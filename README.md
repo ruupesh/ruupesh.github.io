@@ -31,7 +31,7 @@ A stunning, interactive portfolio website built with React, Vite, and modern web
 - **Linting**: ESLint
 
 ## 📋 Prerequisites
-
+ 
 Before you begin, ensure you have the following installed:
 - **Node.js** (v18 or higher recommended)
 - **npm** or **yarn** package manager
