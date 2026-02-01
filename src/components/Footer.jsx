@@ -14,7 +14,7 @@ const Footer = () => {
         borderTop: "1px solid var(--border)",
       }}
     >
-      <p>&copy; {year} {personal.name}. Crafted with Code.</p>
+      <p>&copy; {year} {personal.name}. Crafted with Vibe Coding.</p>
     </footer>
   );
 };

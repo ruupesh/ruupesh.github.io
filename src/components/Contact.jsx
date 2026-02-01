@@ -2,6 +2,7 @@ import React from "react";
 import { usePortfolio } from "../context/PortfolioContext";
 import linkedinIcon from "../assets/linkedin.svg";
 import githubIcon from "../assets/github.svg";
+import mediumIcon from "../assets/medium.svg";
 import leetcodeIcon from "../assets/leetcode.svg";
 import gmailIcon from "../assets/Gmail.svg";
 import whatsappIcon from "../assets/WhatsApp.svg";
@@ -46,6 +47,15 @@ const Contact = () => {
               title="GitHub"
             >
               <img src={githubIcon} alt="GitHub" />
+            </a>
+            <a
+              href="https://medium.com/@ruupesh"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-icon"
+              title="Medium"
+            >
+              <img src={mediumIcon} alt="Medium" />
             </a>
             <a
               href={personal.leetcode}
