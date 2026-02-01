@@ -8,6 +8,7 @@ const portfolioData = {
         linkedin: "https://www.linkedin.com/in/rupeshbodkhe",
         github: "https://github.com/ruupesh",
         leetcode: "https://leetcode.com/ruupesh",
+        medium: "https://medium.com/@ruupesh",
         phone: "+91-9604996583",
         location: "Pune, India",
         resumeUrl: import.meta.env.VITE_RESUME_URL,

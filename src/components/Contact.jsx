@@ -49,7 +49,7 @@ const Contact = () => {
               <img src={githubIcon} alt="GitHub" />
             </a>
             <a
-              href="https://medium.com/@ruupesh"
+              href={personal.medium}
               target="_blank"
               rel="noopener noreferrer"
               className="social-icon"
