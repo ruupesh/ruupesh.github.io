@@ -130,6 +130,19 @@ Technologies: Python, sFTP, React.js, Django REST Framework, Paramiko
 - Automated secure file transfers, saved 8 hours/day, reduced operational risk by 90%.
 `;
   }
+
+  // Publications/Articles
+  if (lowerMessage.includes("publication") || lowerMessage.includes("article") || lowerMessage.includes("blog") || lowerMessage.includes("writing")) {
+    return `📝 **Publications**
+
+**Building a Multi-Agent System with Google ADK: A Deep Dive into the MultiAgent Project**
+Platform: Medium | 2024
+Explore the architecture, design, and implementation of a scalable multi-agent system using Google ADK. Practical insights into building advanced agentic AI systems in production.
+
+[Read on Medium](https://medium.com/@ruupesh/building-a-multi-agent-system-with-google-adk-a-deep-dive-into-the-multiagent-project-16bbadb7e13c)
+`;
+  }
+
   // About
   if (lowerMessage.includes("about")) {
     return `👤 **About Me**
@@ -150,7 +163,8 @@ Explore different sections of my portfolio:
 - 💻 **Skills** - Technical expertise
 - 💼 **Experience** - Work history
 - 🚀 **Projects** - What I've built
-- 📧 **Contact** - Get in touch
+- � **Publications** - My articles
+- �📧 **Contact** - Get in touch
 
 Or ask me something specific about my experience!`;
 };

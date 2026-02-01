@@ -8,6 +8,7 @@ import Achievements from "./components/Achievements";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import About from "./components/About";
+import Publications from "./components/Publications";
 
 import Navbar from "./components/Navbar";
 import BackgroundEffects from "./components/BackgroundEffects";
@@ -26,6 +27,7 @@ function App() {
       <Education />
       <Achievements />
       <Projects />
+      <Publications />
       <Contact />
       <Footer />
       <Chatbot />

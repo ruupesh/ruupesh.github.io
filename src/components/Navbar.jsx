@@ -55,6 +55,7 @@ const Navbar = () => {
           <li><a href="/education">Education</a></li>
           <li><a href="/achievements">Achievements</a></li>
           <li><a href="/projects">Projects</a></li>
+          <li><a href="/publications">Publications</a></li>
           <li><a href="/contact">Contact</a></li>
         </ul>
       </div>

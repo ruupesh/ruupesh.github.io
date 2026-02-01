@@ -148,6 +148,16 @@ const portfolioData = {
         "Spot Award - Leading GenAI project development and timely delivery at Hashedin by Deloitte",
         "Spot Award - Improving GenAI application accuracy from 50% to 99% using prompt engineering at Hashedin by Deloitte",
         "Top Impactor Award - High-impact contributions, timely delivery, and leadership across frontend, backend, DevOps and GenAI initiatives"
+    ],
+
+    publications: [
+        {
+            title: "Building a Multi-Agent System with Google ADK: A Deep Dive into the MultiAgent Project",
+            description: "This article walks through building a multi-agent system using Google’s Agent Development Kit (ADK). It explains the core concepts of agent orchestration, communication, and specialization, and breaks down the architecture of a real multi-agent project with practical examples and code insights.",
+            url: "https://medium.com/@ruupesh/building-a-multi-agent-system-with-google-adk-a-deep-dive-into-the-multiagent-project-16bbadb7e13c",
+            platform: "Medium",
+            date: "January, 2026"
+        }
     ]
 };
 
