@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import ReactMarkdown from "react-markdown";
 
-const apiUrl = "http://localhost:8000/chat";
+const apiUrl = import.meta.env.PORTFOLIO_BE_CHAT_API;
 
 const getFallbackResponse = (message) => {
   const lowerMessage = (message || "").toLowerCase();

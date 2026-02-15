@@ -33,7 +33,7 @@ jobs:
         run: npm run build
         env:
           VITE_RESUME_URL: ${{ vars.VITE_RESUME_URL }}
-      
+          PORTFOLIO_BE_CHAT_API: ${{ vars.PORTFOLIO_BE_CHAT_API }}
       - name: Setup Pages
         uses: actions/configure-pages@v4
       
