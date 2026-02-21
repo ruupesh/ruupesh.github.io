@@ -3,7 +3,7 @@
 const portfolioData = {
     personal: {
         name: "Rupesh Bodkhe",
-        title: "AI-enabled Software Engineer",
+        title: "AI & Backend Engineer",
         email: "rupeshbodkhe2302@gmail.com",
         linkedin: "https://www.linkedin.com/in/rupeshbodkhe",
         github: "https://github.com/ruupesh",
@@ -12,7 +12,7 @@ const portfolioData = {
         phone: "+91-9604996583",
         location: "Pune, India",
         resumeUrl: import.meta.env.VITE_RESUME_URL,
-        summary: "AI-enabled Software Engineer with 3.5+ years of experience building and shipping end-to-end backend and AgenticAI solutions using diverse Python frameworks. Experienced in rapidly developing microservices, event-driven architectures, and multi-agent GenAI systems on cloud-native infrastructure. Comfortable owning features from design to production, integrating LLMs, APIs, frontend components, and DevOps pipelines to deliver scalable products."
+        summary: "AI & Backend Engineer with ~4 years of experience building and shipping end-to-end backend and AgenticAI solutions using diverse Python frameworks. Experienced in rapidly developing microservices, event-driven architectures, and multi-agent GenAI systems on cloud-native infrastructure. Comfortable owning features from design to production, integrating LLMs, APIs, frontend components, and DevOps pipelines to deliver scalable products."
     },
     
     skills: {

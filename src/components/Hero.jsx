@@ -6,7 +6,7 @@ const Hero = () => {
 
   // Typing effect phrases (parity with styles/main.js)
   const phrases = [
-    "AI-Enabled Software Engineer",
+    "AI & Backend Engineer",
     "GenAI Specialist",
     "Full-Stack Developer",
     "Cloud Architecture Expert",

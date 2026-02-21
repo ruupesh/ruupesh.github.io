@@ -15,8 +15,8 @@ const About = () => {
         <div className="about-content">
           <div className="about-text reveal">
             <p>
-              <span className="highlight">AI-enabled Software Engineer</span> with{" "}
-              <span className="highlight">3.5+ years</span> of experience building and shipping end-to-end backend and{" "}
+              <span className="highlight">AI & Backend Engineer</span> with{" "}
+              <span className="highlight">~4 years</span> of experience building and shipping end-to-end backend and{" "}
               <span className="highlight">AgenticAI solutions</span> using diverse Python frameworks.
             </p>
             <p>
@@ -34,7 +34,7 @@ const About = () => {
           <div className="stats-showcase">
             <div className="stat-card tilt-card reveal" data-tilt>
               <div className="stat-icon">💼</div>
-              <div className="stat-number" data-target="3.5">0</div>
+              <div className="stat-number" data-target="4">0</div>
               <div className="stat-label">Years Experience</div>
               <div className="stat-glow"></div>
             </div>
@@ -53,7 +53,7 @@ const About = () => {
             <div className="stat-card tilt-card reveal" data-tilt>
               <div className="stat-icon">⚡</div>
               <div className="stat-number" data-target="50">0</div>
-              <div className="stat-label">Faster with AI Tools</div>
+              <div className="stat-label">Faster development with AI Tools</div>
               <div className="stat-glow"></div>
             </div>
           </div>

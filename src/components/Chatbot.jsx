@@ -10,17 +10,17 @@ const getFallbackResponse = (message) => {
   // GenAI Experience (explicit question)
   if (lowerMessage.includes("genai") && lowerMessage.includes("experience")) {
     return `🤖 GenAI Experience:
-3.5+ years building GenAI chatbots, multi-agent systems, and prompt engineering (accuracy improved from 50% to 99%). Worked with OpenAI, Claude, AWS Bedrock, and LangChain.`;
+~4 years building GenAI chatbots, multi-agent systems, and prompt engineering (accuracy improved from 50% to 99%). Worked with OpenAI, Claude, AWS Bedrock, and LangChain.`;
   }
 
   // Python Experience
   if (lowerMessage.includes("python") && lowerMessage.includes("experience")) {
     return `🐍 Python Experience:
-3.5+ years building backend APIs, ETL systems, and AI solutions using Django, FastAPI, Pandas, and cloud platforms.`;
+~4 years building backend APIs, ETL systems, and AI solutions using Django, FastAPI, Pandas, and cloud platforms.`;
   }
   // Hi/Hello
   if (lowerMessage.includes("hi") || lowerMessage.includes("hello")) {
-    return `👋 Hi! I'm Rupesh Bodkhe, an AI-enabled Software Engineer with 3.5+ years of experience building backend and GenAI solutions. Feel free to ask about my experience, skills, projects, or anything else from my portfolio!`;
+    return `👋 Hi! I'm Rupesh Bodkhe, an AI & Backend Engineer with ~4 years of experience building backend and GenAI solutions. Feel free to ask about my experience, skills, projects, or anything else from my portfolio!`;
   }
 
   // Contact
@@ -147,7 +147,7 @@ Explore the architecture, design, and implementation of a scalable multi-agent s
   if (lowerMessage.includes("about")) {
     return `👤 **About Me**
 
-AI-enabled Software Engineer with 3.5+ years of experience building and shipping end-to-end backend and AgenticAI solutions using diverse Python frameworks. Experienced in rapidly developing microservices, event-driven architectures, and multi-agent GenAI systems on cloud-native infrastructure. Comfortable owning features from design to production, integrating LLMs, APIs, frontend components, and DevOps pipelines to deliver scalable products.
+AI & Backend Engineer with ~4 years of experience building and shipping end-to-end backend and AgenticAI solutions using diverse Python frameworks. Experienced in rapidly developing microservices, event-driven architectures, and multi-agent GenAI systems on cloud-native infrastructure. Comfortable owning features from design to production, integrating LLMs, APIs, frontend components, and DevOps pipelines to deliver scalable products.
 `;
   }
 
