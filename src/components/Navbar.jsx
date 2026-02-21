@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const [imgPreview, setImgPreview] = useState(false);
 
   useEffect(() => {
     const navbar = document.querySelector(".navbar");
@@ -37,15 +38,14 @@ const Navbar = () => {
   }, []);
 
   return (
+    <>
     <nav className="navbar">
       <div className="nav-container">
-        <a href="/" className="nav-logo" onClick={(e) => {
-          e.preventDefault();
-          window.scrollTo({ top: 0, behavior: "smooth" });
-          navigate("/", { replace: true });
-        }}>
-          RB
-        </a>
+        <div className="nav-logo-area">
+          <button className="nav-logo-btn" onClick={() => setImgPreview(true)} title="View profile photo">
+            <img src="/og-image.png" alt="Rupesh Bodkhe" className="nav-logo-img" />
+          </button>
+        </div>
         <button className="mobile-menu-btn" aria-label="Toggle menu">☰</button>
         <ul className="nav-links">
           <li><a href="/">Home</a></li>
@@ -60,6 +60,17 @@ const Navbar = () => {
         </ul>
       </div>
     </nav>
+
+    {imgPreview && (
+      <div className="avatar-preview-overlay" onClick={() => setImgPreview(false)}>
+        <div className="avatar-preview-modal" onClick={(e) => e.stopPropagation()}>
+          <button className="avatar-preview-close" onClick={() => setImgPreview(false)}>✕</button>
+          <img src="/og-image.png" alt="Rupesh Bodkhe" className="avatar-preview-img" />
+          <p className="avatar-preview-name">Rupesh Bodkhe</p>
+        </div>
+      </div>
+    )}
+    </>
   );
 };
 
