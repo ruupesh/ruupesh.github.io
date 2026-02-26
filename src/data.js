@@ -103,6 +103,16 @@ const portfolioData = {
             ]
         },
         {
+            name: "Data Analytics Chatbot",
+            description: "Enterprise data analytics chatbot for generating SQL queries, CSV files, and graphs",
+            technologies: ["Python", "FastAPI", "LangChain Agent", "Prompt Engineering", "Plotly", "Pandas", "AWS S3"],
+            highlights: [
+                "Built a fully functional enterprise data analytics chatbot within a month",
+                "Helps data analysts generate complex SQL queries, convert data to CSV and generate graphs",
+                "Significantly reduced repetitive manual work for data analysts"
+            ]
+        },
+        {
             name: "FileSharing WebApp",
             description: "Secure online SFTP-based file-sharing platform to replace WinSCP",
             technologies: ["Python", "Django REST", "React.js", "Nginx", "Docker", "SFTP", "PostgreSQL", "Gunicorn"],
@@ -130,16 +140,6 @@ const portfolioData = {
                 "Automated secure file transfers and scheduling",
                 "Saved 8 hours/day of manual work",
                 "Reduced operational risk by 90%"
-            ]
-        },
-        {
-            name: "Data Analytics Chatbot",
-            description: "Enterprise data analytics chatbot for generating SQL queries, CSV files, and graphs",
-            technologies: ["Python", "FastAPI", "LangChain Agent", "Prompt Engineering", "Plotly", "Pandas", "AWS S3"],
-            highlights: [
-                "Built a fully functional enterprise data analytics chatbot within a month",
-                "Helps data analysts generate complex SQL queries, convert data to CSV and generate graphs",
-                "Significantly reduced repetitive manual work for data analysts"
             ]
         }
     ],
