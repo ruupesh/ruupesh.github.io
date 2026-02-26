@@ -48,13 +48,6 @@ const Skills = () => {
       emphasis: "secondary",
     },
     {
-      name: "Financial Skills",
-      icon: "💰",
-      list: skills.financial,
-      color: "#22c55e",
-      emphasis: "secondary",
-    },
-    {
       name: "Software Engineering",
       icon: "🛠️",
       list: skills.engineering,

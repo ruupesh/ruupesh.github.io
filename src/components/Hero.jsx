@@ -53,7 +53,7 @@ const Hero = () => {
   return (
     <section id="home" className="hero">
       <div className="hero-content">
-        <span className="hero-badge">Available for Collaboration</span>
+        <span className="hero-badge">Open to Opportunities</span>
         <h1>{personal.name}</h1>
         <p className="subtitle typing">{typed || phrases[0]}</p>
         <p className="hero-description">
