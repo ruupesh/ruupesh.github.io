@@ -61,14 +61,14 @@ const getFallbackResponse = (message) => {
   if (lowerMessage.includes("skill") || lowerMessage.includes("tech") || lowerMessage.includes("language")) {
     return `💻 **Skills**
 
-**Programming Languages:** Python, SQL (Postgres, Oracle), JavaScript
-**GenAI:** LLMs (OpenAI & Claude), AWS Bedrock, Prompt Engineering, Vector Databases, LangChain, RAG
-**AgenticAI:** MultiAgent Architecture, Context Engineering, DeepAgents, LangGraph, FastMCP, A2A, Google ADK
+**Programming Languages:** Python, SQL (Postgres, Oracle)
+**GenAI:** LLMs (like OpenAI & Claude), AWS Bedrock, Prompt Engineering, Vector Databases, LangChain, RAG
+**AgenticAI:** MultiAgent Architecture, Context Engineering, DeepAgents, LangGraph, MCP, A2A Protocol, Google ADK
 **Backend & APIs:** Django REST Framework, FastAPI, Celery, Redis
 **Frontend:** React.js
 **Cloud & DevOps:** AWS, Azure, GCP, Docker, Github, Github Actions, Jenkins, Nginx
 **Financial skills:** Calypso Software, Regulatory Reporting, FICC and EQD products
-**Software Engineering:** API Design, Data Structures, System Design, Microservices, SDLC
+**Software Engineering:** API Design, Data Structures, System Design, Microservices and Event-based Architectures, SDLC, AI Tools
 **Data:** Pandas, Numpy, Airflow
 `;
   }
@@ -77,15 +77,16 @@ const getFallbackResponse = (message) => {
   if (lowerMessage.includes("experience") || lowerMessage.includes("work") || lowerMessage.includes("job")) {
     return `💼 **Experience**
 
-**Hashedin by Deloitte | Software Engineer 2**
+**Hashedin by Deloitte | Software Engineer 2 (AI & Backend)**
 Pune, India | Jan 2025 – Present
-- Enterprise web app with LLM-based chatbot
-- SaaS ITSM GenAI Agent (Prompt Engineering, MultiAgent System)
+- Developed 3 enterprise GenAI & Agentic applications: ITSM Agent, Multi-Agent System, Data Analytics Agent
+- Lead developer of RAG microservice, MultiAgent System, and Data Analytics Agent
+- Designed centralized MultiAgent Orchestrator with Google-ADK, A2A and MCP protocols
 
-**CLSA | Software Engineer**
+**CLSA | Software Engineer (Fullstack)**
 Pune, India | July 2022 – Dec 2024
-- High-performance ETL system
-- Scalable applications with Django REST & React.js
+- High-performance ETL system (8 hours → 5 minutes)
+- Two full-stack apps from scratch to production
 - Automated ETL pipelines for regulatory reporting
 
 **Persistent Systems | Intern**
@@ -128,6 +129,10 @@ Technologies: Python, Django REST Framework, React.js, Nginx, Docker, Pandas, Op
 **PyPoller Automation Application**
 Technologies: Python, sFTP, React.js, Django REST Framework, Paramiko
 - Automated secure file transfers, saved 8 hours/day, reduced operational risk by 90%.
+
+**Data Analytics Chatbot**
+Technologies: Python, FastAPI, LangChain Agent, Prompt Engineering, Plotly, Pandas, AWS S3
+- Enterprise data analytics chatbot for SQL queries, CSV generation, and graph plotting.
 `;
   }
 
@@ -147,7 +152,7 @@ Explore the architecture, design, and implementation of a scalable multi-agent s
   if (lowerMessage.includes("about")) {
     return `👤 **About Me**
 
-AI & Backend Engineer with ~4 years of experience building and shipping end-to-end backend and AgenticAI solutions using diverse Python frameworks. Experienced in rapidly developing microservices, event-driven architectures, and multi-agent GenAI systems on cloud-native infrastructure. Comfortable owning features from design to production, integrating LLMs, APIs, frontend components, and DevOps pipelines to deliver scalable products.
+AI and Backend Engineer with ~4 years of experience building and shipping end-to-end backend and AgenticAI applications using diverse Python frameworks. Experienced in rapidly developing microservices, event-driven architectures, and multi-agent & GenAI systems on cloud-native infrastructure. Comfortable owning features from design to production, integrating LLMs, APIs, frontend components, and DevOps pipelines to deliver scalable products.
 `;
   }
 

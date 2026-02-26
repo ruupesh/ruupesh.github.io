@@ -12,50 +12,49 @@ const portfolioData = {
         phone: "+91-9604996583",
         location: "Pune, India",
         resumeUrl: import.meta.env.VITE_RESUME_URL,
-        summary: "AI & Backend Engineer with ~4 years of experience building and shipping end-to-end backend and AgenticAI solutions using diverse Python frameworks. Experienced in rapidly developing microservices, event-driven architectures, and multi-agent GenAI systems on cloud-native infrastructure. Comfortable owning features from design to production, integrating LLMs, APIs, frontend components, and DevOps pipelines to deliver scalable products."
+        summary: "AI and Backend Engineer with ~4 years of experience building and shipping end-to-end backend and AgenticAI applications using diverse Python frameworks. Experienced in rapidly developing microservices, event-driven architectures, and multi-agent & GenAI systems on cloud-native infrastructure. Comfortable owning features from design to production, integrating LLMs, APIs, frontend components, and DevOps pipelines to deliver scalable products."
     },
     
     skills: {
-        languages: ["Python", "SQL (Postgres, Oracle)", "JavaScript"],
-        genai: ["LLMs (OpenAI & Claude)", "Azure AI Foundry", "AWS Bedrock", "NLP", "Prompt Engineering", "Vector Databases", "Embeddings", "LangChain", "RAG"],
-        agenticai: ["MultiAgent Architecture", "Context Engineering", "DeepAgents", "LangGraph", "FastMCP", "A2A", "Google ADK"],
+        languages: ["Python", "SQL (Postgres, Oracle)"],
+        genai: ["LLMs (like OpenAI & Claude)", "Azure AI Foundry", "AWS Bedrock", "NLP", "Prompt Engineering", "Vector Databases", "LangChain", "RAG"],
+        agenticai: ["MultiAgent Architecture", "Context Engineering", "DeepAgents", "LangGraph", "MCP", "A2A Protocol", "Google ADK"],
         backend: ["Django REST Framework", "FastAPI", "Celery", "Redis"],
         frontend: ["React.js"],
         cloud: ["AWS", "Azure", "GCP", "Docker", "Github", "Github Actions", "Jenkins", "Nginx"],
-        financial: ["Calypso Software", "Regulatory Reporting", "FICC and EQD products"],
-        engineering: ["API Design and Development", "Data Structures and Algorithms", "System Design", "Microservices", "Event-based Architectures", "SDLC", "Vibe Coding"],
+        engineering: ["API Design and Development", "Data Structures and Algorithms", "System Design", "Microservices and Event-based Architectures", "SDLC", "AI Tools"],
         data: ["Pandas", "Numpy", "Airflow"]
     },
 
     experience: [
         {
             company: "Hashedin by Deloitte",
-            position: "Software Engineer 2",
+            position: "Software Engineer 2 (AI & Backend)",
             duration: "Jan 2025 – Present",
             location: "Pune, India",
             responsibilities: [
-                "Designed, developed, and deployed intelligent AI-powered chatbots for two enterprise websites using LLMs and vector databases, serving internal leadership and over 400,000 global employees.",
-                "Utilized LLMs such as AWS Bedrock (Claude Sonnet & Haiku) and OpenAI GPT (gpt 4 & gpt 4o) to ensure secure, relevant, and context-aware conversational experiences.",
-                "Developed secure, scalable backend APIs using Django, hosted on AWS App Runner leveraging serverless architecture for efficient deployment and cost optimization.",
-                "Authored ~75,000 tokens of production-grade natural language prompts for diverse GenAI tasks to improve response accuracy from 50% to 99%.",
-                "Architected cloud-agnostic microservice using asynchronous event-based architecture centered on FastAPI, Celery, Redis and PostgreSQL.",
-                "Lead developer of RAG microservice, Knowledge Article Generator microservice, and Prompt Engineering in SaaS project team.",
-                "Designed POC for converting APIs into LangChain tools, enabling rapid integration of legacy modules via scalable multi-agent architecture.",
-                "Currently leading development of production-grade scalable MultiAgent System and its Context Engineering."
+                "Worked on developing 3 enterprise GenAI & Agentic applications: ITSM Agent, Multi-Agent System, Data Analytics Agent.",
+                "Authored ~75,000 tokens of production-grade natural language prompts for diverse GenAI tasks (retrieval, evaluation, reasoning, and summarization, etc) to significantly reduce LLM hallucinations and improve response accuracy from 50% to 99% in a Fortune 500 facing ITSM SaaS application.",
+                "Lead developer of RAG microservice, Knowledge Article Generator microservice (cloud agnostic asynchronous event based), Prompt Engineering, MultiAgent System and Data Analytics Agent.",
+                "Designed and productionized a centralized MultiAgent Orchestrator System with advanced Context Engineering leveraging Google-ADK, A2A and MCP protocols on a FastAPI backend.",
+                "Led the design and development of Data Analytics Assistant from scratch to production in record 1 month, enabling analysts to generate SQL results, CSV files, and plotting graphs, significantly reducing repetitive manual work.",
+                "Architected and developed a cloud-agnostic microservice by migrating an existing Flask and Airflow DAG using asynchronous event based architecture centered on FastAPI, Celery, Redis and PostgreSQL.",
+                "Designed, developed, and deployed two auto-scaling LLM-powered RAG chatbot web applications, serving internal leadership and over 400,000 global employees.",
+                "Leveraged Anthropic Claude and OpenAI LLMs to build secure, context-aware conversational systems using RAG grounded exclusively in organizational data.",
+                "Hosted the Django backend on AWS App Runner to leverage serverless architecture for efficient deployment, cost optimization and auto-scaling.",
+                "Collaborated cross-functionally with project managers, frontend developers, QA, and DevOps teams to define APIs, align chatbot behavior expectations, and ensure smooth scaling and deployment pipelines."
             ]
         },
         {
             company: "CLSA",
-            position: "Software Engineer",
+            position: "Software Engineer (Fullstack)",
             duration: "July 2022 – Dec 2024",
             location: "Pune, India",
             responsibilities: [
-                "Developed high-performance ETL system with Python, Pandas, and Oracle SQL, reducing data processing time from 8 hours to under 5 mins, optimizing data throughput by over 90%.",
-                "Designed, developed, and deployed multiple scalable applications using Django REST Framework and React.js, building robust APIs and launching three full-scale applications.",
-                "Managed architecture, CI/CD, and infrastructure setup using Gunicorn, Nginx, GitHub, Docker, and PostgreSQL, adhering to microservice architecture and SDLC best practices.",
-                "Automated ETL pipelines for data extraction from Calypso to regulatory repositories (HKTR, MAS), ensuring 100% compliance with global reporting standards.",
-                "Led cross-functional technical initiatives with network security, server, and IAM teams, optimizing infrastructure security and scalability.",
-                "Led a team of developers, guided three new members and two graduates, and served as a code reviewer."
+                "Developed a high-performance ETL system with Python, Pandas, and Oracle SQL, reducing data processing time from 8 hours to under 5 minutes (>98% improvement) and significantly accelerating BAU operations.",
+                "Designed, developed, and deployed two full-stack applications (monitoring & scheduling platform and file-sharing system) from scratch to production, improving team productivity and operational efficiency.",
+                "Automated ETL pipelines for data extraction from Calypso to regulatory repositories (HKTR, MAS), eliminating manual intervention and ensuring 100% compliance with global reporting standards.",
+                "Led a team of developers, guided three new members and two graduates, and additionally served as a code reviewer."
             ]
         },
         {
@@ -76,8 +75,8 @@ const portfolioData = {
             institution: "Savitribai Phule Pune University",
             year: "Aug 2018 - May 2022",
             achievements: [
-                "CGPA of 8.91 (on a scale of 10)",
-                "Honors Course of 2 years in Artificial Intelligence and Machine Learning"
+                "CGPA: 8.91/10",
+                "Honors in Artificial Intelligence and Machine Learning (2 years)"
             ]
         }
     ],
@@ -85,21 +84,21 @@ const portfolioData = {
     projects: [
         {
             name: "Enterprise Chatbot & API Service",
-            description: "Secure RAG-based chatbots for enterprise knowledge access",
-            technologies: ["Python", "Django", "AWS Bedrock (Claude)", "OpenAI GPT", "LangChain", "AWS App Runner", "PostgreSQL", "FAISS", "NLP"],
+            description: "Secure, production-grade enterprise web platform with RAG-based chatbots",
+            technologies: ["Python", "Django", "MSAL", "JWT", "AWS Bedrock (Claude)", "OpenAI GPT", "LangChain", "AWS App Runner", "PostgreSQL", "Embeddings", "Prompt Engineering", "FAISS", "NLP"],
             highlights: [
-                "Built secure RAG-based chatbots using AWS Bedrock, OpenAI, FAISS, and FastAPI",
-                "Implemented MSAL and JWT for enterprise authentication",
-                "Utilized embeddings and prompt engineering for context-aware responses"
+                "Developed a secure, production-grade enterprise web platform with RAG-based chatbots (AWS Bedrock, OpenAI, FAISS, FastAPI)",
+                "Deployed on an auto-scaling cloud architecture to enable context-aware knowledge retrieval grounded in organizational data",
+                "Implemented MSAL and JWT for enterprise authentication"
             ]
         },
         {
-            name: "Multi-Agent System POC",
-            description: "Scalable multi-agent architecture capable of orchestrating hundreds of tools and sub-agents",
-            technologies: ["Python", "Context Engineering", "Prompt Engineering", "DeepAgents", "LangChain", "LLMs", "FastMCP", "A2A", "Google ADK"],
+            name: "Multi-Agent System Orchestrator Microservice",
+            description: "Multi-agent system capable of orchestrating hundreds of MCP tools and remote A2A compatible Agents",
+            technologies: ["A2A Protocol", "MCP Protocol", "LLMs", "Python", "FastAPI", "Context Engineering", "Prompt Engineering"],
             highlights: [
-                "Designed and implemented multi-agent POC orchestrating hundreds of tools and sub-agents",
-                "Integrated legacy APIs and MCP tools",
+                "Designed and implemented a multi-agent system, initially as a POC and subsequently productionized as a standalone microservice",
+                "Capable of orchestrating hundreds of MCP tools and remote A2A compatible Agents",
                 "Approved by stakeholders and adopted as foundation for production-grade agentic system"
             ]
         },
@@ -132,6 +131,16 @@ const portfolioData = {
                 "Saved 8 hours/day of manual work",
                 "Reduced operational risk by 90%"
             ]
+        },
+        {
+            name: "Data Analytics Chatbot",
+            description: "Enterprise data analytics chatbot for generating SQL queries, CSV files, and graphs",
+            technologies: ["Python", "FastAPI", "LangChain Agent", "Prompt Engineering", "Plotly", "Pandas", "AWS S3"],
+            highlights: [
+                "Built a fully functional enterprise data analytics chatbot within a month",
+                "Helps data analysts generate complex SQL queries, convert data to CSV and generate graphs",
+                "Significantly reduced repetitive manual work for data analysts"
+            ]
         }
     ],
 
@@ -145,8 +154,8 @@ const portfolioData = {
 
     awards: [
         "Star Award - Exceptional performance and innovative projects at CLSA",
-        "Spot Award - Leading GenAI project development and timely delivery at Hashedin by Deloitte",
-        "Spot Award - Improving GenAI application accuracy from 50% to 99% using prompt engineering at Hashedin by Deloitte",
+        "Spot Award - Leading the development of a GenAI project and delivering it on time at Hashedin by Deloitte",
+        "Spot Award - Significant impact in improving accuracy of entire GenAI application from 50% to 99% using prompt engineering at Hashedin by Deloitte",
         "Top Impactor Award - High-impact contributions, timely delivery, and leadership across frontend, backend, DevOps and GenAI initiatives"
     ],
 
