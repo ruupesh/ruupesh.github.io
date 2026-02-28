@@ -254,6 +254,8 @@ const Chatbot = () => {
         onClick={toggleChat}
         title="Chat with me"
       >
+        <span className="orbit-ring orbit-ring-1" />
+        <span className="orbit-ring orbit-ring-2" />
         <span className="chatbot-icon">💬</span>
         <span className="chatbot-close-icon">✕</span>
       </button>
