@@ -20,7 +20,7 @@ const getFallbackResponse = (message) => {
   }
   // Hi/Hello
   if (lowerMessage.includes("hi") || lowerMessage.includes("hello")) {
-    return `👋 Hi! I'm Rupesh Bodkhe, an AI & Backend Engineer with ~4 years of experience building backend and GenAI solutions. Feel free to ask about my experience, skills, projects, or anything else from my portfolio!`;
+    return `👋 Hi! I'm Rupesh's AI assistant. Rupesh is an AI & Backend Engineer with ~4 years of experience building backend and GenAI solutions. Feel free to ask about Rupesh's experience, skills, projects, or anything else from his portfolio!`;
   }
 
   // Contact
@@ -150,9 +150,9 @@ Explore the architecture, design, and implementation of a scalable multi-agent s
 
   // About
   if (lowerMessage.includes("about")) {
-    return `👤 **About Me**
+    return `👤 **About Rupesh**
 
-AI and Backend Engineer with ~4 years of experience building and shipping end-to-end backend and AgenticAI applications using diverse Python frameworks. Experienced in rapidly developing microservices, event-driven architectures, and multi-agent & GenAI systems on cloud-native infrastructure. Comfortable owning features from design to production, integrating LLMs, APIs, frontend components, and DevOps pipelines to deliver scalable products.
+Rupesh is an AI and Backend Engineer with ~4 years of experience building and shipping end-to-end backend and AgenticAI applications using diverse Python frameworks. Experienced in rapidly developing microservices, event-driven architectures, and multi-agent & GenAI systems on cloud-native infrastructure. Comfortable owning features from design to production, integrating LLMs, APIs, frontend components, and DevOps pipelines to deliver scalable products.
 `;
   }
 
@@ -161,17 +161,17 @@ AI and Backend Engineer with ~4 years of experience building and shipping end-to
   // Default
   return `That's a great question! 😊
 
-Explore different sections of my portfolio:
+Explore different sections of Rupesh's portfolio:
 
 **📌 Quick Links**
-- 👤 **About** - My background
+- 👤 **About** - Rupesh's background
 - 💻 **Skills** - Technical expertise
 - 💼 **Experience** - Work history
-- 🚀 **Projects** - What I've built
-- � **Publications** - My articles
-- �📧 **Contact** - Get in touch
+- 🚀 **Projects** - What Rupesh has built
+- 📝 **Publications** - Rupesh's articles
+- 📧 **Contact** - Get in touch
 
-Or ask me something specific about my experience!`;
+Or ask me something specific about Rupesh's experience!`;
 };
 
 const quickActions = [
@@ -184,8 +184,8 @@ const quickActions = [
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: "bot", content: "👋 Hi! I'm Rupesh's AI assistant. How can I help you learn more about my work?" },
-    { role: "bot", content: "Feel free to ask about my experience, projects, or technical skills!" },
+    { role: "bot", content: "👋 Hi! I'm Rupesh's AI assistant. How can I help you learn more about Rupesh's work?" },
+    { role: "bot", content: "Feel free to ask about Rupesh's experience, projects, or technical skills!" },
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
