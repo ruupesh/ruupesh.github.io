@@ -1,22 +1,11 @@
-import React from "react";
-import { usePortfolio } from "../context/PortfolioContext";
-
-const Footer = () => {
-  const { personal } = usePortfolio();
+export default function Footer() {
   const year = new Date().getFullYear();
-
   return (
-    <footer
-      style={{
-        textAlign: "center",
-        padding: "2rem",
-        color: "var(--text-muted)",
-        borderTop: "1px solid var(--border)",
-      }}
-    >
-      <p>&copy; {year} {personal.name}. Crafted with Vibe Coding.</p>
+    <footer className="site-footer">
+      <p>© {year} Rupesh Bodkhe. All rights reserved.</p>
+      <p className="footer-vibe">
+        Built with React, FastAPI and LangChain.
+      </p>
     </footer>
   );
-};
-
-export default Footer;
+}

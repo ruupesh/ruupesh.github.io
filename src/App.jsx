@@ -1,38 +1,43 @@
-import React from "react";
+import { lazy, Suspense } from "react";
 import { PortfolioProvider } from "./context/PortfolioContext";
-import Hero from "./components/Hero";
-import Skills from "./components/Skills";
-import Experience from "./components/Experience";
-import Education from "./components/Education";
-import Achievements from "./components/Achievements";
-import Projects from "./components/Projects";
-import Contact from "./components/Contact";
-import About from "./components/About";
-import Publications from "./components/Publications";
-
+import NeuralBackground from "./components/NeuralBackground";
+import SmoothScroll from "./components/SmoothScroll";
 import Navbar from "./components/Navbar";
-import BackgroundEffects from "./components/BackgroundEffects";
-import Chatbot from "./components/Chatbot";
-import Footer from "./components/Footer";
+import Hero from "./components/Hero";
+
+const About = lazy(() => import("./components/About"));
+const Skills = lazy(() => import("./components/Skills"));
+const Experience = lazy(() => import("./components/Experience"));
+const Education = lazy(() => import("./components/Education"));
+const Achievements = lazy(() => import("./components/Achievements"));
+const Projects = lazy(() => import("./components/Projects"));
+const Publications = lazy(() => import("./components/Publications"));
+const Contact = lazy(() => import("./components/Contact"));
+const Footer = lazy(() => import("./components/Footer"));
+const Chatbot = lazy(() => import("./components/Chatbot"));
 
 function App() {
   return (
     <PortfolioProvider>
-      <BackgroundEffects />
-      <Navbar />
-      <Hero />
-      <About />
-      <Skills />
-      <Experience />
-      <Education />
-      <Achievements />
-      <Projects />
-      <Publications />
-      <Contact />
-      <Footer />
-      <Chatbot />
+      <SmoothScroll>
+        <NeuralBackground />
+        <Navbar />
+        <Hero />
+        <Suspense fallback={null}>
+          <About />
+          <Skills />
+          <Experience />
+          <Education />
+          <Achievements />
+          <Projects />
+          <Publications />
+          <Contact />
+          <Footer />
+          <Chatbot />
+        </Suspense>
+      </SmoothScroll>
     </PortfolioProvider>
   );
 }
 
-export default App
+export default App;
