@@ -1,110 +1,63 @@
-import React from "react";
 import { usePortfolio } from "../context/PortfolioContext";
+import useScrollReveal from "../hooks/useScrollReveal";
 
-const Skills = () => {
+const CATEGORY_META = {
+  languages: { icon: "💻", color: "#00f0ff", label: "Languages" },
+  genai: { icon: "🧠", color: "#8b5cf6", label: "Gen AI" },
+  agenticai: { icon: "🤖", color: "#00ff88", label: "Agentic AI" },
+  backend: { icon: "⚙️", color: "#f59e0b", label: "Backend" },
+  frontend: { icon: "🎨", color: "#ec4899", label: "Frontend" },
+  cloud: { icon: "☁️", color: "#3b82f6", label: "Cloud & DevOps" },
+  engineering: { icon: "🏗️", color: "#14b8a6", label: "Engineering" },
+  data: { icon: "📊", color: "#f97316", label: "Data" },
+};
+
+export default function Skills() {
   const { skills } = usePortfolio();
+  const revealRef = useScrollReveal();
 
-  const skillCategories = [
-    {
-      name: "Programming Languages",
-      icon: "💻",
-      list: skills.languages,
-      color: "var(--primary)",
-      emphasis: "core",
-    },
-    {
-      name: "GenAI",
-      icon: "🤖",
-      list: skills.genai,
-      color: "#10b981",
-      emphasis: "primary",
-    },
-    {
-      name: "AgenticAI",
-      icon: "🧠",
-      list: skills.agenticai,
-      color: "#f59e0b",
-      emphasis: "primary",
-    },
-    {
-      name: "Backend & APIs",
-      icon: "⚙️",
-      list: skills.backend,
-      color: "var(--secondary)",
-      emphasis: "core",
-    },
-    {
-      name: "Cloud & DevOps",
-      icon: "☁️",
-      list: skills.cloud,
-      color: "#0ea5e9",
-      emphasis: "core",
-    },
-    {
-      name: "Frontend",
-      icon: "🎨",
-      list: skills.frontend,
-      color: "#ec4899",
-      emphasis: "secondary",
-    },
-    {
-      name: "Software Engineering",
-      icon: "🛠️",
-      list: skills.engineering,
-      color: "#8b5cf6",
-      emphasis: "core",
-    },
-    {
-      name: "Data",
-      icon: "📈",
-      list: skills.data,
-      color: "#14b8a6",
-      emphasis: "secondary",
-    },
-  ];
+  if (!skills) return null;
+
+  const categories = Object.entries(skills);
 
   return (
-    <section id="skills" className="section">
+    <section id="skills" className="section" ref={revealRef}>
       <div className="section-container">
-        <div className="section-header reveal">
-          <h2>Technical Arsenal</h2>
+        <div className="section-header">
+          <p className="subtitle gsap-reveal">Tech Stack</p>
+          <h2 className="gsap-reveal">Skills & Expertise</h2>
         </div>
+
         <div className="skills-grid">
-          {skillCategories.map((cat, i) => (
-            <div
-              key={cat.name}
-              className={`skill-category reveal ${cat.emphasis}`}
-              data-emphasis={cat.emphasis}
-              style={{ "--cat-color": cat.color }}
-            >
-              <div className="cat-header">
-                <div
-                  className="cat-icon-wrapper"
-                  style={{ "--cat-color": cat.color }}
-                >
-                  <span className="cat-icon">{cat.icon}</span>
-                </div>
-                <div className="cat-title-wrapper">
-                  <h3>{cat.name}</h3>
-                  <span className="skill-count">{cat.list.length} skills</span>
-                </div>
-              </div>
-              <div className="skill-tags-wrapper">
-                {cat.list.map((skill, index) => (
-                  <div
-                    key={skill}
-                    className="skill-tag"
-                  >
-                    <span className="skill-name">{skill}</span>
+          {categories.map(([key, items]) => {
+            const meta = CATEGORY_META[key] || { icon: "📌", color: "#00f0ff", label: key };
+            return (
+              <div
+                className="skill-category gsap-reveal"
+                key={key}
+                style={{ "--cat-color": meta.color }}
+              >
+                <div className="cat-header">
+                  <div className="cat-icon-wrapper">
+                    <span className="cat-icon">{meta.icon}</span>
                   </div>
-                ))}
+                  <div className="cat-title-wrapper">
+                    <h3>{meta.label}</h3>
+                    <span className="skill-count">{items.length} skills</span>
+                  </div>
+                </div>
+                <div className="skill-tags-wrapper">
+                  {items.map((skill) => (
+                    <span className="skill-tag" key={skill}>
+                      <span className="skill-name">{skill}</span>
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
   );
-};
-
-export default Skills;
+}

@@ -1,55 +1,48 @@
-import React from "react";
 import { usePortfolio } from "../context/PortfolioContext";
+import useScrollReveal from "../hooks/useScrollReveal";
 
-const Projects = () => {
+export default function Projects() {
   const { projects } = usePortfolio();
+  const revealRef = useScrollReveal();
+
+  if (!projects || projects.length === 0) return null;
 
   return (
-    <section id="projects" className="section">
+    <section id="projects" className="section" ref={revealRef}>
       <div className="section-container">
-        <div className="section-header reveal">
-          <h2>Featured Projects</h2>
+        <div className="section-header">
+          <p className="subtitle gsap-reveal">What I've Built</p>
+          <h2 className="gsap-reveal">Projects</h2>
         </div>
+
         <div className="projects-grid">
-          {projects.map((project, i) => (
-            <div
-              key={project.name}
-              className="project-card reveal"
-            >
+          {projects.map((project, idx) => (
+            <div className="project-card gsap-reveal" key={idx}>
               <div className="project-top">
                 <div className="project-header">
                   <h3>{project.name}</h3>
+                  <p className="project-description">{project.description}</p>
                 </div>
                 <div className="project-tags">
-                  {project.technologies.map((tech) => (
-                    <span key={tech} className="tech-tag">
-                      {tech}
-                    </span>
+                  {project.technologies?.map((tech) => (
+                    <span className="tech-tag" key={tech}>{tech}</span>
                   ))}
                 </div>
               </div>
-              <div className="project-content">
-                <p
-                  style={{
-                    color: "var(--text-muted)",
-                    marginBottom: "1.5rem",
-                    lineHeight: "1.7",
-                  }}
-                >
-                  {project.description}
-                </p>
-                <ul className="highlight-list">
-                  {project.highlights.map((highlight, index) => (
-                    <li key={index}>{highlight}</li>
-                  ))}
-                </ul>
-              </div>
+
+              {project.highlights?.length > 0 && (
+                <div className="project-content">
+                  <ul className="highlight-list">
+                    {project.highlights.map((h, i) => (
+                      <li key={i}>{h}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           ))}
         </div>
       </div>
     </section>
   );
-};
-
-export default Projects;
+}

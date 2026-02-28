@@ -263,7 +263,7 @@ const Chatbot = () => {
           <div className="chatbot-header-info">
             <div className="chatbot-avatar">RB</div>
             <div className="chatbot-header-text">
-              <h4>Rupesh Bodkhe</h4>
+
               <p className="chatbot-status">
                 <span className="status-dot"></span>
                 Available to chat

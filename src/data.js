@@ -33,7 +33,7 @@ const portfolioData = {
             duration: "Jan 2025 – Present",
             location: "Pune, India",
             responsibilities: [
-                "Worked on developing 3 enterprise GenAI & Agentic applications: ITSM Agent, Multi-Agent System, Data Analytics Agent.",
+                "Worked on developing 3 enterprise Agentic applications: ITSM Agent, Multi-Agent System, Data Analytics Agent.",
                 "Authored ~75,000 tokens of production-grade natural language prompts for diverse GenAI tasks (retrieval, evaluation, reasoning, and summarization, etc) to significantly reduce LLM hallucinations and improve response accuracy from 50% to 99% in a Fortune 500 facing ITSM SaaS application.",
                 "Lead developer of RAG microservice, Knowledge Article Generator microservice (cloud agnostic asynchronous event based), Prompt Engineering, MultiAgent System and Data Analytics Agent.",
                 "Designed and productionized a centralized MultiAgent Orchestrator System with advanced Context Engineering leveraging Google-ADK, A2A and MCP protocols on a FastAPI backend.",
@@ -89,7 +89,8 @@ const portfolioData = {
             highlights: [
                 "Developed a secure, production-grade enterprise web platform with RAG-based chatbots (AWS Bedrock, OpenAI, FAISS, FastAPI)",
                 "Deployed on an auto-scaling cloud architecture to enable context-aware knowledge retrieval grounded in organizational data",
-                "Implemented MSAL and JWT for enterprise authentication"
+                "Implemented MSAL and JWT for enterprise authentication",
+                "400k+ users"
             ]
         },
         {
