@@ -1,77 +1,127 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { usePortfolio } from "../context/PortfolioContext";
 
-const Navbar = () => {
-  const navigate = useNavigate();
-  const [imgPreview, setImgPreview] = useState(false);
+const NAV_ITEMS = [
+  { label: "About", href: "#about" },
+  { label: "Skills", href: "#skills" },
+  { label: "Experience", href: "#experience" },
+  { label: "Education", href: "#education" },
+  { label: "Achievements", href: "#achievements" },
+  { label: "Projects", href: "#projects" },
+  { label: "Publications", href: "#publications" },
+  { label: "Contact", href: "#contact" },
+];
+
+const SECTION_IDS = ["hero", "about", "skills", "experience", "education", "achievements", "projects", "publications", "contact"];
+
+export default function Navbar() {
+  const { personal } = usePortfolio();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
+  const [photoPreview, setPhotoPreview] = useState(false);
 
   useEffect(() => {
-    const navbar = document.querySelector(".navbar");
-    const navLinks = document.querySelector(".nav-links");
-    const mobileBtn = document.querySelector(".mobile-menu-btn");
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-    const handleScroll = () => {
-      if (!navbar) return;
-      if (window.scrollY > 100) {
-        navbar.classList.add("scrolled");
-      } else {
-        navbar.classList.remove("scrolled");
+  // Scroll-based hash tracking + active nav highlighting
+  // (works with lazy-loaded sections since it checks DOM dynamically)
+  useEffect(() => {
+    const activeSectionRef = { current: "" };
+    const updateHash = () => {
+      let current = "";
+      for (const id of SECTION_IDS) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= window.innerHeight * 0.4) {
+            current = id;
+          }
+        }
       }
-      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = scrollHeight > 0 ? (window.scrollY / scrollHeight) * 100 : 0;
-      navbar.style.setProperty("--scroll-progress", `${progress}%`);
+      if (current && current !== activeSectionRef.current) {
+        activeSectionRef.current = current;
+        setActiveSection(current);
+        const hash = current === "hero" ? "" : `#${current}`;
+        history.replaceState(null, "", hash || window.location.pathname);
+      }
     };
 
-    const toggleMobile = () => {
-      navLinks?.classList.toggle("active");
-    };
+    window.addEventListener("scroll", updateHash, { passive: true });
+    // Run once after lazy components mount
+    const timer = setTimeout(updateHash, 500);
+    return () => { window.removeEventListener("scroll", updateHash); clearTimeout(timer); };
+  }, []);
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-
-    mobileBtn?.addEventListener("click", toggleMobile);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      mobileBtn?.removeEventListener("click", toggleMobile);
-    };
+  // Smooth scroll to section & close menu
+  const handleNav = useCallback((e, sectionId) => {
+    e.preventDefault();
+    setMobileOpen(false);
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+      history.replaceState(null, "", `#${sectionId}`);
+    }
   }, []);
 
   return (
     <>
-    <nav className="navbar">
-      <div className="nav-container">
-        <div className="nav-logo-area">
-          <button className="nav-logo-btn" onClick={() => setImgPreview(true)} title="View profile photo">
-            <img src="/og-image.png" alt="Rupesh Bodkhe" className="nav-logo-img" />
+      <nav className={`navbar${scrolled ? " scrolled" : ""}`}>
+        <div className="nav-container">
+          <div className="nav-logo-area">
+            <button
+              className="nav-logo-btn"
+              onClick={() => setPhotoPreview(true)}
+              aria-label="View profile photo"
+            >
+              <img
+                src="/og-image.png"
+                alt={personal?.name || "Rupesh Bodkhe"}
+                className="nav-logo-img"
+              />
+            </button>
+          </div>
+
+          <div className={`nav-links${mobileOpen ? " active" : ""}`}>
+            {NAV_ITEMS.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className={activeSection === item.href.slice(1) ? "active" : ""}
+                onClick={(e) => handleNav(e, item.href.slice(1))}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+
+          <button
+            className="mobile-menu-btn"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle mobile menu"
+          >
+            {mobileOpen ? "✕" : "☰"}
           </button>
         </div>
-        <button className="mobile-menu-btn" aria-label="Toggle menu">☰</button>
-        <ul className="nav-links">
-          <li><a href="/">Home</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/skills">Skills</a></li>
-          <li><a href="/experience">Experience</a></li>
-          <li><a href="/education">Education</a></li>
-          <li><a href="/achievements">Achievements</a></li>
-          <li><a href="/projects">Projects</a></li>
-          <li><a href="/publications">Publications</a></li>
-          <li><a href="/contact">Contact</a></li>
-        </ul>
-      </div>
-    </nav>
+      </nav>
 
-    {imgPreview && (
-      <div className="avatar-preview-overlay" onClick={() => setImgPreview(false)}>
-        <div className="avatar-preview-modal" onClick={(e) => e.stopPropagation()}>
-          <button className="avatar-preview-close" onClick={() => setImgPreview(false)}>✕</button>
-          <img src="/og-image.png" alt="Rupesh Bodkhe" className="avatar-preview-img" />
-          <p className="avatar-preview-name">Rupesh Bodkhe</p>
+      {/* Instagram-style photo preview */}
+      {photoPreview && (
+        <div className="avatar-preview-overlay" onClick={() => setPhotoPreview(false)}>
+          <div className="avatar-preview-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="avatar-preview-close" onClick={() => setPhotoPreview(false)}>✕</button>
+            <img
+              src="/og-image.png"
+              alt={personal?.name || "Rupesh Bodkhe"}
+              className="avatar-preview-img"
+            />
+            <p className="avatar-preview-name">{personal?.name || "Rupesh Bodkhe"}</p>
+          </div>
         </div>
-      </div>
-    )}
+      )}
     </>
   );
-};
-
-export default Navbar;
+}

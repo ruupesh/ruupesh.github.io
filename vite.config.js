@@ -5,12 +5,21 @@ export default defineConfig({
   plugins: [react()],
   base: '/',
   build: {
-    sourcemap: false, // Don't generate source maps in production
-    minify: 'terser', // Use terser for better minification
+    sourcemap: false,
+    minify: 'terser',
     terser: {
       compress: {
-        drop_console: true, // Remove console.logs
-        drop_debugger: true // Remove debugger statements
+        drop_console: true,
+        drop_debugger: true
+      }
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-gsap': ['gsap'],
+          'vendor-lenis': ['lenis'],
+        }
       }
     }
   }

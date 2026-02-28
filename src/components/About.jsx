@@ -1,66 +1,91 @@
-import React from "react";
 import { usePortfolio } from "../context/PortfolioContext";
+import useScrollReveal from "../hooks/useScrollReveal";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const About = () => {
+gsap.registerPlugin(ScrollTrigger);
+
+const STATS = [
+  { icon: "🧠", label: "YOE in AI/Backend", target: 4, suffix: "+" },
+  { icon: "🤖", label: "(5 AI) Apps Designed, Developed & Deployed", target: 7, suffix: "+" },
+  { icon: "👥", label: "Users Served", target: 400, suffix: "K+" },
+  { icon: "☁️", label: "Cloud & AI Certs", target: 5, suffix: "" },
+];
+
+export default function About() {
   const { personal } = usePortfolio();
+  const revealRef = useScrollReveal();
+  const countersRef = useRef([]);
+
+  // Animated counters
+  useEffect(() => {
+    countersRef.current.forEach((el, i) => {
+      if (!el) return;
+      const tgt = STATS[i].target;
+      const obj = { val: 0 };
+      gsap.to(obj, {
+        val: tgt,
+        duration: 2,
+        ease: "power2.out",
+        scrollTrigger: { trigger: el, start: "top 80%" },
+        onUpdate: () => {
+          el.textContent = Math.round(obj.val);
+        },
+      });
+    });
+  }, []);
+
+  const highlightSummary = (text) => {
+    if (!text) return null;
+    const keywords = [
+      "AI and Backend Engineer",
+      "~4 years",
+      "AgenticAI",
+      "microservices",
+      "multi-agent",
+      "GenAI",
+      "cloud-native",
+      "LLMs",
+      "scalable products",
+    ];
+    let result = text;
+    keywords.forEach((kw) => {
+      result = result.replace(
+        new RegExp(`(${kw})`, "gi"),
+        `<span class="highlight">$1</span>`
+      );
+    });
+    return <p dangerouslySetInnerHTML={{ __html: result }} />;
+  };
 
   return (
-    <section id="about" className="section">
+    <section id="about" className="section" ref={revealRef}>
       <div className="section-container">
-        <div className="section-header reveal">
-          <h2>About Me</h2>
-          <p className="subtitle">Transforming Ideas into Reality</p>
+        <div className="section-header">
+          <p className="subtitle gsap-reveal">Who I Am</p>
+          <h2 className="gsap-reveal">About Me</h2>
         </div>
 
         <div className="about-content">
-          <div className="about-text reveal">
-            <p>
-              <span className="highlight">AI & Backend Engineer</span> with{" "}
-              <span className="highlight">~4 years</span> of experience building and shipping end-to-end backend and{" "}
-              <span className="highlight">AgenticAI solutions</span> using diverse Python frameworks.
-            </p>
-            <p>
-              Experienced in rapidly developing <span className="highlight">microservices</span>,{" "}
-              <span className="highlight">event-driven architectures</span>, and{" "}
-              <span className="highlight">multi-agent GenAI systems</span> on cloud-native infrastructure.
-            </p>
-            <p>
-              Comfortable owning features from design to production, integrating <span className="highlight">LLMs</span>,{" "}
-              <span className="highlight">APIs</span>, frontend components, and{" "}
-              <span className="highlight">DevOps pipelines</span> to deliver scalable products.
-            </p>
+          <div className="about-text gsap-reveal">
+            {highlightSummary(personal?.summary)}
           </div>
 
           <div className="stats-showcase">
-            <div className="stat-card tilt-card reveal" data-tilt>
-              <div className="stat-icon">💼</div>
-              <div className="stat-number" data-target="4">0</div>
-              <div className="stat-label">Years Experience</div>
-              <div className="stat-glow"></div>
-            </div>
-            <div className="stat-card tilt-card reveal" data-tilt>
-              <div className="stat-icon">🚀</div>
-              <div className="stat-number" data-target="5">0</div>
-              <div className="stat-label">Projects Delivered</div>
-              <div className="stat-glow"></div>
-            </div>
-            <div className="stat-card tilt-card reveal" data-tilt>
-              <div className="stat-icon">🎯</div>
-              <div className="stat-number" data-target="99">0</div>
-              <div className="stat-label">Accuracy Rate using Prompt Engineering</div>
-              <div className="stat-glow"></div>
-            </div>
-            <div className="stat-card tilt-card reveal" data-tilt>
-              <div className="stat-icon">⚡</div>
-              <div className="stat-number" data-target="50">0</div>
-              <div className="stat-label">Faster development with AI Tools</div>
-              <div className="stat-glow"></div>
-            </div>
+            {STATS.map((stat, i) => (
+              <div className="stat-card gsap-reveal" key={stat.label}>
+                <span className="stat-icon">{stat.icon}</span>
+                <div className="stat-number">
+                  <span ref={(el) => (countersRef.current[i] = el)}>0</span>
+                  <span className="stat-suffix">{stat.suffix}</span>
+                </div>
+                <span className="stat-label">{stat.label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default About;
+}
