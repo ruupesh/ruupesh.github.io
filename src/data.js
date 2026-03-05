@@ -54,6 +54,7 @@ const portfolioData = {
                 "Developed a high-performance ETL system with Python, Pandas, and Oracle SQL, reducing data processing time from 8 hours to under 5 minutes (>98% improvement) and significantly accelerating BAU operations.",
                 "Designed, developed, and deployed two full-stack applications (monitoring & scheduling platform and file-sharing system) from scratch to production, improving team productivity and operational efficiency.",
                 "Automated ETL pipelines for data extraction from Calypso to regulatory repositories (HKTR, MAS), eliminating manual intervention and ensuring 100% compliance with global reporting standards.",
+                "Improved development productivity by ~30% by leveraging AI-assisted tools for debugging, code generation and unit test scaffolding",
                 "Led a team of developers, guided three new members and two graduates, and additionally served as a code reviewer."
             ]
         },
