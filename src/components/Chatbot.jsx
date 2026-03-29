@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
 
 const apiUrl = import.meta.env.VITE_PORTFOLIO_BE_CHAT_API;
 
@@ -10,7 +12,7 @@ const getFallbackResponse = (message) => {
   // GenAI Experience (explicit question)
   if (lowerMessage.includes("genai") && lowerMessage.includes("experience")) {
     return `🤖 GenAI Experience:
-~4 years building GenAI chatbots, multi-agent systems, and prompt engineering (accuracy improved from 50% to 99%). Worked with OpenAI, Claude, AWS Bedrock, and LangChain.`;
+Built 5+ GenAI, Agentic AI and multi-agent systems. Expertise in prompt engineering (accuracy improved from 50% to 99%). Worked with OpenAI, Claude, AWS Bedrock, LangChain, Google ADK, Copilot, Codex and more.`;
   }
 
   // Python Experience
@@ -61,15 +63,15 @@ const getFallbackResponse = (message) => {
   if (lowerMessage.includes("skill") || lowerMessage.includes("tech") || lowerMessage.includes("language")) {
     return `💻 **Skills**
 
-**Programming Languages:** Python, SQL (Postgres, Oracle)
-**GenAI:** LLMs (like OpenAI & Claude), AWS Bedrock, Prompt Engineering, Vector Databases, LangChain, RAG
-**AgenticAI:** MultiAgent Architecture, Context Engineering, DeepAgents, LangGraph, MCP, A2A Protocol, Google ADK
-**Backend & APIs:** Django REST Framework, FastAPI, Celery, Redis
-**Frontend:** React.js
-**Cloud & DevOps:** AWS, Azure, GCP, Docker, Github, Github Actions, Jenkins, Nginx
-**Financial skills:** Calypso Software, Regulatory Reporting, FICC and EQD products
-**Software Engineering:** API Design, Data Structures, System Design, Microservices and Event-based Architectures, SDLC, AI Tools
-**Data:** Pandas, Numpy, Airflow
+- **Programming Languages:** Python, SQL (Postgres, Oracle)
+- **GenAI:** LLMs (like OpenAI & Claude), AWS Bedrock, Prompt Engineering, Vector Databases, LangChain, RAG
+- **AgenticAI:** MultiAgent Architecture, Context Engineering, DeepAgents, LangGraph, MCP, A2A Protocol, Google ADK
+- **Backend & APIs:** Django REST Framework, FastAPI, Celery, Redis
+- **Frontend:** React.js
+- **Cloud & DevOps:** AWS, Azure, GCP, Docker, Github, Github Actions, Jenkins, Nginx
+- **Financial skills:** Calypso Software, Regulatory Reporting, FICC and EQD products
+- **Software Engineering:** API Design, Data Structures, System Design, Microservices and Event-based Architectures, SDLC, AI Tools
+- **Data:** Pandas, Numpy, Airflow
 `;
   }
 
@@ -116,7 +118,7 @@ Technologies: Python, Django, AWS Bedrock (Claude), OpenAI GPT, LangChain, AWS A
 
 **Multi-Agent System POC**
 Technologies: Python, Context Engineering, Prompt Engineering, DeepAgents, LangChain, LLMs, FastMCP
-- Designed and implemented a multi-agent POC for scalable production systems.
+- Designed and implemented a multi-agent system, initially as a POC and subsequently productionized as a standalone microservice
 
 **FileSharing WebApp**
 Technologies: Python, Django REST, React.js, Nginx, Docker, SFTP, PostgreSQL
@@ -140,11 +142,16 @@ Technologies: Python, FastAPI, LangChain Agent, Prompt Engineering, Plotly, Pand
   if (lowerMessage.includes("publication") || lowerMessage.includes("article") || lowerMessage.includes("blog") || lowerMessage.includes("writing")) {
     return `📝 **Publications**
 
-**Building a Multi-Agent System with Google ADK: A Deep Dive into the MultiAgent Project**
-Platform: Medium | 2024
+- **Building a Multi-Agent System with Google ADK: A Deep Dive into the MultiAgent Project**
+Platform: Medium | 2026
 Explore the architecture, design, and implementation of a scalable multi-agent system using Google ADK. Practical insights into building advanced agentic AI systems in production.
-
 [Read on Medium](https://medium.com/@ruupesh/building-a-multi-agent-system-with-google-adk-a-deep-dive-into-the-multiagent-project-16bbadb7e13c)
+
+
+- **Beyond Tool Calling: Building a Real Multi-Agent System with Google ADK, MCP, and A2A**
+Platform: Medium | 2026
+This article breaks down how to design and build a production-grade multi-agent system, going beyond simple prompt-based agents to a structured runtime architecture. It explains how Google ADK, MCP, and A2A work together to enable remote multi-agent discovery & orchestration, tool integration, and real communication between remote agents. The focus is on both high-level design and low-level implementation, including authentication, routing, state management, and scalable agent collaboration.
+[Read on Medium](https://medium.com/@ruupesh/beyond-tool-calling-building-a-real-multi-agent-system-with-google-adk-mcp-and-a2a-aa0fd7d64754)
 `;
   }
 
@@ -180,6 +187,12 @@ const quickActions = [
   { label: "💻 Tech Stack", message: "What technologies do you work with?" },
   { label: "📧 Contact Info", message: "How can I contact you?" },
 ];
+
+const markdownComponents = {
+  a: ({ node, ...props }) => (
+    <a {...props} target="_blank" rel="noopener noreferrer" />
+  ),
+};
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -284,7 +297,14 @@ const Chatbot = () => {
               <div className="message-content">
                 {msg.role !== "user" && <div className="message-avatar">RB</div>}
                 <div className="message-bubble">
-                  {msg.role !== "user" ? <ReactMarkdown>{msg.content}</ReactMarkdown> : msg.content}
+                  {msg.role !== "user" ? (
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm, remarkBreaks]}
+                      components={markdownComponents}
+                    >
+                      {msg.content}
+                    </ReactMarkdown>
+                  ) : msg.content}
                 </div>
               </div>
             </div>
