@@ -4,6 +4,7 @@ import NeuralBackground from "./components/NeuralBackground";
 import SmoothScroll from "./components/SmoothScroll";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
+import SplineHumanoid from "./components/SplineHumanoid";
 
 const About = lazy(() => import("./components/About"));
 const Skills = lazy(() => import("./components/Skills"));
@@ -21,6 +22,7 @@ function App() {
     <PortfolioProvider>
       <SmoothScroll>
         <NeuralBackground />
+        <SplineHumanoid />
         <Navbar />
         <Hero />
         <Suspense fallback={null}>
