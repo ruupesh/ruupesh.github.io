@@ -168,6 +168,13 @@ const portfolioData = {
             url: "https://medium.com/@ruupesh/building-a-multi-agent-system-with-google-adk-a-deep-dive-into-the-multiagent-project-16bbadb7e13c",
             platform: "Medium",
             date: "January, 2026"
+        },
+        {
+            title: "Beyond Tool Calling: Building a Real Multi-Agent System with Google ADK, MCP, and A2A",
+            description: "This article breaks down how I designed and built a production-grade multi-agent system, going beyond simple prompt-based agents to a structured runtime architecture. It explains how Google ADK, MCP, and A2A work together to enable remote multi-agent discovery & orchestration, tool integration, and real communication between remote agents. The focus is on both high-level design and low-level implementation, including authentication, routing, state management, and scalable agent collaboration.",
+            url: "https://medium.com/@ruupesh/beyond-tool-calling-building-a-real-multi-agent-system-with-google-adk-mcp-and-a2a-aa0fd7d64754",
+            platform: "Medium",
+            date: "March, 2026",
         }
     ]
 };
