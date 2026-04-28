@@ -990,13 +990,7 @@ export default function NeuralBackground() {
     const onMouseLeave = () => { mouse.x = mouse.y = mouse.px = mouse.py = -1e4; mouse.isDown = false; mouse.holdTime = 0; };
     const onDblClick = (e) => { stampConstellation(e.clientX, e.clientY); };
     const onWheel = (e) => {
-      if (mouse.x < -1e3) return;
-      vortex.active = true; vortex.x = mouse.x; vortex.y = mouse.y;
-      vortex.strength = Math.min((vortex.active ? vortex.strength : 0) + Math.abs(e.deltaY) * 0.012, 5);
-      for (let i = 0; i < 8; i++) {
-        const a = Math.random() * TAU;
-        sparks.push({ x: mouse.x, y: mouse.y, vx: Math.cos(a) * (5 + Math.random() * 8), vy: Math.sin(a) * (5 + Math.random() * 8), life: 0.5, color: pick(), size: 1 + Math.random() * 2 });
-      }
+      // Scroll animation removed
     };
     const onTouchStart = (e) => { if (e.touches[0]) { mouse.x = mouse.px = e.touches[0].clientX; mouse.y = mouse.py = e.touches[0].clientY; mouse.isDown = true; mouse.holdTime = 0; mouse.radius = 400; } };
     const onTouchMove = (e) => { if (e.touches[0]) { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; } };
