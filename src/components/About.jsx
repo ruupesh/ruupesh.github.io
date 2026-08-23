@@ -3,14 +3,16 @@ import useScrollReveal from "../hooks/useScrollReveal";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Neural, Agent, Users, Cloud } from "./icons";
+import { prefersReducedMotion } from "../utils/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const STATS = [
-  { icon: "🧠", label: "YOE in AI/Backend", target: 4, suffix: "+" },
-  { icon: "🤖", label: "(5 AI) Apps Designed, Developed & Deployed", target: 7, suffix: "+" },
-  { icon: "👥", label: "Users Served", target: 400, suffix: "K+" },
-  { icon: "☁️", label: "Cloud & AI Certs", target: 5, suffix: "" },
+  { Icon: Neural, label: "YOE in AI/Backend", target: 4, suffix: "+" },
+  { Icon: Agent, label: "(5 AI) Apps Designed, Developed & Deployed", target: 7, suffix: "+" },
+  { Icon: Users, label: "Users Served", target: 400, suffix: "K+" },
+  { Icon: Cloud, label: "Cloud & AI Certs", target: 5, suffix: "" },
 ];
 
 export default function About() {
@@ -20,11 +22,19 @@ export default function About() {
 
   // Animated counters
   useEffect(() => {
-    countersRef.current.forEach((el, i) => {
-      if (!el) return;
+    // With reduced motion the numbers are simply correct from the start.
+    if (prefersReducedMotion()) {
+      countersRef.current.forEach((el, i) => {
+        if (el) el.textContent = STATS[i].target;
+      });
+      return;
+    }
+
+    const tweens = countersRef.current.map((el, i) => {
+      if (!el) return null;
       const tgt = STATS[i].target;
       const obj = { val: 0 };
-      gsap.to(obj, {
+      return gsap.to(obj, {
         val: tgt,
         duration: 2,
         ease: "power2.out",
@@ -34,6 +44,14 @@ export default function About() {
         },
       });
     });
+
+    return () => {
+      tweens.forEach((t) => {
+        if (!t) return;
+        t.scrollTrigger?.kill();
+        t.kill();
+      });
+    };
   }, []);
 
   const highlightSummary = (text) => {
@@ -62,7 +80,7 @@ export default function About() {
   return (
     <section id="about" className="section" ref={revealRef}>
       <div className="section-container">
-        <div className="section-header">
+        <div className="section-header" data-index="01">
           <p className="subtitle gsap-reveal">Who I Am</p>
           <h2 className="gsap-reveal">About Me</h2>
         </div>
@@ -73,14 +91,14 @@ export default function About() {
           </div>
 
           <div className="stats-showcase">
-            {STATS.map((stat, i) => (
-              <div className="stat-card gsap-reveal" key={stat.label}>
-                <span className="stat-icon">{stat.icon}</span>
+            {STATS.map(({ Icon, label, suffix }, i) => (
+              <div className="stat-card gsap-reveal" key={label}>
+                <span className="stat-icon"><Icon /></span>
                 <div className="stat-number">
                   <span ref={(el) => (countersRef.current[i] = el)}>0</span>
-                  <span className="stat-suffix">{stat.suffix}</span>
+                  <span className="stat-suffix">{suffix}</span>
                 </div>
-                <span className="stat-label">{stat.label}</span>
+                <span className="stat-label">{label}</span>
               </div>
             ))}
           </div>

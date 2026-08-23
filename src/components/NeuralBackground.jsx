@@ -1,37 +1,67 @@
 import { useEffect, useRef } from "react";
+import { prefersReducedMotion } from "../utils/motion";
 
 /**
  * ╔═══════════════════════════════════════════════════════════════╗
- * ║  INTERSTELLAR · GOD-LEVEL NEURAL COSMOS                     ║
- * ║  Beyond human comprehension. A living universe.             ║
+ * ║  NEURAL FIELD — Refined Cosmos                                ║
  * ╠═══════════════════════════════════════════════════════════════╣
- * ║                                                             ║
- * ║  AMBIENT LAYERS:                                            ║
- * ║   • 3-layer parallax starfield with twinkling               ║
- * ║   • Flowing aurora borealis / nebula color fields           ║
- * ║   • Shooting stars crossing the cosmos                      ║
- * ║   • Cosmic dust particle layer                              ║
- * ║   • Living breathing universe pulse                         ║
- * ║                                                             ║
- * ║  INTERACTIONS:                                              ║
- * ║   HOVER ....... repulsion + plasma tendrils from cursor     ║
- * ║                 + cursor aura with orbital rings             ║
- * ║   HOLD ........ wormhole portal (event horizon spiral)      ║
- * ║                 + gravitational lensing distortion           ║
- * ║                 + accretion disk visual                      ║
- * ║   RELEASE ..... SUPERNOVA: screen flash + fractal lightning  ║
- * ║                 + nebula cloud remnant + shockwave cascade   ║
- * ║   DBL-CLICK ... reality fracture + constellation stamp      ║
- * ║   SCROLL ...... galaxy spiral vortex                        ║
- * ║                                                             ║
- * ║  NODES:                                                     ║
- * ║   • 3D depth with parallax response to mouse                ║
- * ║   • Orbital micro-rings                                     ║
- * ║   • Color wave infection propagation                        ║
- * ║   • HDR bloom glow via composite ops                        ║
- * ║                                                             ║
+ * ║  Quiet at rest, rewarding on interaction.                     ║
+ * ║                                                               ║
+ * ║  AMBIENT (always on, deliberately restrained):                ║
+ * ║   • 3-layer parallax starfield                                ║
+ * ║   • Cosmic dust, occasional shooting stars                    ║
+ * ║   • Node network with proximity connections                   ║
+ * ║   • Cursor aura + plasma tendrils                             ║
+ * ║   • Depth vignette                                            ║
+ * ║                                                               ║
+ * ║  INTERACTION (earned spectacle — the easter eggs):            ║
+ * ║   HOLD ........ wormhole / event horizon                      ║
+ * ║   RELEASE ..... supernova: flash, shockwaves, sparks          ║
+ * ║   DBL-CLICK ... constellation stamp                           ║
+ * ║                                                               ║
+ * ║  The maximalist layers this file once drew every frame are    ║
+ * ║  switched off in STAGES below. They competed with the content ║
+ * ║  for attention and cost real frame budget. Flip one back on   ║
+ * ║  only if it earns its place.                                  ║
  * ╚═══════════════════════════════════════════════════════════════╝
  */
+
+/* Draw-stage discipline. `false` = kept in the file, not drawn. */
+const STAGES = {
+  // ── Cut: louder than the content ──
+  tilt: false,            // CSS perspective wobble on the whole canvas
+  perspectiveGrid: false, // receding 3D floor grid
+  aurora: false,          // fbm noise nebula field
+  warpStars: false,       // fly-through-space streaks
+  galaxyVortex: false,
+  colorWaves: false,
+  lightning: false,       // recursive fractal bolts
+  glitch: false,          // chromatic aberration
+  filmGrain: false,
+  bloom: false,           // full-canvas self-drawImage blur pass
+
+  // ── Kept: the quiet core ──
+  atmosphere: true,
+  starfield: true,
+  dust: true,
+  shootingStars: true,
+  comet: true,
+  constellations: true,
+  connections: true,
+  cursorAura: true,
+  nodes: true,
+  vignette: true,
+
+  // ── Kept: interaction easter eggs ──
+  wormhole: true,
+  shockwaves: true,
+  sparks: true,
+  flash: true,
+  remnants: true,
+};
+
+const MAX_DPR = 1.5;
+
 export default function NeuralBackground() {
   const canvasRef = useRef(null);
 
@@ -45,8 +75,20 @@ export default function NeuralBackground() {
     let mouse = { x: -1e4, y: -1e4, px: -1e4, py: -1e4, isDown: false, holdTime: 0, radius: 170 };
     let rotate = { x: 0, y: 0, tx: 0, ty: 0 };
     const M = window.innerWidth < 768; // mobile flag
+    const reduced = prefersReducedMotion();
 
-    const resize = () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; };
+    // DPR capped — the field is decorative and does not warrant
+    // rendering 4x the pixels on a high-density display.
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = Math.floor(W * dpr);
+      canvas.height = Math.floor(H * dpr);
+      canvas.style.width = `${W}px`;
+      canvas.style.height = `${H}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
     resize();
 
     // ═══════════════════════════════════════
@@ -90,7 +132,9 @@ export default function NeuralBackground() {
     // ═══════════════════════════════════════
     //  STARFIELD (3 parallax layers)
     // ═══════════════════════════════════════
-    const STAR_COUNTS = M ? [80, 50, 25] : [200, 120, 60];
+    // Roughly halved from the maximalist build — the field should read
+    // as depth behind the content, not as the subject of the page.
+    const STAR_COUNTS = M ? [45, 28, 14] : [110, 62, 30];
     const starLayers = [0.008, 0.06, 0.22].map((speed, li) =>
       Array.from({ length: STAR_COUNTS[li] }, () => ({
         x: Math.random() * 4000 - 1000,
@@ -108,7 +152,8 @@ export default function NeuralBackground() {
     // ═══════════════════════════════════════
     let shootingStars = [];
     const maybeShootingStar = () => {
-      if (Math.random() < (M ? 0.003 : 0.006)) {
+      // Rare enough to feel like an event rather than weather.
+      if (Math.random() < (M ? 0.0006 : 0.0012)) {
         const angle = -Math.PI / 6 + (Math.random() - 0.5) * 0.3;
         shootingStars.push({
           x: Math.random() * W * 1.5 - W * 0.25,
@@ -123,7 +168,7 @@ export default function NeuralBackground() {
     // ═══════════════════════════════════════
     //  COSMIC DUST (ambient particles)
     // ═══════════════════════════════════════
-    const dustCount = M ? 30 : 70;
+    const dustCount = M ? 16 : 38;
     const dust = Array.from({ length: dustCount }, () => ({
       x: Math.random() * W, y: Math.random() * H,
       vx: (Math.random() - 0.5) * 0.2, vy: (Math.random() - 0.5) * 0.15,
@@ -159,8 +204,8 @@ export default function NeuralBackground() {
     // ═══════════════════════════════════════
     //  NODE — with depth + orbital ring
     // ═══════════════════════════════════════
-    const NODE_COUNT = M ? 55 : 130;
-    const CONN_DIST = M ? 105 : 170;
+    const NODE_COUNT = M ? 32 : 72;
+    const CONN_DIST = M ? 115 : 185;
 
     class Node {
       constructor() {
@@ -435,16 +480,18 @@ export default function NeuralBackground() {
       time += 0.007;
 
       // ── PSEUDO 3D TILT (subtle CSS perspective) ──
-      if (mouse.x > -1e3) {
-        rotate.tx = ((mouse.y / H) - 0.5) * -6;
-        rotate.ty = ((mouse.x / W) - 0.5) * 6;
-      } else {
-        rotate.tx = Math.sin(time * 0.15) * 1.5;
-        rotate.ty = Math.cos(time * 0.12) * 1.5;
+      if (STAGES.tilt) {
+        if (mouse.x > -1e3) {
+          rotate.tx = ((mouse.y / H) - 0.5) * -6;
+          rotate.ty = ((mouse.x / W) - 0.5) * 6;
+        } else {
+          rotate.tx = Math.sin(time * 0.15) * 1.5;
+          rotate.ty = Math.cos(time * 0.12) * 1.5;
+        }
+        rotate.x += (rotate.tx - rotate.x) * 0.04;
+        rotate.y += (rotate.ty - rotate.y) * 0.04;
+        canvas.style.transform = `perspective(900px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) scale(1.15)`;
       }
-      rotate.x += (rotate.tx - rotate.x) * 0.04;
-      rotate.y += (rotate.ty - rotate.y) * 0.04;
-      canvas.style.transform = `perspective(900px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) scale(1.15)`;
 
       ctx.clearRect(0, 0, W, H);
 
@@ -453,7 +500,7 @@ export default function NeuralBackground() {
       ctx.fillRect(0, 0, W, H);
 
       // ── 0.5. 3D PERSPECTIVE GRID ──
-      if (!M) {
+      if (STAGES.perspectiveGrid && !M) {
         const vpx = W / 2 + (mouse.x > -1e3 ? (mouse.x - W / 2) * 0.08 : Math.sin(time * 0.3) * 40);
         const vpy = H * gridVanishY;
         const gridPulse = 0.03 + Math.sin(time * 0.7) * 0.008;
@@ -491,7 +538,7 @@ export default function NeuralBackground() {
       }
 
       // ── 0.7. DEPTH ATMOSPHERE ──
-      {
+      if (STAGES.atmosphere) {
         const fogG = ctx.createLinearGradient(0, 0, 0, H * 0.55);
         fogG.addColorStop(0, 'rgba(5, 2, 20, 0.12)');
         fogG.addColorStop(0.6, 'rgba(3, 5, 15, 0.04)');
@@ -501,7 +548,7 @@ export default function NeuralBackground() {
       }
 
       // ── 1. AURORA / NEBULA ──
-      if (!M || time % 3 < 0.02) { // mobile: only update infrequently
+      if (STAGES.aurora && (!M || time % 3 < 0.02)) { // mobile: only update infrequently
         const auroraAlpha = 0.025 + Math.sin(time * 0.8) * 0.01;
         const step = M ? 80 : 50;
         for (let bx = 0; bx < W; bx += step) {
@@ -523,7 +570,7 @@ export default function NeuralBackground() {
       }
 
       // ── 2. STARFIELD PARALLAX ──
-      for (const layer of starLayers) {
+      if (STAGES.starfield) for (const layer of starLayers) {
         for (const s of layer) {
           // Parallax shift from mouse
           const px = mouse.x > -1e3 ? (W / 2 - mouse.x) * s.speed : 0;
@@ -540,7 +587,7 @@ export default function NeuralBackground() {
       }
 
       // ── 2.5. WARP SPEED STARS (fly-through-space) ──
-      {
+      if (STAGES.warpStars) {
         const wvpx = W / 2 + (mouse.x > -1e3 ? (mouse.x - W / 2) * 0.12 : 0);
         const wvpy = H / 2 + (mouse.x > -1e3 ? (mouse.y - H / 2) * 0.12 : 0);
         for (const ws of warpStars) {
@@ -581,7 +628,7 @@ export default function NeuralBackground() {
       }
 
       // ── 3. COSMIC DUST ──
-      for (const d of dust) {
+      if (STAGES.dust) for (const d of dust) {
         d.x += d.vx; d.y += d.vy;
         if (d.x < 0) d.x = W; if (d.x > W) d.x = 0;
         if (d.y < 0) d.y = H; if (d.y > H) d.y = 0;
@@ -593,7 +640,7 @@ export default function NeuralBackground() {
       }
 
       // ── 4. SHOOTING STARS ──
-      maybeShootingStar();
+      if (STAGES.shootingStars) maybeShootingStar();
       for (let i = shootingStars.length - 1; i >= 0; i--) {
         const ss = shootingStars[i];
         ss.x += ss.vx; ss.y += ss.vy; ss.life -= 0.015;
@@ -709,7 +756,7 @@ export default function NeuralBackground() {
       }
 
       // ── 8. GALAXY VORTEX (scroll) ──
-      if (vortex.active) {
+      if (STAGES.galaxyVortex && vortex.active) {
         vortex.strength *= 0.94;
         vortex.angle += vortex.strength * 0.025;
         if (vortex.strength < 0.04) vortex.active = false;
@@ -747,7 +794,7 @@ export default function NeuralBackground() {
       }
 
       // ── 10. COLOR WAVES ──
-      for (let i = colorWaves.length - 1; i >= 0; i--) {
+      if (STAGES.colorWaves) for (let i = colorWaves.length - 1; i >= 0; i--) {
         const cw = colorWaves[i];
         cw.radius += cw.speed; cw.alpha -= 0.005;
         if (cw.alpha <= 0) { colorWaves.splice(i, 1); continue; }
@@ -776,7 +823,7 @@ export default function NeuralBackground() {
       }
 
       // ── 12. FRACTAL LIGHTNING ──
-      for (let i = lightnings.length - 1; i >= 0; i--) {
+      if (STAGES.lightning) for (let i = lightnings.length - 1; i >= 0; i--) {
         const l = lightnings[i];
         l.alpha -= 0.045;
         if (l.alpha <= 0) { lightnings.splice(i, 1); continue; }
@@ -910,16 +957,20 @@ export default function NeuralBackground() {
       for (const n of nodes) { n.update(); n.draw(); }
 
       // ── 17. HDR BLOOM PASS ──
-      ctx.save();
-      ctx.globalCompositeOperation = "screen";
-      ctx.filter = `blur(${M ? 6 : 10}px)`;
-      ctx.globalAlpha = 0.08 + Math.sin(time * 2) * 0.02;
-      ctx.drawImage(canvas, 0, 0);
-      ctx.restore();
-      ctx.filter = "none";
+      // A full-canvas blurred self-composite — the single most expensive
+      // operation in the loop, and the one that made everything hazy.
+      if (STAGES.bloom) {
+        ctx.save();
+        ctx.globalCompositeOperation = "screen";
+        ctx.filter = `blur(${M ? 6 : 10}px)`;
+        ctx.globalAlpha = 0.08 + Math.sin(time * 2) * 0.02;
+        ctx.drawImage(canvas, 0, 0);
+        ctx.restore();
+        ctx.filter = "none";
+      }
 
       // ── 17.5. DEPTH VIGNETTE ──
-      {
+      if (STAGES.vignette) {
         const vigR = Math.max(W, H) * 0.78;
         const vig = ctx.createRadialGradient(W / 2, H / 2, vigR * 0.25, W / 2, H / 2, vigR);
         vig.addColorStop(0, 'rgba(0,0,0,0)');
@@ -938,7 +989,7 @@ export default function NeuralBackground() {
       }
 
       // ── 19. REALITY GLITCH ──
-      if (screenGlitch > 0) {
+      if (STAGES.glitch && screenGlitch > 0) {
         const sliceCount = ~~(screenGlitch * 12);
         for (let g = 0; g < sliceCount; g++) {
           const sy = ~~(Math.random() * H);
@@ -959,7 +1010,7 @@ export default function NeuralBackground() {
       }
 
       // ── 20. FILM GRAIN (extremely subtle) ──
-      if (!M) {
+      if (STAGES.filmGrain && !M) {
         ctx.save();
         ctx.globalAlpha = 0.015;
         const grainSize = 3;
@@ -977,7 +1028,8 @@ export default function NeuralBackground() {
 
       mouse.px = mouse.x;
       mouse.py = mouse.y;
-      animId = requestAnimationFrame(frame);
+      // Reduced motion draws exactly one frame — a static field.
+      if (!reduced) animId = requestAnimationFrame(frame);
     };
 
     /* ═════ EVENT HANDLERS ═════ */
@@ -989,9 +1041,6 @@ export default function NeuralBackground() {
     };
     const onMouseLeave = () => { mouse.x = mouse.y = mouse.px = mouse.py = -1e4; mouse.isDown = false; mouse.holdTime = 0; };
     const onDblClick = (e) => { stampConstellation(e.clientX, e.clientY); };
-    const onWheel = (e) => {
-      // Scroll animation removed
-    };
     const onTouchStart = (e) => { if (e.touches[0]) { mouse.x = mouse.px = e.touches[0].clientX; mouse.y = mouse.py = e.touches[0].clientY; mouse.isDown = true; mouse.holdTime = 0; mouse.radius = 400; } };
     const onTouchMove = (e) => { if (e.touches[0]) { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; } };
     const onTouchEnd = () => {
@@ -1000,14 +1049,33 @@ export default function NeuralBackground() {
       mouse.x = mouse.y = mouse.px = mouse.py = -1e4;
     };
 
+    // The field asserts itself at the hero, then recedes so the content
+    // sections sit on calm near-black and the typography can carry them.
+    const onScroll = () => {
+      const t = Math.min(window.scrollY / (window.innerHeight * 0.9), 1);
+      canvas.style.opacity = (1 - t * 0.62).toFixed(3);
+    };
+    onScroll();
+
+    // Nothing to animate behind a hidden tab.
+    const onVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(animId);
+      } else if (!reduced) {
+        cancelAnimationFrame(animId);
+        animId = requestAnimationFrame(frame);
+      }
+    };
+
     /* ═════ LISTENERS ═════ */
+    document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", resize);
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mousedown", onMouseDown);
     window.addEventListener("mouseup", onMouseUp);
     window.addEventListener("mouseleave", onMouseLeave);
     window.addEventListener("dblclick", onDblClick);
-    window.addEventListener("wheel", onWheel, { passive: true });
     window.addEventListener("touchstart", onTouchStart, { passive: true });
     window.addEventListener("touchmove", onTouchMove, { passive: true });
     window.addEventListener("touchend", onTouchEnd, { passive: true });
@@ -1016,13 +1084,14 @@ export default function NeuralBackground() {
 
     return () => {
       cancelAnimationFrame(animId);
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mouseup", onMouseUp);
       window.removeEventListener("mouseleave", onMouseLeave);
       window.removeEventListener("dblclick", onDblClick);
-      window.removeEventListener("wheel", onWheel);
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);
@@ -1032,16 +1101,13 @@ export default function NeuralBackground() {
   return (
     <canvas
       ref={canvasRef}
+      className="neural-field"
       style={{
         position: "fixed",
         top: 0,
         left: 0,
-        width: "100%",
-        height: "100%",
         zIndex: -1,
         pointerEvents: "none",
-        transformOrigin: "center center",
-        willChange: "transform",
       }}
       aria-hidden="true"
     />

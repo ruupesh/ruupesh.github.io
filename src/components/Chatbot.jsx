@@ -3,6 +3,9 @@ import axios from "axios";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
+import { Agent, Rocket, Terminal, Mail, Message, Close, Send } from "./icons";
+import portfolioData from "../data";
+import { routeFromText, navigateTo } from "../utils/navigate";
 
 const apiUrl = import.meta.env.VITE_PORTFOLIO_BE_CHAT_API;
 
@@ -20,11 +23,6 @@ Built 5+ GenAI, Agentic AI and multi-agent systems. Expertise in prompt engineer
     return `🐍 Python Experience:
 ~4 years building backend APIs, ETL systems, and AI solutions using Django, FastAPI, Pandas, and cloud platforms.`;
   }
-  // Hi/Hello
-  if (lowerMessage.includes("hi") || lowerMessage.includes("hello")) {
-    return `👋 Hi! I'm Rupesh's AI assistant. Rupesh is an AI & Backend Engineer with ~4 years of experience building backend and GenAI solutions. Feel free to ask about Rupesh's experience, skills, projects, or anything else from his portfolio!`;
-  }
-
   // Contact
   if (lowerMessage.includes("contact") || lowerMessage.includes("email") || lowerMessage.includes("reach")) {
     return `**Contact Information** 📧
@@ -171,6 +169,13 @@ Rupesh is an AI and Backend Engineer with ~4 years of experience building and sh
 
 
 
+  // Greeting — checked last, and on whole words only. Substring matching
+  // meant any message containing "hi" ("Hashedin", "which", "architecture")
+  // short-circuited to the greeting before reaching the specific branches.
+  if (/(^|\W)(hi|hey|hello|yo)(\W|$)/i.test(lowerMessage)) {
+    return `👋 Hi! I'm Rupesh's AI assistant. Rupesh is an AI & Backend Engineer with ~4 years of experience building backend and GenAI solutions. Feel free to ask about Rupesh's experience, skills, projects, or anything else from his portfolio!`;
+  }
+
   // Default
   return `That's a great question! 😊
 
@@ -188,10 +193,10 @@ Or ask me something specific about Rupesh's experience!`;
 };
 
 const quickActions = [
-  { label: "🤖 GenAI Experience", message: "What's your experience with GenAI?" },
-  { label: "🚀 Projects", message: "Tell me about your projects" },
-  { label: "💻 Tech Stack", message: "What technologies do you work with?" },
-  { label: "📧 Contact Info", message: "How can I contact you?" },
+  { Icon: Agent, label: "GenAI Experience", message: "What's your experience with GenAI?" },
+  { Icon: Rocket, label: "Projects", message: "Tell me about your projects" },
+  { Icon: Terminal, label: "Tech Stack", message: "What technologies do you work with?" },
+  { Icon: Mail, label: "Contact Info", message: "How can I contact you?" },
 ];
 
 const markdownComponents = {
@@ -202,6 +207,7 @@ const markdownComponents = {
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const inputRef = useRef(null);
   const [messages, setMessages] = useState([
     { role: "bot", content: "👋 Hi! I'm Rupesh's AI assistant. How can I help you learn more about Rupesh's work?" },
     { role: "bot", content: "Feel free to ask about Rupesh's experience, projects, or technical skills!" },
@@ -214,7 +220,35 @@ const Chatbot = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping, isOpen]);
 
+  // ⌘K / Ctrl+K opens the assistant from anywhere; Escape closes it.
+  useEffect(() => {
+    const onKey = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setIsOpen((o) => !o);
+      } else if (e.key === "Escape") {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  // Focus the field when it opens, so ⌘K lands you ready to type.
+  useEffect(() => {
+    if (isOpen) {
+      const t = setTimeout(() => inputRef.current?.focus(), 260);
+      return () => clearTimeout(t);
+    }
+  }, [isOpen]);
+
   const toggleChat = () => setIsOpen((o) => !o);
+
+  /** A question that names a company, project, or section moves the page. */
+  const drivePage = (text) => {
+    const route = routeFromText(text, portfolioData);
+    if (route) navigateTo(route);
+  };
 
   const addUserMessage = (content) => {
     setMessages((prev) => [...prev, { role: "user", content }]);
@@ -252,6 +286,7 @@ const Chatbot = () => {
     if (!text) return;
     setInput("");
     addUserMessage(text);
+    drivePage(text);
     const nextMessages = [...messages, { role: "user", content: text }];
     await sendToApiOrFallback(nextMessages);
   };
@@ -262,6 +297,7 @@ const Chatbot = () => {
 
   const handleQuickAction = async (msg) => {
     addUserMessage(msg);
+    drivePage(msg);
     const nextMessages = [...messages, { role: "user", content: msg }];
     await sendToApiOrFallback(nextMessages);
   };
@@ -272,12 +308,20 @@ const Chatbot = () => {
         className={`chatbot-toggle ${isOpen ? "active" : ""}`}
         onClick={toggleChat}
         title="Chat with me"
+        aria-label={isOpen ? "Close chat" : "Chat with me"}
+        aria-expanded={isOpen}
       >
         <span className="orbit-ring orbit-ring-1" />
         <span className="orbit-ring orbit-ring-2" />
-        <span className="chatbot-icon">💬</span>
-        <span className="chatbot-close-icon">✕</span>
+        <span className="chatbot-icon"><Message size="24px" /></span>
+        <span className="chatbot-close-icon"><Close size="22px" /></span>
       </button>
+
+      {!isOpen && (
+        <span className="chatbot-kbd" aria-hidden="true">
+          <kbd>⌘</kbd><kbd>K</kbd>
+        </span>
+      )}
 
       <div className={`chatbot-window ${isOpen ? "open" : ""}`}>
         <div className="chatbot-header">
@@ -334,27 +378,32 @@ const Chatbot = () => {
         <div className="chatbot-input-area">
           <input
             type="text"
+            id="chatbot-input"
+            name="message"
+            aria-label="Ask me anything"
             className="chatbot-input"
             placeholder="Ask me anything..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyPress}
             autoComplete="off"
+            ref={inputRef}
           />
-          <button className="chatbot-send" onClick={sendMessage}>
-            <span>➤</span>
+          <button className="chatbot-send" onClick={sendMessage} aria-label="Send message">
+            <Send size="18px" />
           </button>
         </div>
 
         <div className="chatbot-quick-actions">
-          {quickActions.map((qa) => (
+          {quickActions.map(({ Icon, label, message }) => (
             <button
-              key={qa.label}
+              key={label}
               className="quick-action-btn"
-              onClick={() => handleQuickAction(qa.message)}
-              data-message={qa.message}
+              onClick={() => handleQuickAction(message)}
+              data-message={message}
             >
-              {qa.label}
+              <Icon />
+              {label}
             </button>
           ))}
         </div>

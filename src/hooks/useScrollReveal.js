@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitType from "split-type";
+import { prefersReducedMotion } from "../utils/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,6 +17,14 @@ export default function useScrollReveal(opts = {}) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    // Reduced motion: resolve everything straight to its final state.
+    // .gsap-reveal starts at opacity 0 in CSS, so this must still run.
+    if (prefersReducedMotion()) {
+      const targets = el.querySelectorAll(".gsap-reveal");
+      gsap.set(targets.length > 0 ? targets : el, { opacity: 1, y: 0 });
+      return;
+    }
 
     const {
       y = 40,
