@@ -28,9 +28,20 @@ const portfolioData = {
 
     experience: [
         {
+            company: "Electronic Arts",
+            position: "SDE 2 - AI Engineer",
+            duration: "June 2026 – Present",
+            location: "Pune, India",
+            responsibilities: [
+                "Owning end-to-end AI-powered features from design to production, eliminating days of manual work and reducing time-to-insight to minutes.",
+                "Architecting and deploying scalable enterprise AI integrations across AWS and Azure, enabling cross-functional teams to leverage AI-driven automation and insights.",
+                "Driving rapid feature delivery and business impact through innovative AI solutions for internal tools and platform capabilities."
+            ]
+        },
+        {
             company: "Hashedin by Deloitte",
             position: "Software Engineer 2 (AI & Backend)",
-            duration: "Jan 2025 – Present",
+            duration: "Jan 2025 – May 2026",
             location: "Pune, India",
             responsibilities: [
                 "Worked on developing 3 enterprise Agentic applications: ITSM Agent, Multi-Agent System, Data Analytics Agent.",

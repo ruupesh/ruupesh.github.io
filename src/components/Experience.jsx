@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const COMPANY_URLS = {
+  "Electronic Arts": "https://www.ea.com",
   "Hashedin by Deloitte": "https://hashedin.com",
   CLSA: "https://www.clsa.com",
   "Persistent Systems": "https://www.persistent.com",

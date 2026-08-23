@@ -79,8 +79,14 @@ Built 5+ GenAI, Agentic AI and multi-agent systems. Expertise in prompt engineer
   if (lowerMessage.includes("experience") || lowerMessage.includes("work") || lowerMessage.includes("job")) {
     return `💼 **Experience**
 
+**Electronic Arts | SDE 2 - AI Engineer**
+Pune, India | June 2026 – Present
+- Owning end-to-end AI features from design to production, reducing days of work to minutes
+- Architecting scalable enterprise AI integrations across AWS and Azure
+- Driving rapid feature delivery and business impact with AI-driven automation
+
 **Hashedin by Deloitte | Software Engineer 2 (AI & Backend)**
-Pune, India | Jan 2025 – Present
+Pune, India | Jan 2025 – May 2026
 - Developed 3 enterprise GenAI & Agentic applications: ITSM Agent, Multi-Agent System, Data Analytics Agent
 - Lead developer of RAG microservice, MultiAgent System, and Data Analytics Agent
 - Designed centralized MultiAgent Orchestrator with Google-ADK, A2A and MCP protocols
