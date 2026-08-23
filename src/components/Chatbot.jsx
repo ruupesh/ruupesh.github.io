@@ -163,7 +163,7 @@ This article breaks down how to design and build a production-grade multi-agent 
   if (lowerMessage.includes("about")) {
     return `👤 **About Rupesh**
 
-Rupesh is an AI and Backend Engineer with ~4 years of experience building and shipping end-to-end backend and AgenticAI applications using diverse Python frameworks. Experienced in rapidly developing microservices, event-driven architectures, and multi-agent & GenAI systems on cloud-native infrastructure. Comfortable owning features from design to production, integrating LLMs, APIs, frontend components, and DevOps pipelines to deliver scalable products.
+Rupesh is a Fullstack AI Engineer with ~4 years of experience building and shipping end-to-end backend and AgenticAI applications using diverse Python frameworks. Experienced in rapidly developing microservices, event-driven architectures, and multi-agent & GenAI systems on cloud-native infrastructure. Comfortable owning features from design to production, integrating LLMs, APIs, frontend components, and DevOps pipelines to deliver scalable products.
 `;
   }
 
@@ -173,7 +173,7 @@ Rupesh is an AI and Backend Engineer with ~4 years of experience building and sh
   // meant any message containing "hi" ("Hashedin", "which", "architecture")
   // short-circuited to the greeting before reaching the specific branches.
   if (/(^|\W)(hi|hey|hello|yo)(\W|$)/i.test(lowerMessage)) {
-    return `👋 Hi! I'm Rupesh's AI assistant. Rupesh is an AI & Backend Engineer with ~4 years of experience building backend and GenAI solutions. Feel free to ask about Rupesh's experience, skills, projects, or anything else from his portfolio!`;
+    return `👋 Hi! I'm Rupesh's AI assistant. Rupesh is an Fullstack AI Engineer with ~4 years of experience building backend and GenAI solutions. Feel free to ask about Rupesh's experience, skills, projects, or anything else from his portfolio!`;
   }
 
   // Default

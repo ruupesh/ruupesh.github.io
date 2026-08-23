@@ -3,7 +3,7 @@
 const portfolioData = {
     personal: {
         name: "Rupesh Bodkhe",
-        title: "AI & Backend Engineer",
+        title: "Fullstack AI Engineer",
         email: "rupeshbodkhe2302@gmail.com",
         linkedin: "https://www.linkedin.com/in/rupeshbodkhe",
         github: "https://github.com/ruupesh",
@@ -12,7 +12,7 @@ const portfolioData = {
         phone: "+91-9604996583",
         location: "Pune, India",
         resumeUrl: import.meta.env.VITE_RESUME_URL,
-        summary: "AI and Backend Engineer with ~4 years of experience building and shipping end-to-end backend and AgenticAI applications using diverse Python frameworks. Experienced in rapidly developing microservices, event-driven architectures, and multi-agent & GenAI systems on cloud-native infrastructure. Comfortable owning features from design to production, integrating LLMs, APIs, frontend components, and DevOps pipelines to deliver scalable products."
+        summary: "Fullstack AI Engineer with ~4 years of experience building and shipping end-to-end backend and AgenticAI applications using diverse Python frameworks. Experienced in rapidly developing microservices, event-driven architectures, and multi-agent & GenAI systems on cloud-native infrastructure. Comfortable owning features from design to production, integrating LLMs, APIs, frontend components, and DevOps pipelines to deliver scalable products."
     },
     
     skills: {

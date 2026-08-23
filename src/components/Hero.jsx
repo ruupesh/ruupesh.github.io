@@ -6,7 +6,7 @@ import Typewriter from "./Typewriter";
 import { prefersReducedMotion } from "../utils/motion";
 
 const ROLES = [
-  "AI & Backend Engineer",
+  "Fullstack AI Engineer",
   "Building Agentic AI Systems",
   "Prompt Engineering Expert",
   "Cloud-Native Developer",
@@ -82,7 +82,7 @@ export default function Hero() {
           />
         </h1>
 
-        <p className="hero-subtitle">{personal?.title || "AI & Backend Engineer"}</p>
+        <p className="hero-subtitle">{personal?.title || "Fullstack AI Engineer"}</p>
 
         <div className="typing-wrapper">
           <Typewriter phrases={ROLES} />
