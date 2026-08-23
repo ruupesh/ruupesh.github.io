@@ -57,7 +57,7 @@ export default function About() {
   const highlightSummary = (text) => {
     if (!text) return null;
     const keywords = [
-      "AI and Backend Engineer",
+      "Fullstack AI Engineer",
       "~4 years",
       "AgenticAI",
       "microservices",
