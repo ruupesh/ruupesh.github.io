@@ -1,15 +1,36 @@
 /* ═══════════════════════════════════════════════════════════════
-   LIQUID GLASS AI PORTFOLIO — Rupesh Bodkhe
-   Theme: Neural / Liquid Glass / Cyan-Purple AI Aesthetic
+   REFINED COSMOS — Rupesh Bodkhe
+   Dark neural ground, disciplined. One gradient, one accent,
+   a tonal surface ramp, and an editorial grid.
    ═══════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
 :root {
-  /* ── Core Palette ── */
+  /* ── Ground ── */
   --bg-dark: #050510;
-  --bg-card: rgba(255, 255, 255, 0.03);
-  --bg-card-hover: rgba(255, 255, 255, 0.06);
+  --bg-deep: #030308;
+
+  /* ── Surface ramp ──
+     Replaces the single glass value so cards can express real depth.
+     0 = barely there · 3 = raised/flagship */
+  --surface-0: rgba(255, 255, 255, 0.016);
+  --surface-1: rgba(255, 255, 255, 0.032);
+  --surface-2: rgba(255, 255, 255, 0.055);
+  --surface-3: rgba(255, 255, 255, 0.085);
+
+  /* ── Hairlines ── */
+  --line-faint: rgba(255, 255, 255, 0.055);
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.16);
+
+  /* ── Ink ── */
+  --text-bright: #eaf2fb;
+  --text-main: #c3d2e2;
+  --text-muted: #7f90a8;
+  --text-faint: #556278;
+
+  /* ── Hue ──
+     --accent is reserved for live / current / metric states ONLY.
+     That restriction is what makes it read as signal, not decoration. */
   --primary: #00f0ff;
   --primary-rgb: 0, 240, 255;
   --primary-glow: rgba(0, 240, 255, 0.4);
@@ -18,27 +39,42 @@
   --secondary-glow: rgba(139, 92, 246, 0.4);
   --accent: #00ff88;
   --accent-rgb: 0, 255, 136;
-  --text-main: #c0d0e0;
-  --text-muted: #7a8ba5;
-  --border: rgba(255, 255, 255, 0.08);
 
-  /* ── Glass System ── */
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-bg-hover: rgba(255, 255, 255, 0.06);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  /* ── The signature gradient ──
+     Defined once, permitted in exactly ONE place on the page.
+     Everything else uses solid --primary at varying alpha. */
+  --gradient-signature: linear-gradient(135deg, var(--primary), var(--secondary));
+
+  /* ── Type ── */
+  --font-display: 'Bricolage Grotesque', 'Inter', -apple-system, sans-serif;
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* ── Glass ── */
   --glass-blur: 20px;
-  --glass-saturate: 180%;
-  --nav-glass: rgba(5, 5, 16, 0.85);
+  --glass-saturate: 160%;
+  --nav-glass: rgba(5, 5, 16, 0.82);
 
   /* ── Layout ── */
   --container: 1200px;
-  --radius-lg: 24px;
-  --radius-md: 16px;
+  --gutter: 2rem;
+  --radius-lg: 20px;
+  --radius-md: 14px;
   --radius-sm: 8px;
 
-  /* ── Glow ── */
+  /* ── Elevation ── */
   --glow-cyan: 0 0 30px rgba(0, 240, 255, 0.3);
   --glow-purple: 0 0 30px rgba(139, 92, 246, 0.3);
+  --shadow-raised: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 18px 40px -24px rgba(0, 0, 0, 0.9);
+
+  /* ── Legacy aliases ──
+     Mapped onto the ramp so existing rules keep working during the migration. */
+  --bg-card: var(--surface-1);
+  --bg-card-hover: var(--surface-2);
+  --border: var(--line);
+  --glass-bg: var(--surface-1);
+  --glass-bg-hover: var(--surface-2);
+  --glass-border: var(--line);
 }
 
 /* ── Reset ── */
@@ -53,7 +89,7 @@ html {
 body {
   background-color: var(--bg-dark);
   color: var(--text-main);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-ui);
   line-height: 1.6;
   overflow-x: hidden;
   width: 100%;
@@ -61,6 +97,15 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* ── Focus ──
+   One visible ring for every interactive element. */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+:focus:not(:focus-visible) { outline: none; }
 
 /* ── Ambient Background Blobs ── */
 body::before,
@@ -105,34 +150,114 @@ ul { list-style: none; }
    UTILITY CLASSES
    ═══════════════════════════════════════ */
 
-.glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-md);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+/* ── Icons ──
+   Sized in em so they inherit the type scale they sit in. */
+.icon {
+  display: inline-block;
+  flex: none;
+  vertical-align: -0.14em;
 }
 
+/* Icon slots. Each inherits its size from the rule that already
+   styled the emoji it replaced; these set alignment and weight. */
+.stat-icon,
+.cat-icon,
+.award-icon,
+.badge-icon,
+.resp-icon,
+.location-icon,
+.university-icon,
+.honors-icon,
+.date-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* Supporting icons stay quiet so the numbers and names lead. */
+.stat-icon { color: var(--text-faint); }
+.location-icon,
+.date-icon { color: var(--text-faint); }
+.resp-icon { color: var(--primary); opacity: 0.7; }
+.badge-icon { color: var(--text-muted); }
+.honors-icon { color: var(--accent); }
+.university-icon { color: #050510; }
+
+/* ═══════════════════════════════════════
+   CARD HIERARCHY
+   Three tiers, so a flagship project is no longer styled
+   identically to a bullet list.
+   ═══════════════════════════════════════ */
+
+.glass-card,
+.card-standard {
+  background: var(--surface-1);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  transition: background 0.35s ease, border-color 0.35s ease, transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Tier 3 — raised. Real elevation and an accent edge. */
+.card-flagship {
+  position: relative;
+  background: var(--surface-2);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-raised);
+  transition: background 0.35s ease, border-color 0.35s ease, transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-flagship::before {
+  content: '';
+  position: absolute;
+  inset: -1px auto auto -1px;
+  width: 2px;
+  height: 44px;
+  border-radius: 2px;
+  background: var(--primary);
+  opacity: 0.75;
+}
+
+/* Tier 1 — compact. Separated by rules, not boxes. */
+.card-compact {
+  background: none;
+  border: 0;
+  border-top: 1px solid var(--line-faint);
+  border-radius: 0;
+  transition: border-color 0.35s ease;
+}
+
+/* ── Type utilities ── */
+
+/* The signature gradient. Permitted on the hero name and nowhere else. */
 .gradient-text {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: var(--gradient-signature);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.mono {
-  font-family: 'JetBrains Mono', monospace;
+.mono { font-family: var(--font-mono); }
+
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.025em;
 }
 
 /* ═══════════════════════════════════════
-   LAYOUT
+   LAYOUT — editorial grid
    ═══════════════════════════════════════ */
 
 .section-container {
   max-width: var(--container);
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 var(--gutter);
   width: 100%;
 }
 
@@ -141,26 +266,80 @@ ul { list-style: none; }
   position: relative;
 }
 
-.section-header {
-  text-align: center;
-  margin-bottom: 4rem;
+/* Alternating vertical rhythm so the page changes pace
+   instead of marching at a constant interval. */
+.section:nth-of-type(even) { padding: 9rem 0; }
+
+/* 12-column bed for sections that opt into asymmetry. */
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--gutter);
 }
 
-.section-header h2 {
-  font-size: 2.75rem;
-  font-weight: 700;
-  margin-bottom: 0.75rem;
-  color: var(--text-main);
-  letter-spacing: -0.02em;
+/* Sticky header column paired with a scrolling content column. */
+.col-sticky {
+  grid-column: span 4;
+  position: sticky;
+  top: 128px;
+  align-self: start;
+}
+
+.col-flow { grid-column: span 8; }
+
+/* ── Section header — left-aligned, indexed, solid ── */
+
+.section-header {
+  margin-bottom: 4rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  column-gap: 1.25rem;
+  row-gap: 0.35rem;
+}
+
+/* The numbered index. Chrome, generated from the section id. */
+.section-header::before {
+  content: attr(data-index);
+  grid-row: 1 / span 2;
+  align-self: start;
+  padding-top: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--text-faint);
+  white-space: nowrap;
 }
 
 .section-header .subtitle {
-  font-size: 0.9rem;
+  grid-column: 2;
+  font-size: 0.72rem;
   color: var(--primary);
-  letter-spacing: 3px;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  font-weight: 600;
-  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  opacity: 0.85;
+}
+
+.section-header h2 {
+  grid-column: 2;
+  font-size: clamp(2rem, 4.2vw, 3.15rem);
+  font-weight: 800;
+  line-height: 1.04;
+  color: var(--text-bright);
+  /* Solid, not gradient — the gradient is spent on the hero name. */
+  max-width: 20ch;
+}
+
+/* A hairline running to the right edge, anchoring the header to the grid. */
+.section-header::after {
+  content: '';
+  grid-column: 2;
+  height: 1px;
+  margin-top: 1.5rem;
+  background: linear-gradient(90deg, var(--line-strong), transparent 65%);
 }
 
 /* ═══════════════════════════════════════
@@ -412,19 +591,50 @@ ul { list-style: none; }
 }
 
 .hero h1 {
-  font-size: 4.5rem;
-  line-height: 1.05;
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 8.5vw, 5.6rem);
+  line-height: 0.98;
   margin-bottom: 1.5rem;
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  color: #8bb8cc;
+  font-weight: 800;
+  letter-spacing: -0.04em;
   text-transform: uppercase;
-  text-shadow: 0 0 40px rgba(0, 180, 220, 0.1);
 }
 
-.hero h1 .char {
+/* ── Denoise ──
+   The single permitted use of the signature gradient on the page. */
+.hero-name .denoise {
+  background: var(--gradient-signature);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.denoise { display: inline; }
+
+/* Words stay whole; lines break between them, never inside. */
+.dn-word {
   display: inline-block;
-  will-change: transform;
+  white-space: nowrap;
+}
+
+.dn-char {
+  display: inline-block;
+  /* Floor for narrow glyphs; JS pins each slot to its final width on top
+     of this, so cycling never reflows the line. */
+  min-width: 0.52em;
+  text-align: center;
+  /* Opacity only — a filter transition is not compositable and Chrome
+     flags it as able to move pixels, which shows up as layout shift. */
+  transition: opacity 0.25s ease;
+}
+
+.dn-char[data-state="noise"] { opacity: 0.34; }
+.dn-char[data-state="settled"] { opacity: 1; }
+
+.dn-space {
+  display: inline-block;
+  width: 0.3em;
 }
 
 .hero-subtitle {
@@ -439,21 +649,24 @@ ul { list-style: none; }
   display: inline-flex;
   align-items: center;
   margin-bottom: 1.5rem;
+  min-height: 2rem;
 }
 
-.typing-text {
-  font-family: 'JetBrains Mono', monospace;
+/* ── Typewriter ── */
+.typewriter {
+  font-family: var(--font-mono);
   font-size: 1.1rem;
   font-weight: 500;
   color: var(--primary);
 }
 
-.typing-cursor {
+.type-caret {
   display: inline-block;
   width: 2px;
-  height: 1.3em;
+  height: 1.15em;
+  vertical-align: -0.18em;
   background: var(--primary);
-  margin-left: 2px;
+  margin-left: 3px;
   animation: cursorBlink 0.8s step-end infinite;
   box-shadow: 0 0 8px rgba(var(--primary-rgb), 0.6);
 }
@@ -461,6 +674,19 @@ ul { list-style: none; }
 @keyframes cursorBlink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+
+/* ── Screen-reader-only ── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .hero-description {
@@ -564,13 +790,15 @@ ul { list-style: none; }
   gap: 3.5rem;
 }
 
+/* Left-aligned on a readable measure, matching the section header.
+   Centred body copy under a left-aligned heading is the giveaway. */
 .about-text {
-  font-size: 1.15rem;
+  font-size: 1.28rem;
   color: var(--text-muted);
-  line-height: 1.9;
-  max-width: 850px;
-  margin: 0 auto;
-  text-align: center;
+  line-height: 1.75;
+  max-width: 62ch;
+  text-align: left;
+  text-wrap: pretty;
 }
 
 .about-text p { margin-bottom: 1.25rem; }
@@ -584,8 +812,6 @@ ul { list-style: none; }
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
-  max-width: 1000px;
-  margin: 0 auto;
 }
 
 .stat-card {
@@ -678,16 +904,19 @@ ul { list-style: none; }
   overflow: hidden;
 }
 
+/* The category hue is a quiet identifier, not a headline.
+   Eight full-width saturated bars were the last of the rainbow —
+   this keeps the coding while restoring calm. */
 .skill-category::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 3px;
+  width: 56px;
+  height: 2px;
   background: var(--cat-color, var(--primary));
-  opacity: 0.6;
-  transition: opacity 0.4s;
+  opacity: 0.55;
+  transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
 }
 
 .skill-category:hover {
@@ -696,7 +925,11 @@ ul { list-style: none; }
   box-shadow: 0 8px 30px rgba(var(--primary-rgb), 0.08);
 }
 
-.skill-category:hover::before { opacity: 1; }
+/* On hover the bar draws across — motion tied to the state change. */
+.skill-category:hover::before {
+  width: 100%;
+  opacity: 0.95;
+}
 
 .cat-header {
   display: flex;
@@ -725,7 +958,11 @@ ul { list-style: none; }
   transform: scale(1.05);
 }
 
-.cat-icon { font-size: 1.35rem; }
+.cat-icon {
+  font-size: 1.35rem;
+  display: flex;
+  color: var(--cat-color, var(--primary));
+}
 
 .cat-title-wrapper { flex: 1; }
 
@@ -769,6 +1006,256 @@ ul { list-style: none; }
 .skill-name { font-weight: 500; }
 
 /* ═══════════════════════════════════════
+   TRACE RAIL — nav, progress and execution trace
+   ═══════════════════════════════════════ */
+
+.trace-rail {
+  position: fixed;
+  left: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+/* Below this the top nav does the job and the margin isn't there. */
+@media (max-width: 1279px) {
+  .trace-rail { display: none; }
+}
+
+.trace-progress {
+  position: absolute;
+  left: 3px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--line-faint);
+}
+
+.trace-progress::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: calc(var(--p, 0) * 100%);
+  background: linear-gradient(180deg, var(--primary), var(--secondary));
+  opacity: 0.55;
+}
+
+.trace-ticks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  list-style: none;
+  pointer-events: auto;
+}
+
+.trace-tick {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.trace-tick-mark {
+  display: block;
+  width: 7px;
+  height: 1px;
+  background: var(--line-strong);
+  transition: width 0.3s ease, background 0.3s ease;
+}
+
+.trace-tick.is-past .trace-tick-mark { background: rgba(var(--primary-rgb), 0.45); }
+
+.trace-tick.is-active .trace-tick-mark {
+  width: 18px;
+  background: var(--primary);
+}
+
+.trace-tick-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.25s ease, transform 0.25s ease, color 0.25s ease;
+  white-space: nowrap;
+}
+
+.trace-rail:hover .trace-tick-label { opacity: 1; transform: none; }
+.trace-tick:hover .trace-tick-label,
+.trace-tick:focus-visible .trace-tick-label { color: var(--text-main); }
+.trace-tick.is-active .trace-tick-label { color: var(--primary); opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .trace-tick-mark,
+  .trace-tick-label { transition: none; }
+}
+
+/* ═══════════════════════════════════════
+   ASSISTANT-DRIVEN NAVIGATION
+   ═══════════════════════════════════════ */
+
+/* Brief pulse so it's obvious which section answered the question. */
+.section.is-nav-target::before {
+  content: '';
+  position: absolute;
+  inset: 0 calc(50% - 50vw);
+  pointer-events: none;
+  background: radial-gradient(
+    60% 50% at 50% 0%,
+    rgba(var(--primary-rgb), 0.1),
+    transparent 70%
+  );
+  animation: navPulse 1.6s ease-out forwards;
+}
+
+@keyframes navPulse {
+  0% { opacity: 0; }
+  25% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section.is-nav-target::before { display: none; }
+}
+
+/* ═══════════════════════════════════════
+   PROJECT DETAIL — FLIP expansion
+   ═══════════════════════════════════════ */
+
+.pd-root {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 4vw, 3rem);
+}
+
+.pd-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 3, 8, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.pd-panel {
+  position: relative;
+  width: min(860px, 100%);
+  max-height: min(86vh, 900px);
+  overflow-y: auto;
+  padding: clamp(1.75rem, 4vw, 3rem);
+  background: #0a0b14;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.95);
+  /* FLIP scales the panel — keep the corner anchored to the maths. */
+  transform-origin: center center;
+}
+
+.pd-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.pd-close:hover { background: var(--surface-3); color: var(--text-bright); }
+
+.pd-head { margin-bottom: 1.5rem; padding-right: 3rem; }
+
+.pd-title {
+  font-size: clamp(1.5rem, 3.4vw, 2.15rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--text-bright);
+  margin-bottom: 0.65rem;
+}
+
+.pd-description {
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  max-width: 62ch;
+}
+
+.pd-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--line-faint);
+}
+
+.pd-highlights {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.pd-highlight {
+  display: block;
+  padding-left: 1.1rem;
+  border-left: 1px solid var(--line);
+}
+
+.pd-highlight-text {
+  display: block;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: var(--text-main);
+}
+
+/* The card advertises that it opens. */
+.project-card {
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  width: 100%;
+}
+
+.project-open {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.project-card:hover .project-open,
+.project-card:focus-visible .project-open {
+  opacity: 1;
+  transform: none;
+  color: var(--primary);
+}
+/* ═══════════════════════════════════════
    EXPERIENCE TIMELINE
    ═══════════════════════════════════════ */
 
@@ -776,49 +1263,22 @@ ul { list-style: none; }
   position: relative;
   max-width: 900px;
   margin: 0 auto;
-  padding-left: 3rem;
 }
 
-.timeline-line {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 2px;
-  height: 100%;
-  background: rgba(var(--primary-rgb), 0.1);
-  border-radius: 2px;
+/* Brief marker when the assistant is asked about a specific employer. */
+.timeline-item.is-highlighted .timeline-content {
+  border-color: rgba(var(--primary-rgb), 0.45);
+  box-shadow: 0 0 0 1px rgba(var(--primary-rgb), 0.18),
+              0 10px 40px -20px rgba(var(--primary-rgb), 0.5);
 }
 
-.timeline-line-fill {
-  width: 100%;
-  height: 0%;
-  background: linear-gradient(to bottom, var(--primary), var(--secondary));
-  border-radius: 2px;
-  transition: height 0.1s linear;
+.timeline-item .timeline-content {
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 .timeline-item {
   margin-bottom: 3rem;
   position: relative;
-}
-
-.timeline-dot {
-  position: absolute;
-  left: -3.55rem;
-  top: 1.5rem;
-  width: 14px;
-  height: 14px;
-  background: var(--bg-dark);
-  border: 2px solid rgba(var(--primary-rgb), 0.4);
-  border-radius: 50%;
-  z-index: 2;
-  transition: all 0.3s;
-}
-
-.timeline-dot.current {
-  background: var(--primary);
-  border-color: var(--primary);
-  box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.5);
 }
 
 .timeline-content {
@@ -922,11 +1382,15 @@ ul { list-style: none; }
 .location-date {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
   font-size: 0.85rem;
   color: var(--text-muted);
   margin-top: 0.1rem;
 }
+
+/* Place and date each stay whole; the row breaks between them. */
+.location-date > span { white-space: nowrap; }
 
 .location-icon { font-size: 0.9rem; }
 .date-separator { color: rgba(255, 255, 255, 0.15); }
@@ -1018,6 +1482,32 @@ ul { list-style: none; }
   flex-direction: column;
   height: 100%;
   position: relative;
+}
+
+/* Flagship tier — raised surface, stronger edge, real elevation. */
+.project-card.is-flagship {
+  background: var(--surface-2);
+  border-color: var(--line-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-raised);
+}
+
+.project-card.is-flagship .project-header h3 {
+  font-size: 1.45rem;
+  color: var(--text-bright);
+}
+
+/* A short accent edge marks the tier without adding another colour. */
+.project-card.is-flagship::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 2px;
+  height: 48px;
+  border-radius: 2px;
+  background: var(--primary);
+  opacity: 0.75;
 }
 
 .project-card::before {
@@ -1307,22 +1797,54 @@ ul { list-style: none; }
   box-shadow: 0 8px 30px rgba(var(--primary-rgb), 0.08);
 }
 
+/* Vendor identification, not vendor advertising.
+   Five saturated full-width bands read as a colour chart; the brand hue
+   survives as a marker dot and the wordmark, on the card's own surface. */
 .cert-vendor {
-  background: var(--vendor-color, var(--primary));
-  padding: 0.6rem 1rem;
+  background: none;
+  padding: 1rem 1.25rem 0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.55rem;
+}
+
+.cert-vendor::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: none;
+  background: var(--vendor-color, var(--primary));
+  box-shadow: 0 0 10px var(--vendor-color, var(--primary));
 }
 
 .vendor-badge {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--text-main);
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--vendor-color, var(--primary));
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.16em;
+  font-family: var(--font-mono);
+  opacity: 0.9;
 }
+
+.cert-card { position: relative; }
+
+/* A hairline in the brand hue along the top edge — enough to group
+   the AWS cards visually without shouting. */
+.cert-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--vendor-color, var(--primary)), transparent 70%);
+  opacity: 0.5;
+  transition: opacity 0.4s;
+}
+
+.cert-card:hover::before { opacity: 1; }
 
 .cert-content {
   padding: 1.25rem;
@@ -1591,9 +2113,10 @@ ul { list-style: none; }
 }
 
 .site-footer .footer-vibe {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: rgba(var(--primary-rgb), 0.5);
+  /* Raised from 0.5 alpha, which fell below the 4.5:1 contrast floor. */
+  color: rgba(var(--primary-rgb), 0.78);
   margin-top: 0.5rem;
 }
 
@@ -1601,9 +2124,31 @@ ul { list-style: none; }
    GSAP INITIAL STATES
    ═══════════════════════════════════════ */
 
-.gsap-reveal {
+/* Scoped to html.js so a failed or blocked script can never leave the
+   page permanently invisible — without JS these are simply visible. */
+html.js .gsap-reveal {
   opacity: 0;
   transform: translateY(30px);
+}
+
+/* Reduced motion: nothing moves, everything is legible. */
+@media (prefers-reduced-motion: reduce) {
+  html.js .gsap-reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Nothing is being emitted, so the caret has nothing to mark. */
+  .type-caret { display: none; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Page load */
@@ -1626,8 +2171,16 @@ ul { list-style: none; }
 }
 
 @media (max-width: 768px) {
-  .hero h1 { font-size: 2.75rem; }
-  .section-header h2 { font-size: 2rem; }
+  /* Hero name and section headings size themselves with clamp(). */
+
+  /* Reclaim the index gutter on narrow screens. */
+  .section-header {
+    column-gap: 0.75rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .section-header::before { font-size: 0.62rem; }
+  .section-header::after { margin-top: 1rem; }
 
   .nav-links {
     position: fixed;
@@ -1672,9 +2225,11 @@ ul { list-style: none; }
   .skills-grid { grid-template-columns: 1fr; }
   .projects-grid { grid-template-columns: 1fr; }
 
-  .timeline { padding-left: 2rem; }
-  .timeline-dot { left: -2.55rem; }
   .timeline-content { padding: 1.5rem; }
+
+  /* Location and date stack here, which leaves the separator dangling
+     at the end of the first line. */
+  .location-date .date-separator { display: none; }
 
   .contact-card { padding: 2.5rem 1.5rem; }
   .email-big { font-size: 1.25rem; word-break: break-word; }
@@ -1683,8 +2238,6 @@ ul { list-style: none; }
 }
 
 @media (max-width: 480px) {
-  .hero h1 { font-size: 2.25rem; }
-  .section-header h2 { font-size: 1.75rem; }
   .section-container { padding: 0 1rem; }
   .section { padding: 3rem 0; }
   .hero { min-height: 80vh; padding: 2rem 1rem; padding-top: 80px; }
@@ -1693,8 +2246,6 @@ ul { list-style: none; }
   .stat-card { padding: 1.5rem 1rem; }
   .stat-number { font-size: 2rem; }
 
-  .timeline { padding-left: 1.5rem; }
-  .timeline-dot { left: -2rem; width: 12px; height: 12px; }
   .timeline-content { padding: 1.25rem; }
 
   .email-big { font-size: 1.1rem; }
@@ -1708,15 +2259,11 @@ ul { list-style: none; }
 }
 
 @media (max-width: 360px) {
-  .hero h1 { font-size: 1.9rem; }
-  .section-header h2 { font-size: 1.5rem; }
   .section-container { padding: 0 0.75rem; }
 
   .stats-showcase { grid-template-columns: 1fr; }
   .stat-card { padding: 1.25rem 1rem; }
 
-  .timeline { padding-left: 1.25rem; }
-  .timeline-dot { left: -1.7rem; width: 10px; height: 10px; }
 
   .email-big { font-size: 1rem; }
   .contact-card { padding: 1.5rem 0.75rem; }

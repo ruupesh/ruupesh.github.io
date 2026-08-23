@@ -10,7 +10,7 @@ export default function Publications() {
   return (
     <section id="publications" className="section" ref={revealRef}>
       <div className="section-container">
-        <div className="section-header">
+        <div className="section-header" data-index="07">
           <p className="subtitle gsap-reveal">Thought Leadership</p>
           <h2 className="gsap-reveal">Publications</h2>
         </div>

@@ -127,7 +127,10 @@
 
 .chatbot-icon,
 .chatbot-close-icon {
-  font-size: 1.45rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d8f4ff;
   transition: all 0.35s ease;
   position: relative;
   z-index: 2;
@@ -149,6 +152,41 @@
 .chatbot-toggle.active .chatbot-close-icon {
   opacity: 1;
   transform: rotate(0deg) scale(1);
+}
+
+/*  ⌘K AFFORDANCE  */
+.chatbot-kbd {
+  position: absolute;
+  right: 72px;
+  bottom: 20px;
+  display: flex;
+  gap: 3px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.chatbot-container:hover .chatbot-kbd { opacity: 1; transform: none; }
+
+.chatbot-kbd kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  background: rgba(8, 10, 22, 0.9);
+  border: 1px solid rgba(0, 240, 255, 0.28);
+  border-radius: 5px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: rgba(180, 210, 230, 0.85);
+}
+
+@media (max-width: 768px) {
+  /* No physical keyboard to hint at. */
+  .chatbot-kbd { display: none; }
 }
 
 /*  CHAT WINDOW  */
@@ -614,6 +652,9 @@
 }
 
 .quick-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   padding: 0.38rem 0.65rem;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(0,240,255,0.18);

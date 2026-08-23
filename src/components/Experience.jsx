@@ -1,10 +1,8 @@
 import { usePortfolio } from "../context/PortfolioContext";
 import useScrollReveal from "../hooks/useScrollReveal";
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useEffect, useState } from "react";
+import { MapPin, Contributions } from "./icons";
+import { NAV_EVENT } from "../utils/navigate";
 
 const COMPANY_URLS = {
   "Electronic Arts": "https://www.ea.com",
@@ -18,50 +16,50 @@ const hasMetric = (text) => /\d+%|\d+x|\d+\s*(hours?|minutes?|days?)|\d+K?\+?/i.
 export default function Experience() {
   const { experience } = usePortfolio();
   const revealRef = useScrollReveal();
-  const lineRef = useRef(null);
+  // Set briefly when the assistant names a specific employer.
+  const [highlighted, setHighlighted] = useState(null);
 
-  // Timeline line fill animation
+  // A question that names an employer marks that entry.
+  // navigateTo owns the scrolling; this only handles the highlight.
   useEffect(() => {
-    if (!lineRef.current) return;
-    const tween = gsap.to(lineRef.current, {
-      height: "100%",
-      ease: "none",
-      scrollTrigger: {
-        trigger: lineRef.current.parentElement,
-        start: "top 70%",
-        end: "bottom 30%",
-        scrub: 1,
-      },
-    });
-    return () => {
-      tween.kill();
-      if (tween.scrollTrigger) tween.scrollTrigger.kill();
+    const onNavigate = (e) => {
+      const idx = e.detail?.roleIndex;
+      if (typeof idx === "number" && idx >= 0) setHighlighted(idx);
     };
-  }, [experience]);
+    window.addEventListener(NAV_EVENT, onNavigate);
+    return () => window.removeEventListener(NAV_EVENT, onNavigate);
+  }, []);
+
+  useEffect(() => {
+    if (highlighted == null) return;
+    const t = setTimeout(() => setHighlighted(null), 2200);
+    return () => clearTimeout(t);
+  }, [highlighted]);
 
   if (!experience || experience.length === 0) return null;
 
   return (
     <section id="experience" className="section" ref={revealRef}>
       <div className="section-container">
-        <div className="section-header">
+        <div className="section-header" data-index="03">
           <p className="subtitle gsap-reveal">Career Journey</p>
           <h2 className="gsap-reveal">Experience</h2>
         </div>
 
         <div className="timeline">
-          <div className="timeline-line">
-            <div className="timeline-line-fill" ref={lineRef} />
-          </div>
-
           {experience.map((exp, idx) => {
             const isCurrent = idx === 0 && exp.duration?.includes("Present");
             const initial = exp.company?.charAt(0) || "?";
             const companyUrl = COMPANY_URLS[exp.company];
 
             return (
-              <div className="timeline-item gsap-reveal" key={idx}>
-                <div className={`timeline-dot${isCurrent ? " current" : ""}`} />
+              <div
+                className={`timeline-item gsap-reveal${
+                  highlighted === idx ? " is-highlighted" : ""
+                }`}
+                id={`role-${idx}`}
+                key={idx}
+              >
                 <div className="timeline-content">
                   <div className="experience-header-wrapper">
                     <div className="company-badge">
@@ -75,7 +73,12 @@ export default function Experience() {
                         </div>
                         <span className="company-name">
                           {companyUrl ? (
-                            <a href={companyUrl} target="_blank" rel="noopener noreferrer" className="company-link">
+                            <a
+                              href={companyUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="company-link"
+                            >
                               {exp.company}
                             </a>
                           ) : (
@@ -83,7 +86,7 @@ export default function Experience() {
                           )}
                         </span>
                         <div className="location-date">
-                          <span className="location-icon">📍</span>
+                          <span className="location-icon"><MapPin /></span>
                           <span>{exp.location}</span>
                           <span className="date-separator">|</span>
                           <span className="timeline-date">{exp.duration}</span>
@@ -95,7 +98,7 @@ export default function Experience() {
                   {exp.responsibilities?.length > 0 && (
                     <div className="responsibilities-section">
                       <div className="resp-label">
-                        <span className="resp-icon">💡</span>
+                        <span className="resp-icon"><Contributions /></span>
                         Key Contributions
                       </div>
                       <div className="responsibility-list">

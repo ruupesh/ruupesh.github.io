@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { registerLenis } from "../utils/scrollLock";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,22 +20,28 @@ export default function SmoothScroll({ children }) {
       gestureOrientation: "vertical",
       smoothWheel: true,
       touchMultiplier: 2,
-      prevent: (node) => node.closest && node.closest(".chatbot-window") !== null,
+      prevent: (node) =>
+        node.closest &&
+        (node.closest(".chatbot-window") !== null ||
+          node.closest("[data-lenis-prevent]") !== null),
     });
 
     lenisRef.current = lenis;
+    registerLenis(lenis);
 
     // Sync Lenis with GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
 
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
+    // Keep a reference to the exact callback — removing `lenis.raf`
+    // instead would leave this ticker running against a destroyed instance.
+    const tick = (time) => lenis.raf(time * 1000);
+    gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
 
     return () => {
+      gsap.ticker.remove(tick);
       lenis.destroy();
-      gsap.ticker.remove(lenis.raf);
+      registerLenis(null);
     };
   }, []);
 

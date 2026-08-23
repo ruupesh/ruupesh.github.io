@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { usePortfolio } from "../context/PortfolioContext";
+import { Menu, Close } from "./icons";
 
 const NAV_ITEMS = [
   { label: "About", href: "#about" },
@@ -77,10 +78,14 @@ export default function Navbar() {
               onClick={() => setPhotoPreview(true)}
               aria-label="View profile photo"
             >
+              {/* 256px crop (10 KB) rather than the 942 KB social card —
+                  this loads on every page view. */}
               <img
-                src="/og-image.png"
+                src="/avatar.webp"
                 alt={personal?.name || "Rupesh Bodkhe"}
                 className="nav-logo-img"
+                width="44"
+                height="44"
               />
             </button>
           </div>
@@ -103,7 +108,7 @@ export default function Navbar() {
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle mobile menu"
           >
-            {mobileOpen ? "✕" : "☰"}
+            {mobileOpen ? <Close size="22px" /> : <Menu size="22px" />}
           </button>
         </div>
       </nav>
@@ -112,11 +117,19 @@ export default function Navbar() {
       {photoPreview && (
         <div className="avatar-preview-overlay" onClick={() => setPhotoPreview(false)}>
           <div className="avatar-preview-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="avatar-preview-close" onClick={() => setPhotoPreview(false)}>✕</button>
+            <button
+              className="avatar-preview-close"
+              onClick={() => setPhotoPreview(false)}
+              aria-label="Close photo"
+            >
+              <Close size="20px" />
+            </button>
+            {/* Full-resolution only here, and only once opened. */}
             <img
               src="/og-image.png"
               alt={personal?.name || "Rupesh Bodkhe"}
               className="avatar-preview-img"
+              loading="lazy"
             />
             <p className="avatar-preview-name">{personal?.name || "Rupesh Bodkhe"}</p>
           </div>

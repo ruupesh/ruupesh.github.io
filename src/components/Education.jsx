@@ -1,5 +1,6 @@
 import { usePortfolio } from "../context/PortfolioContext";
 import useScrollReveal from "../hooks/useScrollReveal";
+import { GraduationCap, Calendar, Medal } from "./icons";
 
 export default function Education() {
   const { education } = usePortfolio();
@@ -14,7 +15,7 @@ export default function Education() {
   return (
     <section id="education" className="section" ref={revealRef}>
       <div className="section-container">
-        <div className="section-header">
+        <div className="section-header" data-index="04">
           <p className="subtitle gsap-reveal">Academic Background</p>
           <h2 className="gsap-reveal">Education</h2>
         </div>
@@ -22,7 +23,7 @@ export default function Education() {
         <div className="education-card gsap-reveal">
           <div className="edu-header-wrapper">
             <div className="university-badge">
-              <span className="university-icon">🎓</span>
+              <span className="university-icon"><GraduationCap /></span>
               <span className="university-initial">SPPU</span>
             </div>
             <div className="edu-info">
@@ -30,7 +31,7 @@ export default function Education() {
               <span className="edu-field">{edu.field}</span>
               <span className="university-name">{edu.institution}</span>
               <div className="edu-date">
-                <span className="date-icon">📅</span>
+                <span className="date-icon"><Calendar /></span>
                 <span>{edu.year}</span>
               </div>
             </div>
@@ -45,7 +46,7 @@ export default function Education() {
             )}
             {honorsLine && (
               <div className="honors-badge">
-                <span className="honors-icon">🏅</span>
+                <span className="honors-icon"><Medal /></span>
                 <span className="honors-text">{honorsLine}</span>
               </div>
             )}

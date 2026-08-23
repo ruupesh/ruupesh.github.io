@@ -3,6 +3,7 @@ import { PortfolioProvider } from "./context/PortfolioContext";
 import NeuralBackground from "./components/NeuralBackground";
 import SmoothScroll from "./components/SmoothScroll";
 import Navbar from "./components/Navbar";
+import TraceRail from "./components/TraceRail";
 import Hero from "./components/Hero";
 
 const About = lazy(() => import("./components/About"));
@@ -22,16 +23,22 @@ function App() {
       <SmoothScroll>
         <NeuralBackground />
         <Navbar />
-        <Hero />
+        <TraceRail />
+        {/* Single main landmark wrapping the page content. */}
+        <main id="main">
+          <Hero />
+          <Suspense fallback={null}>
+            <About />
+            <Skills />
+            <Experience />
+            <Education />
+            <Achievements />
+            <Projects />
+            <Publications />
+            <Contact />
+          </Suspense>
+        </main>
         <Suspense fallback={null}>
-          <About />
-          <Skills />
-          <Experience />
-          <Education />
-          <Achievements />
-          <Projects />
-          <Publications />
-          <Contact />
           <Footer />
           <Chatbot />
         </Suspense>

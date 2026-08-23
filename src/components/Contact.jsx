@@ -6,6 +6,7 @@ import leetcodeIcon from "../assets/leetcode.svg";
 import mediumIcon from "../assets/medium.svg";
 import gmailIcon from "../assets/Gmail.svg";
 import whatsappIcon from "../assets/WhatsApp.svg";
+import { Document } from "./icons";
 
 export default function Contact() {
   const { personal } = usePortfolio();
@@ -23,7 +24,7 @@ export default function Contact() {
   return (
     <section id="contact" className="section" ref={revealRef}>
       <div className="section-container">
-        <div className="section-header">
+        <div className="section-header" data-index="08">
           <p className="subtitle gsap-reveal">Let's Connect</p>
           <h2 className="gsap-reveal">Get in Touch</h2>
         </div>
@@ -64,7 +65,7 @@ export default function Contact() {
                 aria-label="Download Resume"
                 title="Resume"
               >
-                📄
+                <Document size="22px" />
               </a>
             )}
           </div>
