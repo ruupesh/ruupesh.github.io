@@ -1,56 +1,49 @@
-import { usePortfolio } from "../context/PortfolioContext";
+import SectionIcon from "./SectionIcon";
+import { usePortfolio } from "../context/usePortfolio";
 import useScrollReveal from "../hooks/useScrollReveal";
-import { GraduationCap, Calendar, Medal } from "./icons";
 
 export default function Education() {
   const { education } = usePortfolio();
   const revealRef = useScrollReveal();
-
-  if (!education || education.length === 0) return null;
-  const edu = education[0];
-
-  const cgpaLine = edu.achievements?.find((a) => a.toLowerCase().includes("cgpa"));
-  const honorsLine = edu.achievements?.find((a) => a.toLowerCase().includes("honors"));
+  if (!education?.length) return null;
 
   return (
-    <section id="education" className="section" ref={revealRef}>
+    <section id="education" className="section academic-section" ref={revealRef}>
       <div className="section-container">
-        <div className="section-header" data-index="04">
-          <p className="subtitle gsap-reveal">Academic Background</p>
+        <div className="section-header" data-index="05">
+          <p className="subtitle section-kicker gsap-reveal"><SectionIcon section="education" />Academic Background</p>
           <h2 className="gsap-reveal">Education</h2>
         </div>
-
-        <div className="education-card gsap-reveal">
-          <div className="edu-header-wrapper">
-            <div className="university-badge">
-              <span className="university-icon"><GraduationCap /></span>
-              <span className="university-initial">SPPU</span>
-            </div>
-            <div className="edu-info">
-              <h3 className="degree-title">{edu.degree}</h3>
-              <span className="edu-field">{edu.field}</span>
-              <span className="university-name">{edu.institution}</span>
-              <div className="edu-date">
-                <span className="date-icon"><Calendar /></span>
-                <span>{edu.year}</span>
+        <div className="academic-records">
+          {education.map((entry) => (
+            <article className="academic-record gsap-reveal" key={`${entry.institution}-${entry.degree}`}>
+              <div className="academic-main">
+                <span className="academic-date">{entry.year}</span>
+                <h3>{entry.degree}</h3>
+                <p className="academic-field">{entry.field}</p>
+                <p className="academic-institution">{entry.institution}</p>
               </div>
-            </div>
-          </div>
-
-          <div className="edu-achievements">
-            {cgpaLine && (
-              <div className="cgpa-highlight">
-                <div className="cgpa-label">CGPA</div>
-                <div className="cgpa-value">{cgpaLine.replace("CGPA: ", "")}</div>
-              </div>
-            )}
-            {honorsLine && (
-              <div className="honors-badge">
-                <span className="honors-icon"><Medal /></span>
-                <span className="honors-text">{honorsLine}</span>
-              </div>
-            )}
-          </div>
+              {entry.achievements?.length > 0 && (
+                <ul className="academic-achievements">
+                  {entry.achievements.map((achievement) => {
+                    const isGrade = /^CGPA:\s*/i.test(achievement);
+                    return (
+                      <li key={achievement} className={isGrade ? "academic-grade" : "academic-honors"}>
+                        {isGrade ? (
+                          <>
+                            <span className="academic-grade-label">CGPA:</span>
+                            <span className="academic-grade-value">{achievement.replace(/^CGPA:\s*/i, "")}</span>
+                          </>
+                        ) : (
+                          <><span className="academic-spark" aria-hidden="true">✳</span><span>{achievement}</span></>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </article>
+          ))}
         </div>
       </div>
     </section>

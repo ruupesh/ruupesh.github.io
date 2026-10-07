@@ -1,120 +1,33 @@
-import { useEffect, useRef } from "react";
-import { usePortfolio } from "../context/PortfolioContext";
-import { gsap } from "gsap";
-import DenoiseText from "./DenoiseText";
-import Typewriter from "./Typewriter";
-import { prefersReducedMotion } from "../utils/motion";
-
-const ROLES = [
-  "Fullstack AI Engineer",
-  "Building Agentic AI Systems",
-  "Prompt Engineering Expert",
-  "Cloud-Native Developer",
-];
-
-const NAME_DENOISE_DELAY = 260;
-const NAME_DENOISE_DURATION = 1150;
+import { usePortfolio } from "../context/usePortfolio";
 
 export default function Hero() {
-  const { personal } = usePortfolio();
-  const sectionRef = useRef(null);
-
-  // Entrance. The name is handled by DenoiseText; everything else
-  // settles around it.
-  useEffect(() => {
-    const root = sectionRef.current;
-    if (!root) return;
-
-    const els = {
-      badge: root.querySelector(".hero-badge"),
-      subtitle: root.querySelector(".hero-subtitle"),
-      typing: root.querySelector(".typing-wrapper"),
-      desc: root.querySelector(".hero-description"),
-      btns: root.querySelectorAll(".hero-buttons .btn"),
-      scroll: root.querySelector(".scroll-indicator"),
-    };
-
-    const targets = [
-      els.badge,
-      els.subtitle,
-      els.typing,
-      els.desc,
-      ...(els.btns || []),
-      els.scroll,
-    ].filter(Boolean);
-
-    if (prefersReducedMotion()) {
-      gsap.set(targets, { opacity: 1, y: 0 });
-      if (els.scroll) gsap.set(els.scroll, { opacity: 0.4 });
-      return;
-    }
-
-    gsap.set(targets, { opacity: 0, y: 20 });
-
-    const tl = gsap.timeline({ delay: 0.2 });
-    if (els.badge) tl.to(els.badge, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" });
-    // Held back so the name has resolved before the supporting copy lands.
-    if (els.subtitle) tl.to(els.subtitle, { opacity: 1, y: 0, duration: 0.6 }, 1.05);
-    if (els.typing) tl.to(els.typing, { opacity: 1, y: 0, duration: 0.5 }, "-=0.35");
-    if (els.desc) tl.to(els.desc, { opacity: 1, y: 0, duration: 0.6 }, "-=0.25");
-    if (els.btns?.length) tl.to(els.btns, { opacity: 1, y: 0, stagger: 0.09, duration: 0.5 }, "-=0.3");
-    if (els.scroll) tl.to(els.scroll, { opacity: 0.4, y: 0, duration: 0.5 }, "-=0.15");
-
-    return () => tl.kill();
-  }, []);
-
-  const scrollTo = (id) => (e) => {
-    e.preventDefault();
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    history.replaceState(null, "", `#${id}`);
-  };
-
+  const { personal, experience } = usePortfolio();
   return (
-    <section id="hero" className="hero" ref={sectionRef}>
-      <div className="hero-content">
-        <div className="hero-badge">Open to Opportunities</div>
-
-        <h1 className="hero-name">
-          <DenoiseText
-            text={personal?.name || "Rupesh Bodkhe"}
-            delay={NAME_DENOISE_DELAY}
-            duration={NAME_DENOISE_DURATION}
-          />
-        </h1>
-
-        <p className="hero-subtitle">{personal?.title || "Fullstack AI Engineer"}</p>
-
-        <div className="typing-wrapper">
-          <Typewriter phrases={ROLES} />
+    <section id="hero" className="hero">
+      <div className="hero-topline">
+        <p className="hero-hello">A small corner of the internet, by me.</p>
+        <span className="hero-location">{personal.location} <span aria-hidden="true">↗</span></span>
+      </div>
+      <div className="hero-grid">
+        <div className="hero-content">
+          <figure className="hero-polaroid">
+            <img src="/personal_photo.jpg" alt="Portrait of Rupesh Bodkhe" width="360" height="360" fetchPriority="high" />
+            <figcaption><h1>{personal.name}</h1><p>{personal.title}</p></figcaption>
+          </figure>
         </div>
-
-        <p className="hero-description">
-            Transforming complex AI requirements into production-grade solutions. Specialized in Backend Development, GenAI, Agentic Systems, and Cloud-Native Architecture.
-        </p>
-
-        <div className="hero-buttons">
-          <a href="#contact" className="btn btn-primary" onClick={scrollTo("contact")}>
-            Get in Touch
-          </a>
-          <a href="#experience" className="btn btn-outline" onClick={scrollTo("experience")}>
-            View Experience
-          </a>
-          {personal?.resumeUrl && (
-            <a
-              href={personal.resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-outline"
-            >
-              Resume ↗
-            </a>
-          )}
+        <div className="hero-summary">
+          <blockquote className="hero-personal-note"><span className="hero-quote-mark">“</span>The art of developers lies in solving problems by wrapping functionality in layers upon layers of abstraction, <span>wrappers on top of wrappers</span>, until complexity transforms into a seamless solution (or at least looks like one).<span className="hero-quote-mark">”</span></blockquote>
+          <p className="hero-description">Transforming complex AI requirements into production-grade solutions. Specialized in Backend Development, GenAI, Agentic Systems, and Cloud-Native Architecture.</p>
+          <div className="hero-buttons">
+            <a href="#projects" className="btn btn-primary">A few things I’ve built <span aria-hidden="true">↗</span></a>
+            <a href={personal.resumeUrl || "/Rupesh_Bodkhe-SDE2.pdf"} className="text-link" target="_blank" rel="noopener noreferrer">My résumé <span aria-hidden="true">↗</span></a>
+          </div>
+          <div className="hero-current"><span className="availability-dot" aria-hidden="true" /><span>{experience[0].position} at <strong>{experience[0].company}</strong><small>Open to Opportunities</small></span></div>
         </div>
       </div>
-
-      <div className="scroll-indicator">
-        <span>Scroll</span>
-        <div className="chevron" />
+      <div className="hero-foot">
+        <a href="#impact" className="scroll-cue"><span aria-hidden="true">↓</span> Follow the thread.</a>
+        <p className="hero-foot-note">A curious mind, a little code,<br />and the things that happen next.</p>
       </div>
     </section>
   );

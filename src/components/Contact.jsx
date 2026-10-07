@@ -1,71 +1,57 @@
-import { usePortfolio } from "../context/PortfolioContext";
+import SectionIcon from "./SectionIcon";
+import { usePortfolio } from "../context/usePortfolio";
 import useScrollReveal from "../hooks/useScrollReveal";
-import linkedinIcon from "../assets/linkedin.svg";
+import linkedInIcon from "../assets/linkedin.svg";
 import githubIcon from "../assets/github.svg";
 import leetcodeIcon from "../assets/leetcode.svg";
 import mediumIcon from "../assets/medium.svg";
 import gmailIcon from "../assets/Gmail.svg";
 import whatsappIcon from "../assets/WhatsApp.svg";
-import { Document } from "./icons";
 
 export default function Contact() {
   const { personal } = usePortfolio();
   const revealRef = useScrollReveal();
-
   const socials = [
-    { icon: linkedinIcon, url: personal?.linkedin, label: "LinkedIn" },
-    { icon: githubIcon, url: personal?.github, label: "GitHub" },
-    { icon: leetcodeIcon, url: personal?.leetcode, label: "LeetCode" },
-    { icon: mediumIcon, url: personal?.medium, label: "Medium" },
-    { icon: gmailIcon, url: `mailto:${personal?.email}`, label: "Email" },
-    { icon: whatsappIcon, url: `https://wa.me/${personal?.phone?.replace(/[^0-9]/g, '')}`, label: "WhatsApp" },
+    { url: personal?.linkedin, label: "LinkedIn", icon: linkedInIcon },
+    { url: personal?.github, label: "GitHub", icon: githubIcon },
+    { url: personal?.leetcode, label: "LeetCode", icon: leetcodeIcon },
+    { url: personal?.medium, label: "Medium", icon: mediumIcon },
+    { url: personal?.email && `mailto:${personal.email}`, label: "Email", icon: gmailIcon },
+    { url: personal?.phone && `https://wa.me/${personal.phone.replace(/[^0-9]/g, "")}`, label: "WhatsApp", icon: whatsappIcon },
   ];
 
   return (
-    <section id="contact" className="section" ref={revealRef}>
+    <section id="contact" className="section connect-section" ref={revealRef}>
       <div className="section-container">
         <div className="section-header" data-index="08">
-          <p className="subtitle gsap-reveal">Let's Connect</p>
-          <h2 className="gsap-reveal">Get in Touch</h2>
+          <p className="subtitle section-kicker gsap-reveal"><SectionIcon section="contact" />Let's Connect</p>
         </div>
-
-        <div className="contact-card gsap-reveal">
-          <p className="contact-text">
-            I'm always open to discussing AI engineering, agentic systems, or
-            exciting opportunities. Feel free to reach out!
-          </p>
-
-          <a href={`mailto:${personal?.email}`} className="email-big">
-            {personal?.email}
-          </a>
-
-          <div className="socials">
-            {socials.map(
-              (s) =>
-                s.url && (
-                  <a
-                    key={s.label}
-                    href={s.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="social-icon"
-                    aria-label={s.label}
-                    title={s.label}
-                  >
-                    <img src={s.icon} alt={s.label} />
-                  </a>
-                )
+        <div className="connect-details gsap-reveal">
+          <div className="connect-intro">
+            <h2 className="connect-heading">Get in<br /><span>Touch</span><span className="connect-heading-arrow" aria-hidden="true">↗</span></h2>
+            <p className="connect-introduction">
+              I'm always open to discussing AI engineering, agentic systems, or
+              exciting opportunities. Feel free to reach out!
+            </p>
+          </div>
+          <div className="connect-actions">
+            <nav className="connect-socials" aria-label="Social links">
+              {socials.filter((social) => social.url).map((social) => (
+                <a key={social.label} href={social.url} aria-label={social.label} title={social.label}
+                  target={social.url.startsWith("mailto:") ? undefined : "_blank"}
+                  rel={social.url.startsWith("mailto:") ? undefined : "noopener noreferrer"}>
+                  <img src={social.icon} alt="" width="24" height="24" loading="lazy" />
+                </a>
+              ))}
+            </nav>
+            {personal?.email && (
+              <a href={`mailto:${personal.email}`} className="connect-email">
+                <span>{personal.email}</span><span aria-hidden="true">↗</span>
+              </a>
             )}
-            {personal?.resumeUrl && (
-              <a
-                href={personal.resumeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-icon resume-download"
-                aria-label="Download Resume"
-                title="Resume"
-              >
-                <Document size="22px" />
+            {(
+              <a href={personal.resumeUrl || "/Rupesh_Bodkhe-SDE2.pdf"} target="_blank" rel="noopener noreferrer" className="connect-resume">
+                Download Resume <span aria-hidden="true">↗</span>
               </a>
             )}
           </div>

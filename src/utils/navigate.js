@@ -81,8 +81,8 @@ export function navigateTo(target) {
       : null;
 
   (role || el).scrollIntoView({
-    behavior: "smooth",
-    block: role ? "center" : "start",
+    behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+    block: "start",
   });
   history.replaceState(null, "", `#${target.section}`);
 

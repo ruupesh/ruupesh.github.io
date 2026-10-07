@@ -1,50 +1,32 @@
-import { lazy, Suspense } from "react";
 import { PortfolioProvider } from "./context/PortfolioContext";
-import NeuralBackground from "./components/NeuralBackground";
-import SmoothScroll from "./components/SmoothScroll";
 import Navbar from "./components/Navbar";
-import TraceRail from "./components/TraceRail";
 import Hero from "./components/Hero";
+import About from "./components/About";
+import Projects from "./components/Projects";
+import Experience from "./components/Experience";
+import Skills from "./components/Skills";
+import Education from "./components/Education";
+import Achievements from "./components/Achievements";
+import Publications from "./components/Publications";
+import Contact from "./components/Contact";
+import Footer from "./components/Footer";
+import AssistantLauncher from "./components/AssistantLauncher";
+import ScrollMotion from "./components/ScrollMotion";
+import Impact from "./components/Impact";
+import AmbientBackground from "./components/AmbientBackground";
 
-const About = lazy(() => import("./components/About"));
-const Skills = lazy(() => import("./components/Skills"));
-const Experience = lazy(() => import("./components/Experience"));
-const Education = lazy(() => import("./components/Education"));
-const Achievements = lazy(() => import("./components/Achievements"));
-const Projects = lazy(() => import("./components/Projects"));
-const Publications = lazy(() => import("./components/Publications"));
-const Contact = lazy(() => import("./components/Contact"));
-const Footer = lazy(() => import("./components/Footer"));
-const Chatbot = lazy(() => import("./components/Chatbot"));
-
-function App() {
+export default function App() {
   return (
     <PortfolioProvider>
-      <SmoothScroll>
-        <NeuralBackground />
-        <Navbar />
-        <TraceRail />
-        {/* Single main landmark wrapping the page content. */}
-        <main id="main">
-          <Hero />
-          <Suspense fallback={null}>
-            <About />
-            <Skills />
-            <Experience />
-            <Education />
-            <Achievements />
-            <Projects />
-            <Publications />
-            <Contact />
-          </Suspense>
-        </main>
-        <Suspense fallback={null}>
-          <Footer />
-          <Chatbot />
-        </Suspense>
-      </SmoothScroll>
+      <a className="skip-link" href="#main">Skip to content</a>
+      <AmbientBackground /><ScrollMotion />
+      <Navbar />
+      <main id="main" tabIndex={-1}>
+        <Hero /><Impact /><Projects /><About /><Experience /><Skills />
+        <Education /><Achievements /><Publications /><Contact />
+      </main>
+      <Footer />
+      <AssistantLauncher />
     </PortfolioProvider>
   );
 }
-
-export default App;

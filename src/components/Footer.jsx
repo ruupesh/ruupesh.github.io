@@ -1,11 +1,12 @@
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="site-footer">
-      <p>© {year} Rupesh Bodkhe. All rights reserved.</p>
-      <p className="footer-vibe">
-        Built with React, FastAPI and LangChain.
-      </p>
+    <footer className="colophon-footer">
+      <div className="section-container colophon-content">
+        <p>© {year} Rupesh Bodkhe. All rights reserved.</p>
+        <p>Built with React, FastAPI and LangChain.</p>
+        <a href="#hero">Back to top <span aria-hidden="true">↑</span></a>
+      </div>
     </footer>
   );
 }

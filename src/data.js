@@ -10,7 +10,7 @@ const portfolioData = {
         leetcode: "https://leetcode.com/ruupesh",
         medium: "https://medium.com/@ruupesh",
         phone: "+91-9604996583",
-        location: "Pune, India",
+        location: "Based in Hyderabad, India",
         resumeUrl: import.meta.env.VITE_RESUME_URL,
         summary: "Fullstack AI Engineer with ~4 years of experience building and shipping end-to-end backend and AgenticAI applications using diverse Python frameworks. Experienced in rapidly developing microservices, event-driven architectures, and multi-agent & GenAI systems on cloud-native infrastructure. Comfortable owning features from design to production, integrating LLMs, APIs, frontend components, and DevOps pipelines to deliver scalable products."
     },
@@ -31,7 +31,7 @@ const portfolioData = {
             company: "Electronic Arts",
             position: "SDE 2 - AI Engineer",
             duration: "June 2026 – Present",
-            location: "Pune, India",
+            location: "Hyderabad, India",
             responsibilities: [
                 "Owning end-to-end AI-powered features from design to production, eliminating days of manual work and reducing time-to-insight to minutes.",
                 "Architecting and deploying scalable enterprise AI integrations across AWS and Azure, enabling cross-functional teams to leverage AI-driven automation and insights.",
