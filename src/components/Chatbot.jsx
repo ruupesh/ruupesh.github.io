@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import axios from "axios";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
-import { Agent, Rocket, Terminal, Mail, Message, Close, Send } from "./icons";
+import { Agent, Rocket, Terminal, Mail, Close, Send } from "./icons";
 import portfolioData from "../data";
 import { routeFromText, navigateTo } from "../utils/navigate";
 
@@ -27,10 +27,10 @@ Built 5+ GenAI, Agentic AI and multi-agent systems. Expertise in prompt engineer
   if (lowerMessage.includes("contact") || lowerMessage.includes("email") || lowerMessage.includes("reach")) {
     return `**Contact Information** 📧
 
-**Email:** [rupeshbodkhe2302@gmail.com](mailto:rupeshbodkhe2302@gmail.com)
-**Phone:** +91-9604996583
-**LinkedIn:** [linkedin.com/in/rupeshbodkhe](https://www.linkedin.com/in/rupeshbodkhe)
-**GitHub:** [github.com/rupeshbodkhe](https://github.com/rupeshbodkhe)
+**Email:** [${portfolioData.personal.email}](mailto:${portfolioData.personal.email})
+**Phone:** ${portfolioData.personal.phone}
+**LinkedIn:** [${portfolioData.personal.linkedin.replace("https://www.", "")}](${portfolioData.personal.linkedin})
+**GitHub:** [${portfolioData.personal.github.replace("https://", "")}](${portfolioData.personal.github})
 `;
   }
 
@@ -182,12 +182,12 @@ Rupesh is a Fullstack AI Engineer with ~4 years of experience building and shipp
 Explore different sections of Rupesh's portfolio:
 
 **📌 Quick Links**
-- 👤 **About** - Rupesh's background
-- 💻 **Skills** - Technical expertise
-- 💼 **Experience** - Work history
-- 🚀 **Projects** - What Rupesh has built
-- 📝 **Publications** - Rupesh's articles
-- 📧 **Contact** - Get in touch
+- 👤 **[About](#about)** - Rupesh's background
+- 💻 **[Skills](#skills)** - Technical expertise
+- 💼 **[Experience](#experience)** - Work history
+- 🚀 **[Projects](#projects)** - What Rupesh has built
+- 📝 **[Publications](#publications)** - Rupesh's articles
+- 📧 **[Contact](#contact)** - Get in touch
 
 Or ask me something specific about Rupesh's experience!`;
 };
@@ -199,216 +199,210 @@ const quickActions = [
   { Icon: Mail, label: "Contact Info", message: "How can I contact you?" },
 ];
 
-const markdownComponents = {
-  a: ({ node, ...props }) => (
-    <a {...props} target="_blank" rel="noopener noreferrer" />
-  ),
+const portfolioSections = new Set([
+  "hero", "impact", "about", "skills", "experience", "projects",
+  "education", "achievements", "publications", "contact",
+]);
+
+// Older backend responses also return the Quick Links as bold text.
+const linkQuickSections = (content) => {
+  if (!content.includes("Quick Links")) return content;
+  return content.replace(
+    /^(\s*[-*]\s+[^\n]*?)\*\*(About|Skills|Experience|Projects|Publications|Contact)\*\*/gm,
+    (_, prefix, label) => `${prefix}**[${label}](#${label.toLowerCase()})**`,
+  );
 };
 
-const Chatbot = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const sectionFromHref = (href) => {
+  if (!href) return null;
+  try {
+    const url = new URL(href, window.location.href);
+    const section = url.hash.slice(1);
+    return url.origin === window.location.origin
+      && url.pathname === window.location.pathname
+      && !url.search
+      && portfolioSections.has(section) ? section : null;
+  } catch {
+    return null;
+  }
+};
+
+const MAX_MESSAGES = 60;
+
+const Chatbot = ({ isOpen, onClose }) => {
   const inputRef = useRef(null);
+  const messagesRef = useRef(null);
+  const requestRef = useRef(null);
+  const nextMessageId = useRef(2);
   const [messages, setMessages] = useState([
-    { role: "bot", content: "👋 Hi! I'm Rupesh's AI assistant. How can I help you learn more about Rupesh's work?" },
-    { role: "bot", content: "Feel free to ask about Rupesh's experience, projects, or technical skills!" },
+    { id: 0, role: "bot", content: "👋 Hi! I'm Rupesh's AI assistant. How can I help you learn more about Rupesh's work?" },
+    { id: 1, role: "bot", content: "Feel free to ask about Rupesh's experience, projects, or technical skills!" },
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const messagesEndRef = useRef(null);
+  const [announcement, setAnnouncement] = useState("");
+  const markdownComponents = useMemo(() => ({
+    a: ({ href, title, children }) => {
+      const section = sectionFromHref(href);
+      return section ? (
+        <a href={`#${section}`} title={title} onClick={(event) => {
+          if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+          event.preventDefault();
+          onClose();
+          navigateTo({ section });
+          const destination = document.getElementById(section);
+          destination?.setAttribute("tabindex", "-1");
+          destination?.focus({ preventScroll: true });
+        }}>{children}</a>
+      ) : (
+        <a href={href} title={title} target="_blank" rel="noopener noreferrer">{children}</a>
+      );
+    },
+  }), [onClose]);
 
+  // Scroll only the conversation, never an ancestor or the portfolio itself.
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (isOpen && messagesRef.current) {
+      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+    }
   }, [messages, isTyping, isOpen]);
 
-  // ⌘K / Ctrl+K opens the assistant from anywhere; Escape closes it.
   useEffect(() => {
-    const onKey = (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        setIsOpen((o) => !o);
-      } else if (e.key === "Escape") {
-        setIsOpen(false);
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
-  // Focus the field when it opens, so ⌘K lands you ready to type.
-  useEffect(() => {
-    if (isOpen) {
-      const t = setTimeout(() => inputRef.current?.focus(), 260);
-      return () => clearTimeout(t);
-    }
+    if (isOpen) inputRef.current?.focus({ preventScroll: true });
   }, [isOpen]);
 
-  const toggleChat = () => setIsOpen((o) => !o);
+  useEffect(() => () => requestRef.current?.abort(), []);
 
-  /** A question that names a company, project, or section moves the page. */
-  const drivePage = (text) => {
-    const route = routeFromText(text, portfolioData);
-    if (route) navigateTo(route);
-  };
+  const submitMessage = async (content) => {
+    const text = content.trim();
+    if (!text || requestRef.current) return;
 
-  const addUserMessage = (content) => {
-    setMessages((prev) => [...prev, { role: "user", content }]);
-  };
-
-  const addBotMessage = (content) => {
-    setMessages((prev) => [...prev, { role: "bot", content }]);
-  };
-
-  const sendToApiOrFallback = async (nextMessages) => {
+    const request = new AbortController();
+    requestRef.current = request;
+    const userMessage = { id: nextMessageId.current++, role: "user", content: text };
+    const nextMessages = [...messages, userMessage].slice(-MAX_MESSAGES);
+    setMessages(nextMessages);
+    setInput("");
     setIsTyping(true);
+    setAnnouncement("Preparing a response.");
+
+    let reply = getFallbackResponse(text);
     try {
-      const response = await axios.post(apiUrl, {
-        messages: nextMessages.map((m) => ({
-          role: m.role === "bot" ? "assistant" : m.role,
-          content: m.content,
-        })),
-      });
-      if (response?.data?.response) {
-        addBotMessage(response.data.response);
-      } else {
-        const lastUser = nextMessages.filter((m) => m.role === "user").slice(-1)[0]?.content || "";
-        addBotMessage(getFallbackResponse(lastUser));
+      // A missing backend uses the portfolio answers directly, without a request.
+      if (apiUrl) {
+        const response = await axios.post(apiUrl, {
+          messages: nextMessages.map((message) => ({
+            role: message.role === "bot" ? "assistant" : message.role,
+            content: message.content,
+          })),
+        }, { timeout: 20000, signal: request.signal });
+        if (typeof response?.data?.response === "string" && response.data.response.trim()) {
+          reply = response.data.response;
+        }
       }
-    } catch (e) {
-      const lastUser = nextMessages.filter((m) => m.role === "user").slice(-1)[0]?.content || "";
-      addBotMessage(getFallbackResponse(lastUser));
+    } catch {
+      // The same portfolio answers remain available if the service is unreachable.
     } finally {
-      setIsTyping(false);
+      if (!request.signal.aborted) {
+        const botMessage = {
+          id: nextMessageId.current++,
+          role: "bot",
+          content: reply,
+          route: routeFromText(text, portfolioData),
+        };
+        setMessages((previous) => [...previous, botMessage].slice(-MAX_MESSAGES));
+        setAnnouncement(reply);
+        setIsTyping(false);
+      }
+      if (requestRef.current === request) requestRef.current = null;
     }
   };
 
-  const sendMessage = async () => {
-    const text = input.trim();
-    if (!text) return;
-    setInput("");
-    addUserMessage(text);
-    drivePage(text);
-    const nextMessages = [...messages, { role: "user", content: text }];
-    await sendToApiOrFallback(nextMessages);
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") sendMessage();
-  };
-
-  const handleQuickAction = async (msg) => {
-    addUserMessage(msg);
-    drivePage(msg);
-    const nextMessages = [...messages, { role: "user", content: msg }];
-    await sendToApiOrFallback(nextMessages);
-  };
+  // Preserve conversation state when closed, with no hidden focusable controls.
+  if (!isOpen) return null;
 
   return (
-    <div className="chatbot-container">
-      <button
-        className={`chatbot-toggle ${isOpen ? "active" : ""}`}
-        onClick={toggleChat}
-        title="Chat with me"
-        aria-label={isOpen ? "Close chat" : "Chat with me"}
-        aria-expanded={isOpen}
-      >
-        <span className="orbit-ring orbit-ring-1" />
-        <span className="orbit-ring orbit-ring-2" />
-        <span className="chatbot-icon"><Message size="24px" /></span>
-        <span className="chatbot-close-icon"><Close size="22px" /></span>
-      </button>
-
-      {!isOpen && (
-        <span className="chatbot-kbd" aria-hidden="true">
-          <kbd>⌘</kbd><kbd>K</kbd>
-        </span>
-      )}
-
-      <div className={`chatbot-window ${isOpen ? "open" : ""}`}>
-        <div className="chatbot-header">
-          <div className="chatbot-header-info">
-            <div className="chatbot-avatar">RB</div>
-            <div className="chatbot-header-text">
-
-              <p className="chatbot-status">
-                <span className="status-dot"></span>
-                Available to chat
-              </p>
-            </div>
+    <section
+      className="chatbot-window"
+      id="portfolio-assistant"
+      role="dialog"
+      aria-labelledby="assistant-title"
+      aria-describedby="assistant-description"
+      data-lenis-prevent
+    >
+      <header className="chatbot-header">
+        <div className="chatbot-header-info">
+          <span className="chatbot-avatar" aria-hidden="true">RB<span>✳</span></span>
+          <div>
+            <p className="chatbot-eyebrow">A little more about me</p>
+            <h2 id="assistant-title">Rupesh’s assistant</h2>
           </div>
-          <button className="chatbot-minimize" onClick={toggleChat}>−</button>
         </div>
+        <button className="chatbot-close" type="button" onClick={onClose} aria-label="Close assistant">
+          <Close size="20px" />
+        </button>
+      </header>
+      <p className="chatbot-description" id="assistant-description">Explore my work. Follow your curiosity.</p>
 
-        <div className="chatbot-messages">
-          {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`chatbot-message ${msg.role === "user" ? "user-message" : "bot-message"} show`}
-            >
-              <div className="message-content">
-                {msg.role !== "user" && <div className="message-avatar">RB</div>}
-                <div className="message-bubble">
-                  {msg.role !== "user" ? (
-                    <ReactMarkdown
-                      remarkPlugins={[remarkGfm, remarkBreaks]}
-                      components={markdownComponents}
-                    >
-                      {msg.content}
-                    </ReactMarkdown>
-                  ) : msg.content}
-                </div>
-              </div>
+      <div className="chatbot-messages" ref={messagesRef} aria-label="Conversation" tabIndex={0}>
+        {messages.map((message) => (
+          <div key={message.id} className={`chatbot-message ${message.role === "user" ? "user-message" : "bot-message"}`}>
+            <span className="message-label">{message.role === "user" ? "You" : "Assistant"}</span>
+            <div className="message-bubble">
+              {message.role === "bot" ? (
+                <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]} components={markdownComponents}>
+                  {linkQuickSections(message.content)}
+                </ReactMarkdown>
+              ) : message.content}
             </div>
-          ))}
-
-          {isTyping && (
-            <div className="chatbot-message bot-message typing-indicator show">
-              <div className="message-content">
-                <div className="message-avatar">RB</div>
-                <div className="message-bubble">
-                  <span className="typing-dot"></span>
-                  <span className="typing-dot"></span>
-                  <span className="typing-dot"></span>
-                </div>
-              </div>
-            </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
-
-        <div className="chatbot-input-area">
-          <input
-            type="text"
-            id="chatbot-input"
-            name="message"
-            aria-label="Ask me anything"
-            className="chatbot-input"
-            placeholder="Ask me anything..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyPress}
-            autoComplete="off"
-            ref={inputRef}
-          />
-          <button className="chatbot-send" onClick={sendMessage} aria-label="Send message">
-            <Send size="18px" />
-          </button>
-        </div>
-
-        <div className="chatbot-quick-actions">
-          {quickActions.map(({ Icon, label, message }) => (
-            <button
-              key={label}
-              className="quick-action-btn"
-              onClick={() => handleQuickAction(message)}
-              data-message={message}
-            >
-              <Icon />
-              {label}
-            </button>
-          ))}
-        </div>
+            {message.route && (
+              <button
+                type="button"
+                className="chatbot-view-section"
+                onClick={() => { onClose(); navigateTo(message.route); }}
+              >
+                View {message.route.section} <span aria-hidden="true">↗</span>
+              </button>
+            )}
+          </div>
+        ))}
+        {isTyping && <p className="chatbot-thinking">Thinking through your question…</p>}
       </div>
-    </div>
+      <p className="assistant-sr-only" role="status" aria-live="polite" aria-atomic="true">{announcement}</p>
+
+      <div className="chatbot-quick-actions" aria-label="Suggested questions">
+        {quickActions.map((action) => (
+          <button
+            key={action.label}
+            type="button"
+            className="quick-action-btn"
+            onClick={() => submitMessage(action.message)}
+            disabled={isTyping}
+          >
+            <action.Icon size="14px" />{action.label}
+          </button>
+        ))}
+      </div>
+      <form className="chatbot-input-area" onSubmit={(event) => { event.preventDefault(); submitMessage(input); }}>
+        <input
+          type="text"
+          id="chatbot-input"
+          name="message"
+          aria-label="Ask about Rupesh"
+          className="chatbot-input"
+          placeholder="What are you curious about?"
+          value={input}
+          onChange={(event) => setInput(event.target.value)}
+          autoComplete="off"
+          maxLength={2000}
+          ref={inputRef}
+        />
+        <button className="chatbot-send" type="submit" aria-label="Send message" disabled={isTyping || !input.trim()}>
+          <Send size="18px" />
+        </button>
+      </form>
+      <p className="chatbot-footnote">AI assistant · For a human conversation, <a href={`mailto:${portfolioData.personal.email}`}>email me ↗</a></p>
+    </section>
   );
 };
 

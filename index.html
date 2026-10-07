@@ -4,10 +4,25 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/r.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#050510" />
+    <meta name="theme-color" content="#f7f5f0" />
+    <meta name="color-scheme" content="light dark" />
     <!-- Marks that scripting is live. Reveal animations start hidden only
          under html.js, so a blocked bundle can't leave the page blank. -->
-    <script>document.documentElement.classList.add('js');</script>
+    <script>
+      (() => {
+        const root = document.documentElement;
+        root.classList.add('js');
+        let preference;
+        try { preference = localStorage.getItem('portfolio-theme'); } catch { /* Storage is optional. */ }
+        const theme = preference === 'light' || preference === 'dark'
+          ? preference
+          : window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        root.dataset.theme = theme;
+        root.style.colorScheme = theme;
+        root.style.backgroundColor = theme === 'dark' ? '#141923' : '#f7f5f0';
+        document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#141923' : '#f7f5f0';
+      })();
+    </script>
     <title>Rupesh Bodkhe | Fullstack AI Engineer</title>
     <meta name="description" content="Rupesh Bodkhe — Fullstack AI Engineer with ~4 years building production-grade GenAI, Agentic AI & cloud-native applications. Expert in Python, React, LLMs, RAG, Multi-Agent Systems, AWS, GCP & Azure.">
     <meta name="keywords" content="Rupesh Bodkhe, AI Engineer, Backend Engineer, Python Developer, GenAI, Agentic AI, LLM, RAG, Multi-Agent Systems, Prompt Engineering, AWS, Azure, FastAPI, Django, LangChain, Cloud Native, Software Engineer Portfolio, GenAI Engineer, Agentic AI Engineer, Python Backend Developer, AI Application Developer, Fullstack AI Engineer, Hire AI Engineer India">

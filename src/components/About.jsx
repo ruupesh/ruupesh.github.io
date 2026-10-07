@@ -1,109 +1,31 @@
-import { usePortfolio } from "../context/PortfolioContext";
+import SectionIcon from "./SectionIcon";
+import { usePortfolio } from "../context/usePortfolio";
 import useScrollReveal from "../hooks/useScrollReveal";
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Neural, Agent, Users, Cloud } from "./icons";
-import { prefersReducedMotion } from "../utils/motion";
-
-gsap.registerPlugin(ScrollTrigger);
+import CuriosityStrip from "./CuriosityStrip";
 
 const STATS = [
-  { Icon: Neural, label: "YOE in AI/Backend", target: 4, suffix: "+" },
-  { Icon: Agent, label: "(5 AI) Apps Designed, Developed & Deployed", target: 7, suffix: "+" },
-  { Icon: Users, label: "Users Served", target: 400, suffix: "K+" },
-  { Icon: Cloud, label: "Cloud & AI Certs", target: 5, suffix: "" },
+  { value: "4+", label: "YOE in AI/Backend" },
+  { value: "7+", label: "(5 AI) Apps Designed, Developed & Deployed" },
+  { value: "400K+", label: "Users Served" },
+  { value: "5", label: "Cloud & AI Certs" },
 ];
 
 export default function About() {
   const { personal } = usePortfolio();
-  const revealRef = useScrollReveal();
-  const countersRef = useRef([]);
-
-  // Animated counters
-  useEffect(() => {
-    // With reduced motion the numbers are simply correct from the start.
-    if (prefersReducedMotion()) {
-      countersRef.current.forEach((el, i) => {
-        if (el) el.textContent = STATS[i].target;
-      });
-      return;
-    }
-
-    const tweens = countersRef.current.map((el, i) => {
-      if (!el) return null;
-      const tgt = STATS[i].target;
-      const obj = { val: 0 };
-      return gsap.to(obj, {
-        val: tgt,
-        duration: 2,
-        ease: "power2.out",
-        scrollTrigger: { trigger: el, start: "top 80%" },
-        onUpdate: () => {
-          el.textContent = Math.round(obj.val);
-        },
-      });
-    });
-
-    return () => {
-      tweens.forEach((t) => {
-        if (!t) return;
-        t.scrollTrigger?.kill();
-        t.kill();
-      });
-    };
-  }, []);
-
-  const highlightSummary = (text) => {
-    if (!text) return null;
-    const keywords = [
-      "Fullstack AI Engineer",
-      "~4 years",
-      "AgenticAI",
-      "microservices",
-      "multi-agent",
-      "GenAI",
-      "cloud-native",
-      "LLMs",
-      "scalable products",
-    ];
-    let result = text;
-    keywords.forEach((kw) => {
-      result = result.replace(
-        new RegExp(`(${kw})`, "gi"),
-        `<span class="highlight">$1</span>`
-      );
-    });
-    return <p dangerouslySetInnerHTML={{ __html: result }} />;
-  };
-
+  const ref = useScrollReveal();
+  const parts = personal.summary.split(/(building and shipping|multi-agent & GenAI systems|design to production|scalable products)/g);
   return (
-    <section id="about" className="section" ref={revealRef}>
+    <section id="about" className="section about-section" ref={ref}>
       <div className="section-container">
-        <div className="section-header" data-index="01">
-          <p className="subtitle gsap-reveal">Who I Am</p>
-          <h2 className="gsap-reveal">About Me</h2>
-        </div>
-
-        <div className="about-content">
-          <div className="about-text gsap-reveal">
-            {highlightSummary(personal?.summary)}
+        <div className="about-editorial">
+          <div className="about-left">
+            <div className="section-header" data-index="02"><p className="subtitle section-kicker gsap-reveal"><SectionIcon section="about" />The human behind the systems</p><h2 className="gsap-reveal">A little<br /><em>about me.</em></h2></div>
           </div>
-
-          <div className="stats-showcase">
-            {STATS.map(({ Icon, label, suffix }, i) => (
-              <div className="stat-card gsap-reveal" key={label}>
-                <span className="stat-icon"><Icon /></span>
-                <div className="stat-number">
-                  <span ref={(el) => (countersRef.current[i] = el)}>0</span>
-                  <span className="stat-suffix">{suffix}</span>
-                </div>
-                <span className="stat-label">{label}</span>
-              </div>
-            ))}
-          </div>
+          <div className="about-body"><p className="about-personal-line gsap-reveal">The part I keep coming back to?<br /><em>Finding out what’s possible.</em></p><p className="about-statement gsap-reveal">{parts.map((part, i) => i % 2 ? <mark key={i}>{part}</mark> : part)}</p><div className="about-interests gsap-reveal"><span>Building Agentic AI Systems</span><span>Prompt Engineering Expert</span><span>Cloud-Native Developer</span></div><a href="#publications" className="text-link gsap-reveal">What I’ve been thinking about <span aria-hidden="true">↗</span></a></div>
         </div>
+        <div className="stats-showcase">{STATS.map((stat, i) => <div className="stat-card gsap-reveal" key={stat.label}><span className="stat-index">0{i + 1} /</span><strong className="stat-number">{stat.value}</strong><span className="stat-label">{stat.label}</span></div>)}</div>
       </div>
+      <CuriosityStrip />
     </section>
   );
 }

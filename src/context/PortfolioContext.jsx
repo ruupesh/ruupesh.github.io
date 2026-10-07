@@ -1,15 +1,6 @@
-import React, { createContext, useContext } from "react";
+import { PortfolioContext } from "./usePortfolio";
 import portfolioData from "../data.js";
 
-const PortfolioContext = createContext();
-
-export const PortfolioProvider = ({ children }) => {
-  const data = portfolioData || {};
-  return (
-    <PortfolioContext.Provider value={data}>
-      {children}
-    </PortfolioContext.Provider>
-  );
-};
-
-export const usePortfolio = () => useContext(PortfolioContext);
+export const PortfolioProvider = ({ children }) => (
+  <PortfolioContext.Provider value={portfolioData}>{children}</PortfolioContext.Provider>
+);

@@ -1,65 +1,43 @@
-import { usePortfolio } from "../context/PortfolioContext";
+import SectionIcon from "./SectionIcon";
+import { usePortfolio } from "../context/usePortfolio";
 import useScrollReveal from "../hooks/useScrollReveal";
-import {
-  Terminal, Neural, Agent, Server, Layout, Cloud, Architecture, Chart, Tag,
-} from "./icons";
 
-const CATEGORY_META = {
-  languages: { Icon: Terminal, color: "#00f0ff", label: "Languages" },
-  genai: { Icon: Neural, color: "#8b5cf6", label: "Gen AI" },
-  agenticai: { Icon: Agent, color: "#00ff88", label: "Agentic AI" },
-  backend: { Icon: Server, color: "#f59e0b", label: "Backend" },
-  frontend: { Icon: Layout, color: "#ec4899", label: "Frontend" },
-  cloud: { Icon: Cloud, color: "#3b82f6", label: "Cloud & DevOps" },
-  engineering: { Icon: Architecture, color: "#14b8a6", label: "Engineering" },
-  data: { Icon: Chart, color: "#f97316", label: "Data" },
+const CATEGORY_LABELS = {
+  languages: "Languages",
+  genai: "Gen AI",
+  agenticai: "Agentic AI",
+  backend: "Backend",
+  frontend: "Frontend",
+  cloud: "Cloud & DevOps",
+  engineering: "Engineering",
+  data: "Data",
 };
 
 export default function Skills() {
   const { skills } = usePortfolio();
   const revealRef = useScrollReveal();
-
   if (!skills) return null;
 
-  const categories = Object.entries(skills);
-
   return (
-    <section id="skills" className="section" ref={revealRef}>
+    <section id="skills" className="section expertise-section" ref={revealRef}>
       <div className="section-container">
-        <div className="section-header" data-index="02">
-          <p className="subtitle gsap-reveal">Tech Stack</p>
-          <h2 className="gsap-reveal">Skills & Expertise</h2>
+        <div className="section-header" data-index="04">
+          <p className="subtitle section-kicker gsap-reveal"><SectionIcon section="skills" />Tech Stack</p>
+          <h2 className="gsap-reveal">Skills &<br /> Expertise</h2>
         </div>
-
-        <div className="skills-grid">
-          {categories.map(([key, items]) => {
-            const meta = CATEGORY_META[key] || { Icon: Tag, color: "#00f0ff", label: key };
-            const { Icon } = meta;
-            return (
-              <div
-                className="skill-category gsap-reveal"
-                key={key}
-                style={{ "--cat-color": meta.color }}
-              >
-                <div className="cat-header">
-                  <div className="cat-icon-wrapper">
-                    <span className="cat-icon"><Icon /></span>
-                  </div>
-                  <div className="cat-title-wrapper">
-                    <h3>{meta.label}</h3>
-                    <span className="skill-count">{items.length} skills</span>
-                  </div>
-                </div>
-                <div className="skill-tags-wrapper">
-                  {items.map((skill) => (
-                    <span className="skill-tag" key={skill}>
-                      <span className="skill-name">{skill}</span>
-                    </span>
-                  ))}
-                </div>
+        <div className="expertise-matrix">
+          {Object.entries(skills).map(([category, items], index) => (
+            <div className="expertise-cell gsap-reveal" key={category}>
+              <div className="expertise-category">
+                <span className="expertise-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+                <h3>{CATEGORY_LABELS[category] || category}</h3>
+                <span className="expertise-count">{items.length} skills</span>
               </div>
-            );
-          })}
+              <ul className="expertise-items">
+                {items.map((skill) => <li key={skill}>{skill}</li>)}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
     </section>
