@@ -1,4 +1,5 @@
 import SectionIcon from "./SectionIcon";
+import InkTrace from "./InkTrace";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { usePortfolio } from "../context/usePortfolio";
 import useScrollReveal from "../hooks/useScrollReveal";
@@ -8,7 +9,7 @@ import { NAV_EVENT } from "../utils/navigate";
 const LABELS = ["01 / GENERATIVE AI", "02 / AGENTIC SYSTEMS", "03 / DATA & INTELLIGENCE", "04 / FULLSTACK", "05 / DEVELOPER TOOLS", "06 / AUTOMATION"];
 const METRICS = [{ value: "400k+", label: "users" }, { value: "MCP + A2A", label: "agent orchestration" }, { value: "1 month", label: "from concept to functional" }];
 
-function ProjectSketch({ index }) {
+function ProjectDiagram({ index }) {
   if (index === 0) return <div className="project-sketch rag-sketch" aria-hidden="true">
     <div className="diagram-caption">KNOWLEDGE, CONNECTED.</div>
     <svg viewBox="0 0 480 300" fill="none">
@@ -19,7 +20,7 @@ function ProjectSketch({ index }) {
       <text x="260" y="220" textAnchor="middle">RAG</text><text x="404" y="207" textAnchor="middle">CONTEXT</text>
       <circle cx="180" cy="150" r="4" fill="currentColor" /><circle cx="325" cy="150" r="4" fill="currentColor" />
     </svg>
-    <span className="diagram-footnote">ORGANIZATIONAL DATA → CONTEXT-AWARE ANSWERS</span>
+    <span className="diagram-footnote">ORGANIZATIONAL DATA / CONTEXT-AWARE ANSWERS</span>
   </div>;
   if (index === 1) return <div className="project-sketch agent-sketch" aria-hidden="true">
     <div className="diagram-caption">SPECIALISTS. ONE SYSTEM.</div>
@@ -41,8 +42,30 @@ function ProjectSketch({ index }) {
       <path d="M82 222H398M82 180H398M82 138H398M82 96H398" stroke="currentColor" opacity=".1" />
       {[48,77,67,110,135,121,150].map((h,i) => <rect key={i} className="chart-bar" style={{"--bar-index":i}} x={88+i*44} y={222-h} width="27" height={h} rx="2" fill={i===6 ? "var(--ink)" : "var(--accent-soft)"} />)}
     </svg>
-    <span className="diagram-footnote">NATURAL LANGUAGE → ANALYSIS</span>
+    <span className="diagram-footnote">NATURAL LANGUAGE / ANALYSIS</span>
   </div>;
+}
+
+const LAYERS = [
+  ["DATA", "RETRIEVAL", "CONTEXT"],
+  ["TOOLS", "ORCHESTRATION", "MULTI-AGENT"],
+  ["DATA", "QUERIES", "INSIGHTS"],
+];
+
+function ProjectSketch({ index }) {
+  return (
+    <div className={`project-artwork project-artwork-${index}`} data-scroll-scene="artifact" aria-hidden="true">
+      <div className="artifact-caption"><span>0{index + 1} / SYSTEM STUDY</span><span className="artifact-scroll-note">SCROLL TO EXPLORE</span></div>
+      <div className="artifact-perspective">
+        <div className="artifact-object">
+          <div className="artifact-layer artifact-layer-back"><span>{LAYERS[index][0]}</span><div className="artifact-grid" /></div>
+          <div className="artifact-layer artifact-layer-middle"><span>{LAYERS[index][1]}</span><svg viewBox="0 0 400 250" fill="none"><path d="M40 125H360M200 40V210" /><circle cx="200" cy="125" r="72" /><circle cx="200" cy="125" r="38" /><path d="M80 70H125V115M275 135V180H320" /></svg></div>
+          <div className="artifact-layer artifact-layer-front"><ProjectDiagram index={index} /></div>
+        </div>
+      </div>
+      <div className="artifact-legend">{LAYERS[index].map((label) => <span key={label}>{label}</span>)}</div>
+    </div>
+  );
 }
 
 export default function Projects() {
@@ -65,16 +88,17 @@ export default function Projects() {
       <div className="section-container">
         <div className="section-header project-section-heading" data-index="01">
           <div><p className="subtitle section-kicker gsap-reveal"><SectionIcon section="projects" />What I've Built</p><h2 className="gsap-reveal">Selected <em>work.</em></h2></div>
-          <span className="section-side-note gsap-reveal">From a question<br />to something people use. <span>↙</span></span>
+          <span className="section-side-note gsap-reveal">From a question<br />to something people use. </span>
+          <InkTrace />
         </div>
         <div className="project-stack">
-          {projects.slice(0,3).map((project,index) => <button type="button" ref={(el) => {cardRefs.current[index] = el;}} className={`project-feature project-feature-${index}`} key={project.name} style={{"--card-index":index}} onClick={(event) => setOpen({index,el:event.currentTarget})} aria-haspopup="dialog" aria-label={`Explore ${project.name}`}>
-            <div className="project-info"><div className="project-kicker">{LABELS[index]}<span>↗</span></div><h3>{project.name}</h3><p className="project-description">{project.description}</p><div className="project-tags">{project.technologies.slice(0,4).map((tech) => <span className="tech-tag" key={tech}>{tech}</span>)}<span className="tech-tag">+{project.technologies.length-4}</span></div><div className="project-result"><div><strong>{METRICS[index].value}</strong><span>{METRICS[index].label}</span></div><span className="project-open">Explore project <span>↗</span></span></div></div>
+          {projects.slice(0,3).map((project,index) => <div className="project-chapter" key={project.name} data-scroll-scene="chapter"><button type="button" ref={(el) => {cardRefs.current[index] = el;}} className={`project-feature project-feature-${index}`} style={{"--card-index":index}} onClick={(event) => setOpen({index,el:event.currentTarget})} aria-haspopup="dialog" aria-label={`Explore ${project.name}`}>
+            <div className="project-info"><div className="project-kicker">{LABELS[index]}</div><h3>{project.name}</h3><p className="project-description">{project.description}</p><div className="project-tags">{project.technologies.slice(0,4).map((tech) => <span className="tech-tag" key={tech}>{tech}</span>)}<span className="tech-tag">+{project.technologies.length-4}</span></div><div className="project-result"><div><strong>{METRICS[index].value}</strong><span>{METRICS[index].label}</span></div><span className="project-open">Explore project </span></div></div>
             <ProjectSketch index={index} />
-          </button>)}
+          </button></div>)}
         </div>
         <div className="more-projects-heading"><span className="eyebrow">MORE THINGS I'VE BUILT</span><span>04 — 06</span></div>
-        <div className="projects-grid">{projects.slice(3).map((project,i) => { const index=i+3; return <button type="button" ref={(el) => {cardRefs.current[index]=el;}} className="project-card gsap-reveal" key={project.name} onClick={(event) => setOpen({index,el:event.currentTarget})} aria-haspopup="dialog"><div className="project-kicker">{LABELS[index]}<span>↗</span></div><h3>{project.name}</h3><p className="project-description">{project.description}</p><div className="project-tags">{project.technologies.slice(0,3).map((tech) => <span className="tech-tag" key={tech}>{tech}</span>)}</div><span className="project-card-outcome">{project.highlights[project.highlights.length-2]}</span><span className="project-open">Explore project <span>↗</span></span></button>; })}</div>
+        <div className="projects-grid">{projects.slice(3).map((project,i) => { const index=i+3; return <button type="button" ref={(el) => {cardRefs.current[index]=el;}} className="project-card gsap-reveal" key={project.name} onClick={(event) => setOpen({index,el:event.currentTarget})} aria-haspopup="dialog"><div className="project-kicker">{LABELS[index]}</div><h3>{project.name}</h3><p className="project-description">{project.description}</p><div className="project-tags">{project.technologies.slice(0,3).map((tech) => <span className="tech-tag" key={tech}>{tech}</span>)}</div><span className="project-card-outcome">{project.highlights[project.highlights.length-2]}</span><span className="project-open">Explore project </span></button>; })}</div>
       </div>
       {open && <ProjectDetail project={projects[open.index]} originEl={open.el} onClose={close} index={open.index} />}
     </section>

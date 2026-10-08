@@ -5,7 +5,7 @@ export default function Footer() {
       <div className="section-container colophon-content">
         <p>© {year} Rupesh Bodkhe. All rights reserved.</p>
         <p>Built with React, FastAPI and LangChain.</p>
-        <a href="#hero">Back to top <span aria-hidden="true">↑</span></a>
+        <a href="#hero">Back to top </a>
       </div>
     </footer>
   );

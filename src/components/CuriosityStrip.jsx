@@ -15,7 +15,7 @@ export default function CuriosityStrip() {
   return (
     <div className="curiosity-line" ref={ref} aria-hidden="true">
       <div className="curiosity-line-track">
-        {[0, 1].map((copy) => <div className="curiosity-line-group" key={copy}>{WORDS.map((word) => <span className="curiosity-word" key={word}>{word}<span className="curiosity-arrow">↗</span></span>)}</div>)}
+        {[0, 1].map((copy) => <div className="curiosity-line-group" key={copy}>{WORDS.map((word) => <span className="curiosity-word" key={word}>{word}<i className="curiosity-divider" /></span>)}</div>)}
       </div>
     </div>
   );

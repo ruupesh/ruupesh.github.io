@@ -1,18 +1,18 @@
 /* RUPESH — blue ink, red thread, and room for curiosity. */
 :root {
-  --paper: #f7f5f0;
-  --paper-white: #fffdf9;
-  --ink: #22242a;
-  --muted: #626671;
-  --line: #d9dbe1;
-  --blue: #2855bb;
-  --red: #bd493b;
-  --accent-soft: #e6ebf6;
-  --surface-alt: #eceff5;
-  --inverse: #182234;
-  --inverse-text: #f7f5f0;
-  --button-bg: #2855bb;
-  --button-ink: #fffdf9;
+  --paper: #0c1017;
+  --paper-white: #141b26;
+  --ink: #f0eee8;
+  --muted: #a3acbc;
+  --line: #2a3343;
+  --blue: #97b5ec;
+  --red: #d48779;
+  --accent-soft: #1b2a44;
+  --surface-alt: #0f1622;
+  --inverse: #080d15;
+  --inverse-text: #f0eee8;
+  --button-bg: #a9c3f3;
+  --button-ink: #101725;
   --font-display: 'Bricolage Grotesque', Arial, sans-serif;
   --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
@@ -21,27 +21,13 @@
   --gutter: clamp(22px, 4.5vw, 72px);
   --hero-scroll: 0;
   --page-progress: 0;
+  color-scheme: dark;
   color: var(--ink);
   background: var(--paper);
   font-family: var(--font-ui);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-}
-:root[data-theme="dark"] {
-  --paper: #141923;
-  --paper-white: #1b2230;
-  --ink: #eef0f5;
-  --muted: #a9b1c1;
-  --line: #343e51;
-  --blue: #91aee7;
-  --red: #e78a78;
-  --accent-soft: #253653;
-  --surface-alt: #1c2636;
-  --inverse: #0e1420;
-  --inverse-text: #eef0f5;
-  --button-bg: #91aee7;
-  --button-ink: #141923;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 96px; scrollbar-gutter: stable; }
@@ -118,7 +104,7 @@ section { scroll-margin-top: 24px; }
 .scroll-cue { display: flex; align-items: center; gap: 15px; font-size: 8px; letter-spacing: .8px; }
 .scroll-cue > span { font: 22px var(--font-ui); }
 .hero-disciplines { display: flex; gap: 20px; font-size: 8px; color: var(--muted); }
-.hero-disciplines > span + span::before { content: '✳'; margin-right: 20px; color: var(--blue); }
+.hero-disciplines > span + span::before { content: ''; margin-right: 20px; color: var(--blue); }
 .section { padding: 108px var(--gutter); }
 .section-container { max-width: var(--container); margin: 0 auto; }
 .section-header { position: relative; margin-bottom: 44px; }
@@ -187,7 +173,7 @@ section { scroll-margin-top: 24px; }
 .pd-tech { display: flex; flex-wrap: wrap; gap: 7px; margin: 14px 0 32px; }
 .pd-highlights { list-style: none; margin: 13px 0 30px; padding: 0; }
 .pd-highlights li { border-top: 1px solid var(--line); padding: 15px 0 15px 24px; position: relative; font-size: 13px; line-height: 1.7; }
-.pd-highlights li::before { content: '↗'; position: absolute; left: 0; }
+.pd-highlights li::before { content: ''; position: absolute; left: 0; }
 @keyframes dialog-in { from { opacity: 0; transform: translateY(14px) scale(.985); } to { opacity: 1; transform: none; } }
 @keyframes hero-in { from { opacity: 0; transform: translateY(23px); } to { opacity: 1; transform: none; } }
 @keyframes draw-orbit { from { opacity: 0; rotate: -25deg; } to { opacity: 1; rotate: 0deg; } }
@@ -198,10 +184,6 @@ section { scroll-margin-top: 24px; }
   @supports (animation-timeline: view()) {
     .about-statement mark { animation: highlight-in linear both; animation-timeline: view(); animation-range: entry 20% cover 40%; background-size: 100% 100%; background-repeat: no-repeat; }
     @keyframes highlight-in { from { background-size: 0% 100%; } to { background-size: 100% 100%; } }
-    .project-sketch .chart-bar { transform-origin: center 222px; animation: chart-grow linear both; animation-timeline: view(); animation-range: entry 5% cover 35%; }
-    @keyframes chart-grow { from { transform: scaleY(.12); } to { transform: scaleY(1); } }
-    .project-sketch .diagram-path { stroke-dasharray: 600; animation: diagram-draw linear both; animation-timeline: view(); animation-range: entry 0% cover 35%; }
-    @keyframes diagram-draw { from { stroke-dashoffset: 600; } to { stroke-dashoffset: 0; } }
   }
 }
 @media (min-width: 1600px) { .hero-grid { padding-top: 62px; padding-bottom: 72px; } }

@@ -1,4 +1,5 @@
 import SectionIcon from "./SectionIcon";
+import InkTrace from "./InkTrace";
 import { usePortfolio } from "../context/usePortfolio";
 import useScrollReveal from "../hooks/useScrollReveal";
 
@@ -13,6 +14,7 @@ export default function Education() {
         <div className="section-header" data-index="05">
           <p className="subtitle section-kicker gsap-reveal"><SectionIcon section="education" />Academic Background</p>
           <h2 className="gsap-reveal">Education</h2>
+          <InkTrace />
         </div>
         <div className="academic-records">
           {education.map((entry) => (
@@ -35,7 +37,7 @@ export default function Education() {
                             <span className="academic-grade-value">{achievement.replace(/^CGPA:\s*/i, "")}</span>
                           </>
                         ) : (
-                          <><span className="academic-spark" aria-hidden="true">✳</span><span>{achievement}</span></>
+                          <><span>{achievement}</span></>
                         )}
                       </li>
                     );

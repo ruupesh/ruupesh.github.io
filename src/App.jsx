@@ -14,12 +14,13 @@ import AssistantLauncher from "./components/AssistantLauncher";
 import ScrollMotion from "./components/ScrollMotion";
 import Impact from "./components/Impact";
 import AmbientBackground from "./components/AmbientBackground";
+import AnimeMotion from "./components/AnimeMotion";
 
 export default function App() {
   return (
     <PortfolioProvider>
       <a className="skip-link" href="#main">Skip to content</a>
-      <AmbientBackground /><ScrollMotion />
+      <AmbientBackground /><ScrollMotion /><AnimeMotion />
       <Navbar />
       <main id="main" tabIndex={-1}>
         <Hero /><Impact /><Projects /><About /><Experience /><Skills />

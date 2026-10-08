@@ -1,26 +1,19 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark" style="color-scheme: dark; background-color: #0c1017">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/r.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f7f5f0" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#0c1017" />
+    <meta name="color-scheme" content="dark" />
     <!-- Marks that scripting is live. Reveal animations start hidden only
          under html.js, so a blocked bundle can't leave the page blank. -->
     <script>
       (() => {
         const root = document.documentElement;
         root.classList.add('js');
-        let preference;
-        try { preference = localStorage.getItem('portfolio-theme'); } catch { /* Storage is optional. */ }
-        const theme = preference === 'light' || preference === 'dark'
-          ? preference
-          : window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        root.dataset.theme = theme;
-        root.style.colorScheme = theme;
-        root.style.backgroundColor = theme === 'dark' ? '#141923' : '#f7f5f0';
-        document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#141923' : '#f7f5f0';
+        root.dataset.theme = 'dark';
+        root.style.colorScheme = 'dark';
       })();
     </script>
     <title>Rupesh Bodkhe | Fullstack AI Engineer</title>

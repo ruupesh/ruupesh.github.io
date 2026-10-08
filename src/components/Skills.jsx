@@ -1,4 +1,5 @@
 import SectionIcon from "./SectionIcon";
+import InkTrace from "./InkTrace";
 import { usePortfolio } from "../context/usePortfolio";
 import useScrollReveal from "../hooks/useScrollReveal";
 
@@ -24,6 +25,7 @@ export default function Skills() {
         <div className="section-header" data-index="04">
           <p className="subtitle section-kicker gsap-reveal"><SectionIcon section="skills" />Tech Stack</p>
           <h2 className="gsap-reveal">Skills &<br /> Expertise</h2>
+          <InkTrace />
         </div>
         <div className="expertise-matrix">
           {Object.entries(skills).map(([category, items], index) => (

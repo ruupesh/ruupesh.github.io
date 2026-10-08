@@ -14,18 +14,18 @@ const getFallbackResponse = (message) => {
 
   // GenAI Experience (explicit question)
   if (lowerMessage.includes("genai") && lowerMessage.includes("experience")) {
-    return `🤖 GenAI Experience:
+    return ` GenAI Experience:
 Built 5+ GenAI, Agentic AI and multi-agent systems. Expertise in prompt engineering (accuracy improved from 50% to 99%). Worked with OpenAI, Claude, AWS Bedrock, LangChain, Google ADK, Copilot, Codex and more.`;
   }
 
   // Python Experience
   if (lowerMessage.includes("python") && lowerMessage.includes("experience")) {
-    return `🐍 Python Experience:
+    return ` Python Experience:
 ~4 years building backend APIs, ETL systems, and AI solutions using Django, FastAPI, Pandas, and cloud platforms.`;
   }
   // Contact
   if (lowerMessage.includes("contact") || lowerMessage.includes("email") || lowerMessage.includes("reach")) {
-    return `**Contact Information** 📧
+    return `**Contact Information**
 
 **Email:** [${portfolioData.personal.email}](mailto:${portfolioData.personal.email})
 **Phone:** ${portfolioData.personal.phone}
@@ -36,7 +36,7 @@ Built 5+ GenAI, Agentic AI and multi-agent systems. Expertise in prompt engineer
 
   // Awards
   if (lowerMessage.includes("award")) {
-    return `🏆 **Awards**
+    return ` **Awards**
 
 - Star Award (CLSA): Exceptional performance and innovative projects
 - Spot Award (Hashedin by Deloitte): Impactful GenAI project delivery
@@ -47,7 +47,7 @@ Built 5+ GenAI, Agentic AI and multi-agent systems. Expertise in prompt engineer
 
   // Certifications
   if (lowerMessage.includes("certif")) {
-    return `📜 **Certifications**
+    return ` **Certifications**
 
 - AWS Certified Developer - Associate
 - AWS Partner: Accreditation (Technical) & AWS Technical Essentials
@@ -59,7 +59,7 @@ Built 5+ GenAI, Agentic AI and multi-agent systems. Expertise in prompt engineer
 
   // Skills
   if (lowerMessage.includes("skill") || lowerMessage.includes("tech") || lowerMessage.includes("language")) {
-    return `💻 **Skills**
+    return ` **Skills**
 
 - **Programming Languages:** Python, SQL (Postgres, Oracle)
 - **GenAI:** LLMs (like OpenAI & Claude), AWS Bedrock, Prompt Engineering, Vector Databases, LangChain, RAG
@@ -75,7 +75,7 @@ Built 5+ GenAI, Agentic AI and multi-agent systems. Expertise in prompt engineer
 
   // Experience
   if (lowerMessage.includes("experience") || lowerMessage.includes("work") || lowerMessage.includes("job")) {
-    return `💼 **Experience**
+    return ` **Experience**
 
 **Electronic Arts | SDE 2 - AI Engineer**
 Pune, India | June 2026 – Present
@@ -91,7 +91,7 @@ Pune, India | Jan 2025 – May 2026
 
 **CLSA | Software Engineer (Fullstack)**
 Pune, India | July 2022 – Dec 2024
-- High-performance ETL system (8 hours → 5 minutes)
+- High-performance ETL system (8 hours / 5 minutes)
 - Two full-stack apps from scratch to production
 - Automated ETL pipelines for regulatory reporting
 
@@ -103,7 +103,7 @@ Pune, India | Jan 2022 - June 2022
 
   // Education
   if (lowerMessage.includes("education") || lowerMessage.includes("degree") || lowerMessage.includes("university")) {
-    return `🎓 **Education**
+    return ` **Education**
 
 **Bachelor of Engineering - Computer Science**
 Savitribai Phule Pune University
@@ -114,7 +114,7 @@ Aug 2018 - May 2022
   }
   // Projects
   if (lowerMessage.includes("project")) {
-    return `🚀 **Projects**
+    return ` **Projects**
 
 **Enterprise Chatbot & API Service**
 Technologies: Python, Django, AWS Bedrock (Claude), OpenAI GPT, LangChain, AWS App Runner, PostgreSQL, FAISS, NLP
@@ -144,7 +144,7 @@ Technologies: Python, FastAPI, LangChain Agent, Prompt Engineering, Plotly, Pand
 
   // Publications/Articles
   if (lowerMessage.includes("publication") || lowerMessage.includes("article") || lowerMessage.includes("blog") || lowerMessage.includes("writing")) {
-    return `📝 **Publications**
+    return ` **Publications**
 
 - **Building a Multi-Agent System with Google ADK: A Deep Dive into the MultiAgent Project**
 Platform: Medium | 2026
@@ -161,7 +161,7 @@ This article breaks down how to design and build a production-grade multi-agent 
 
   // About
   if (lowerMessage.includes("about")) {
-    return `👤 **About Rupesh**
+    return ` **About Rupesh**
 
 Rupesh is a Fullstack AI Engineer with ~4 years of experience building and shipping end-to-end backend and AgenticAI applications using diverse Python frameworks. Experienced in rapidly developing microservices, event-driven architectures, and multi-agent & GenAI systems on cloud-native infrastructure. Comfortable owning features from design to production, integrating LLMs, APIs, frontend components, and DevOps pipelines to deliver scalable products.
 `;
@@ -173,21 +173,21 @@ Rupesh is a Fullstack AI Engineer with ~4 years of experience building and shipp
   // meant any message containing "hi" ("Hashedin", "which", "architecture")
   // short-circuited to the greeting before reaching the specific branches.
   if (/(^|\W)(hi|hey|hello|yo)(\W|$)/i.test(lowerMessage)) {
-    return `👋 Hi! I'm Rupesh's AI assistant. Rupesh is an Fullstack AI Engineer with ~4 years of experience building backend and GenAI solutions. Feel free to ask about Rupesh's experience, skills, projects, or anything else from his portfolio!`;
+    return ` Hi! I'm Rupesh's AI assistant. Rupesh is an Fullstack AI Engineer with ~4 years of experience building backend and GenAI solutions. Feel free to ask about Rupesh's experience, skills, projects, or anything else from his portfolio!`;
   }
 
   // Default
-  return `That's a great question! 😊
+  return `That's a great question!
 
 Explore different sections of Rupesh's portfolio:
 
-**📌 Quick Links**
-- 👤 **[About](#about)** - Rupesh's background
-- 💻 **[Skills](#skills)** - Technical expertise
-- 💼 **[Experience](#experience)** - Work history
-- 🚀 **[Projects](#projects)** - What Rupesh has built
-- 📝 **[Publications](#publications)** - Rupesh's articles
-- 📧 **[Contact](#contact)** - Get in touch
+** Quick Links**
+-  **[About](#about)** - Rupesh's background
+-  **[Skills](#skills)** - Technical expertise
+-  **[Experience](#experience)** - Work history
+-  **[Projects](#projects)** - What Rupesh has built
+-  **[Publications](#publications)** - Rupesh's articles
+-  **[Contact](#contact)** - Get in touch
 
 Or ask me something specific about Rupesh's experience!`;
 };
@@ -235,7 +235,7 @@ const Chatbot = ({ isOpen, onClose }) => {
   const requestRef = useRef(null);
   const nextMessageId = useRef(2);
   const [messages, setMessages] = useState([
-    { id: 0, role: "bot", content: "👋 Hi! I'm Rupesh's AI assistant. How can I help you learn more about Rupesh's work?" },
+    { id: 0, role: "bot", content: " Hi! I'm Rupesh's AI assistant. How can I help you learn more about Rupesh's work?" },
     { id: 1, role: "bot", content: "Feel free to ask about Rupesh's experience, projects, or technical skills!" },
   ]);
   const [input, setInput] = useState("");
@@ -332,7 +332,7 @@ const Chatbot = ({ isOpen, onClose }) => {
     >
       <header className="chatbot-header">
         <div className="chatbot-header-info">
-          <span className="chatbot-avatar" aria-hidden="true">RB<span>✳</span></span>
+          <span className="chatbot-avatar" aria-hidden="true">RB</span>
           <div>
             <p className="chatbot-eyebrow">A little more about me</p>
             <h2 id="assistant-title">Rupesh’s assistant</h2>
@@ -361,7 +361,7 @@ const Chatbot = ({ isOpen, onClose }) => {
                 className="chatbot-view-section"
                 onClick={() => { onClose(); navigateTo(message.route); }}
               >
-                View {message.route.section} <span aria-hidden="true">↗</span>
+                View {message.route.section}
               </button>
             )}
           </div>
@@ -401,7 +401,7 @@ const Chatbot = ({ isOpen, onClose }) => {
           <Send size="18px" />
         </button>
       </form>
-      <p className="chatbot-footnote">AI assistant · For a human conversation, <a href={`mailto:${portfolioData.personal.email}`}>email me ↗</a></p>
+      <p className="chatbot-footnote">AI assistant · For a human conversation, <a href={`mailto:${portfolioData.personal.email}`}>email me</a></p>
     </section>
   );
 };

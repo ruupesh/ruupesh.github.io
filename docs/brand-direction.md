@@ -8,7 +8,7 @@ The three intended takeaways are: **builds production AI; owns delivery; learns 
 
 ## Research and its limits
 
-Reviewed 7 October 2026. Job descriptions are examples of role requirements, not endorsements, universal hiring criteria, or guarantees of interviews. The UX portfolio study concerns UX hiring; applying its presentation principles to this engineering portfolio is a design inference.
+Reviewed 7 October 2026; motion and dark-only direction updated 8 October 2026. Job descriptions are examples of role requirements, not endorsements, universal hiring criteria, or guarantees of interviews. The UX portfolio study concerns UX hiring; applying its presentation principles to this engineering portfolio is a design inference.
 
 | Primary source | What the source supports | Portfolio decision |
 | --- | --- | --- |
@@ -32,25 +32,23 @@ Keep the introduction understandable to technical and nontechnical visitors alik
 
 Navigation exposes every main section and uses “See the impact” as its leading link to `/#impact`. The active link and URL track scrolling at the fixed header’s reading line, including after layout changes. The curiosity strip uses distinct phrases and moves on mobile; motion-off layouts show all phrases rather than clipping them.
 
-## Color and theme system
+## Color, texture and motion direction
 
-Use semantic CSS variables. Blue is the principal interactive color; red marks emphasis and playful annotations. Warm paper and blue-black backgrounds provide contrast without neon or glow effects. The dark palette softens accents for legibility rather than increasing saturation.
+The user requested dark-only appearance on 8 October 2026. Apply charcoal `#0c1017` before first paint, ignoring old light-theme preferences. The principal accents are muted cobalt `#97b5ec` and red `#d48779`. Use bright warm text `#f0eee8`, secondary text `#a3acbc`, and borders `#2a3343`. No theme toggle, neon, decorative Unicode arrows or asterisks.
 
-| Token | Light | Dark |
-| --- | --- | --- |
-| `--paper` | `#f7f5f0` | `#141923` |
-| `--paper-white` | `#fffdf9` | `#1b2230` |
-| `--ink` | `#22242a` | `#eef0f5` |
-| `--muted` | `#626671` | `#a9b1c1` |
-| `--line` | `#d9dbe1` | `#343e51` |
-| `--blue` | `#2855bb` | `#91aee7` |
-| `--red` | `#bd493b` | `#e78a78` |
-| `--accent-soft` | `#e6ebf6` | `#253653` |
-| `--surface-alt` | `#eceff5` | `#1c2636` |
-| `--inverse` | `#182234` | `#0e1420` |
-| `--inverse-text` | `#f7f5f0` | `#eef0f5` |
+Texture is a small local grain tile, etched calibration rings around the portrait, a subtle crosshatch in the impact section, and grid / layered lacquer surfaces in project artwork. The warm Polaroid is deliberately tactile against the cool dark palette.
 
-On a first visit follow the operating system. A visitor's explicit choice persists in `localStorage` under `portfolio-theme`; it takes precedence over subsequent operating-system changes. Theme controls must have meaningful accessible labels and remain available on mobile. Apply the theme before first paint to avoid a bright flash.
+The [Apple iPhone Air presentation](https://www.apple.com/iphone-air/) is a reference for turning an object and revealing its construction during scrolling. This portfolio applies that visual principle to the actual portrait and existing project diagrams, rather than copying Apple's imagery. The layers are decorative interpretations, not verified architectural schematics. [WebKit's scroll animation guide](https://webkit.org/blog/17101/a-guide-to-scroll-driven-animations-with-just-css/) supports tying animation to scroll position and providing reduced-motion alternatives. GSAP / ScrollTrigger provide the same scroll choreography on mobile and desktop without requiring CSS scroll timeline support. The libraries load independently of the visible content.
+
+Three project studies rotate and separate layers as the visitor scrolls. Desktop uses short sticky chapters; mobile keeps a direct vertical reading flow with the same scroll-controlled artwork. The portrait turns during scrolling and gently responds to a desktop pointer. Avoid empty showpiece sections, terminals, invented personal anecdotes or animations unrelated to the work.
+
+Use only nearby scene geometry, batch reads before writes, never continuously rerender React during motion, and retain native scrolling and ordinary navigation. The user requested removal of the visitor pause control. OS reduced-motion preferences provide static normal-flow cards, and hidden tabs suspend GSAP activity. Old manually saved pause preferences are ignored. No WebGL, frame sequences or video backgrounds.
+
+GSAP motion is specific to each section: metric panels assemble around unchanged figures; biography highlights draw under text; a career spine progresses alongside real roles; skills unfold as instrument panels; education uses an archival card; credentials fan into place with a rotating medal; writing settles as journal pages; contact icons turn into their row. The fixed contour field changes with total page scroll instead of running an endless background scene.
+
+Anime.js supplies the smaller details inside those surfaces. Pencil strokes draw beneath section titles and the existing name caption; project connections trace through the original SVG diagrams; the analytics chart assembles; skills and technology labels arrive in a short sequence; native career disclosures and project dialogs settle their details. Social icons use spring feedback on focus, mouse hover and touch. Three contour curves change shape briefly when a new section passes through the reading area. No new biography or project claims are introduced.
+
+The Anime.js implementation follows the official [SVG drawing documentation](https://animejs.com/documentation/svg/createdrawable/), [scope cleanup API](https://animejs.com/documentation/scope/scope-methods/revert/) and [spring easing API](https://animejs.com/documentation/easings/spring/). Keep GSAP responsible for parent scroll planes and Anime.js responsible for child elements and independent interaction variables. Scopes must restore SVG attributes as well as inline styles. Reuse interaction controllers, avoid indefinite loops, skip the extra library when motion is initially reduced, and keep the static fallback complete.
 
 ## Evidence hierarchy and factual boundaries
 
@@ -77,11 +75,11 @@ Write as a person: concise, clear and curious. Prefer concrete verbs and actual 
 - Keep essential text and links in normal HTML. The hero should communicate through clear typography and personal content.
 - Use native scrolling. Scrolling can transform the artwork and reveal relationships, but must not trap navigation or make readers wait for text.
 - Keep background movement quiet and behind content. Avoid simultaneous competing animations, flashes and neon bloom.
-- Offer a visible animation pause control. Honor `prefers-reduced-motion`, including changes during a visit.
-- Prefer transform and opacity for supporting animation; avoid per-frame layout reads, continuous React state updates when idle or repeated allocation.
+- No visitor motion toggle, as explicitly requested by the user. Honor `prefers-reduced-motion`, including changes during a visit, and stop hidden-tab activity.
+- Prefer transform and opacity for supporting animation; batch nearby geometry reads before transform writes; avoid continuous React state updates when idle or repeated allocation.
 - Keep mobile layouts readable at 320px, support touch without hover dependency, and preserve keyboard navigation, visible focus and modal focus restoration.
 - Load optional assistant and scroll-animation code independently of essential content where practical. Measure the production build; do not assume a library is lightweight.
 
 ## Review checklist
 
-Verify both themes at 1440, 768, 390 and 320px; first-visit OS theme and persisted override; scroll navigation; all six complete project dialogs; résumé and external links; pause and reduced motion; no runtime errors, horizontal overflow or residual lime/neon treatment. Check actual source data remains unchanged. Performance numbers should state their measurement context and must not be presented as universal device guarantees.
+Verify dark-only appearance at 1440, 1024, 390 and 320px; confirm stored light preferences and light OS settings still open dark; check desktop and mobile scroll rotation; scroll navigation; all six complete project dialogs; résumé and external links; absence of the manual pause control, ignored legacy pause preferences and reduced motion; no runtime errors, horizontal overflow or residual lime/neon treatment. Check actual source data remains unchanged. Performance numbers should state their measurement context and must not be presented as universal device guarantees.

@@ -68,7 +68,7 @@ export default function AssistantLauncher() {
         <section id="portfolio-assistant" className="chatbot-window chatbot-loading" role="dialog" aria-label="Rupesh’s assistant">
           <button className="chatbot-close" type="button" onClick={close} aria-label="Close assistant"><Close size="20px" /></button>
           <p role="status">{loadError ? "Couldn’t load the assistant. Please try again." : "Opening a conversation…"}</p>
-          {loadError && <button type="button" className="quick-action-btn" onClick={open}>Try again ↗</button>}
+          {loadError && <button type="button" className="quick-action-btn" onClick={open}>Try again</button>}
         </section>
       )}
     </div>
