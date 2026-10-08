@@ -1,4 +1,5 @@
 import SectionIcon from "./SectionIcon";
+import InkTrace from "./InkTrace";
 import { useEffect, useRef, useState } from "react";
 import { usePortfolio } from "../context/usePortfolio";
 import useScrollReveal from "../hooks/useScrollReveal";
@@ -42,6 +43,7 @@ export default function Experience() {
         <div className="section-header" data-index="03">
           <p className="subtitle section-kicker gsap-reveal"><SectionIcon section="experience" />Career Journey</p>
           <h2 className="gsap-reveal">Experience<span className="career-heading-dot" aria-hidden="true">.</span></h2>
+          <InkTrace />
         </div>
 
         <div className="career-ledger">
@@ -72,7 +74,7 @@ export default function Experience() {
                     <span>{entry.location}</span>
                     {companyUrl && (
                       <a href={companyUrl} target="_blank" rel="noopener noreferrer">
-                        {entry.company} <span aria-hidden="true">↗</span>
+                        {entry.company}
                       </a>
                     )}
                   </div>

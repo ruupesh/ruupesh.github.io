@@ -1,4 +1,5 @@
 import SectionIcon from "./SectionIcon";
+import InkTrace from "./InkTrace";
 import { usePortfolio } from "../context/usePortfolio";
 import useScrollReveal from "../hooks/useScrollReveal";
 import linkedInIcon from "../assets/linkedin.svg";
@@ -25,10 +26,11 @@ export default function Contact() {
       <div className="section-container">
         <div className="section-header" data-index="08">
           <p className="subtitle section-kicker gsap-reveal"><SectionIcon section="contact" />Let's Connect</p>
+          <InkTrace />
         </div>
         <div className="connect-details gsap-reveal">
           <div className="connect-intro">
-            <h2 className="connect-heading">Get in<br /><span>Touch</span><span className="connect-heading-arrow" aria-hidden="true">↗</span></h2>
+            <h2 className="connect-heading">Get in<br /><span>Touch</span></h2>
             <p className="connect-introduction">
               I'm always open to discussing AI engineering, agentic systems, or
               exciting opportunities. Feel free to reach out!
@@ -46,12 +48,12 @@ export default function Contact() {
             </nav>
             {personal?.email && (
               <a href={`mailto:${personal.email}`} className="connect-email">
-                <span>{personal.email}</span><span aria-hidden="true">↗</span>
+                <span>{personal.email}</span>
               </a>
             )}
             {(
               <a href={personal.resumeUrl || "/Rupesh_Bodkhe-SDE2.pdf"} target="_blank" rel="noopener noreferrer" className="connect-resume">
-                Download Resume <span aria-hidden="true">↗</span>
+                Download Resume
               </a>
             )}
           </div>

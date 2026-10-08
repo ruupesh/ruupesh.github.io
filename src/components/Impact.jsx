@@ -1,4 +1,5 @@
 import SectionIcon from "./SectionIcon";
+import InkTrace from "./InkTrace";
 import useScrollReveal from "../hooks/useScrollReveal";
 import { navigateTo } from "../utils/navigate";
 
@@ -12,8 +13,8 @@ export default function Impact() {
   return (
     <section className="impact-section" id="impact" ref={ref} aria-labelledby="impact-heading">
       <div className="section-container">
-        <div className="impact-intro gsap-reveal"><div><p className="subtitle section-kicker impact-kicker"><SectionIcon section="impact" />Impact</p><h2 id="impact-heading">Curiosity is the start.<br /><em>Here’s where it led.</em></h2></div><p>A few outcomes from the work.<br />Every number has a story.</p></div>
-        <div className="impact-grid">{OUTCOMES.map((outcome) => <a className="impact-item gsap-reveal" href={`#role-${outcome.roleIndex}`} key={outcome.label} onClick={(event) => { event.preventDefault(); navigateTo({ section: "experience", roleIndex: outcome.roleIndex }); }}><div className="impact-number">{outcome.before && <><span className="impact-before">{outcome.before}</span><span className="impact-arrow" aria-hidden="true">→</span></>}<strong>{outcome.after}</strong></div><h3>{outcome.label}</h3><p>{outcome.context}</p><span className="impact-source">The story behind it <span aria-hidden="true">↗</span></span></a>)}</div>
+        <div className="impact-intro gsap-reveal"><div className="impact-heading-group"><p className="subtitle section-kicker impact-kicker"><SectionIcon section="impact" />Impact</p><h2 id="impact-heading">Curiosity is the start.<br /><em>Here’s where it led.</em></h2><InkTrace /></div><p>A few outcomes from the work.<br />Every number has a story.</p></div>
+        <div className="impact-grid">{OUTCOMES.map((outcome) => <a className="impact-item gsap-reveal" href={`#role-${outcome.roleIndex}`} key={outcome.label} onClick={(event) => { event.preventDefault(); navigateTo({ section: "experience", roleIndex: outcome.roleIndex }); }}><div className="impact-number">{outcome.before && <><span className="impact-before">{outcome.before}</span></>}<strong>{outcome.after}</strong></div><h3>{outcome.label}</h3><p>{outcome.context}</p><span className="impact-source">The story behind it </span></a>)}</div>
       </div>
     </section>
   );

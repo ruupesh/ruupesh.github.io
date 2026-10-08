@@ -1,4 +1,5 @@
 import SectionIcon from "./SectionIcon";
+import InkTrace from "./InkTrace";
 import { usePortfolio } from "../context/usePortfolio";
 import useScrollReveal from "../hooks/useScrollReveal";
 
@@ -13,6 +14,7 @@ export default function Publications() {
         <div className="section-header" data-index="07">
           <p className="subtitle section-kicker gsap-reveal"><SectionIcon section="publications" />Thinking out loud</p>
           <h2 className="gsap-reveal">Notes from<br /><em>the rabbit hole.</em></h2>
+          <InkTrace />
         </div>
         <div className="reading-list">
           {publications.map((publication, index) => (
@@ -25,12 +27,12 @@ export default function Publications() {
               <div className="reading-content">
                 <h3>
                   <a href={publication.url} target="_blank" rel="noopener noreferrer">
-                    {publication.title}<span className="reading-arrow" aria-hidden="true">↗</span>
+                    {publication.title}
                   </a>
                 </h3>
                 <p>{publication.description}</p>
                 <a className="reading-link" href={publication.url} target="_blank" rel="noopener noreferrer">
-                  Read article <span aria-hidden="true">↗</span>
+                  Read article
                   <span className="recognition-sr-only">: {publication.title}</span>
                 </a>
               </div>

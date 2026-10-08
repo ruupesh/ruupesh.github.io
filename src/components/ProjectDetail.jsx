@@ -1,8 +1,10 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import useAnimeMotion from "../hooks/useAnimeMotion";
 
 export default function ProjectDetail({ project, originEl, onClose, index }) {
   const dialogRef = useRef(null);
+  useAnimeMotion("mountProjectMotion", dialogRef);
   useEffect(() => {
     const dialog = dialogRef.current;
     const previousOverflow = document.body.style.overflow;
@@ -31,7 +33,7 @@ export default function ProjectDetail({ project, originEl, onClose, index }) {
       <header className="pd-head"><h2 id="project-dialog-title">{project.name}</h2><p>{project.description}</p></header>
       <h3 className="eyebrow">THE STACK</h3><div className="pd-tech">{project.technologies.map((tech) => <span className="tech-tag" key={tech}>{tech}</span>)}</div>
       <h3 className="eyebrow">THE DETAILS</h3><ul className="pd-highlights">{project.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}</ul>
-      <a className="btn btn-primary pd-contact" href="#contact" onClick={onClose}>Let’s talk <span>↗</span></a>
+      <a className="btn btn-primary pd-contact" href="#contact" onClick={onClose}>Let’s talk </a>
     </dialog>, document.body
   );
 }

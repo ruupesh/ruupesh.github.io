@@ -1,12 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "../styles/ambient.css";
-
-const MOTION_KEY = "portfolio-motion";
-
-function savedPause() {
-  try { return window.localStorage.getItem(MOTION_KEY) === "paused"; }
-  catch { return false; }
-}
 
 const FLOW_PATHS = [
   "M-80 -60C350 50 260 180 102 265S-138 456 54 562 269 730 148 882 64 1041 246 1160",
@@ -29,77 +22,39 @@ function FlowLines({ side }) {
 }
 
 export default function AmbientBackground() {
-  const [userPaused, setUserPaused] = useState(savedPause);
-  const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || false);
-  const [hidden, setHidden] = useState(() => document.hidden);
-  const paused = userPaused || reducedMotion || hidden;
-
   useEffect(() => {
-    document.documentElement.dataset.motion = paused ? "paused" : "running";
-    window.dispatchEvent(new CustomEvent("portfolio:motion", { detail: { paused, source: "ambient" } }));
-  }, [paused]);
-
-  useEffect(() => {
-    const preference = window.matchMedia?.("(prefers-reduced-motion: reduce)");
-    const onPreferenceChange = (event) => setReducedMotion(event.matches);
-    const onVisibilityChange = () => setHidden(document.hidden);
-    const onStorageChange = (event) => {
-      if (event.key === MOTION_KEY || event.key === null) setUserPaused(event.newValue === "paused");
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => {
+      // Old manual-pause preferences no longer govern the experience.
+      const paused = preference.matches || document.hidden;
+      document.documentElement.dataset.motion = paused ? "paused" : "running";
+      window.dispatchEvent(new CustomEvent("portfolio:motion", { detail: { paused, source: "system" } }));
     };
-    const onExternalMotion = (event) => {
-      if (event.detail?.source === "ambient" || typeof event.detail?.paused !== "boolean") return;
-      const next = event.detail.paused;
-      setUserPaused(next);
-      try { window.localStorage.setItem(MOTION_KEY, next ? "paused" : "running"); }
-      catch { /* A scene-local control can also work without storage. */ }
-      // A scene-local resume must not override the visitor's OS preference.
-      const effectivePause = next || preference?.matches || document.hidden;
-      document.documentElement.dataset.motion = effectivePause ? "paused" : "running";
-      if (effectivePause !== next) {
-        window.dispatchEvent(new CustomEvent("portfolio:motion", { detail: { paused: effectivePause, source: "ambient" } }));
-      }
-    };
-    preference?.addEventListener("change", onPreferenceChange);
-    document.addEventListener("visibilitychange", onVisibilityChange);
-    window.addEventListener("storage", onStorageChange);
-    window.addEventListener("portfolio:motion", onExternalMotion);
+    preference.addEventListener("change", sync);
+    document.addEventListener("visibilitychange", sync);
+    sync();
     return () => {
-      preference?.removeEventListener("change", onPreferenceChange);
-      document.removeEventListener("visibilitychange", onVisibilityChange);
-      window.removeEventListener("storage", onStorageChange);
-      window.removeEventListener("portfolio:motion", onExternalMotion);
+      preference.removeEventListener("change", sync);
+      document.removeEventListener("visibilitychange", sync);
     };
   }, []);
 
-  const toggleMotion = () => {
-    if (reducedMotion) return;
-    const next = !userPaused;
-    try { window.localStorage.setItem(MOTION_KEY, next ? "paused" : "running"); }
-    catch { /* The control still works when storage is unavailable. */ }
-    setUserPaused(next);
-  };
-
-  const label = reducedMotion ? "Motion paused" : userPaused ? "Resume motion" : "Pause motion";
-
   return (
-    <>
-      <div className={`ambient-background${paused ? " is-paused" : ""}`} aria-hidden="true">
-        <FlowLines side="left" />
-        <FlowLines side="right" />
-      </div>
-      <button
-        className="motion-control"
-        type="button"
-        onClick={toggleMotion}
-        disabled={reducedMotion}
-        aria-label={reducedMotion ? "Motion paused to respect your reduced motion setting" : label}
-        title={reducedMotion ? "Motion is off to respect your system preference" : label}
-      >
-        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-          {userPaused && !reducedMotion ? <path d="m5 3 7 5-7 5Z" /> : <path d="M5.5 3.5v9m5-9v9" />}
-        </svg>
-        <span>{label}</span>
-      </button>
-    </>
+    <div className="ambient-background" aria-hidden="true">
+      <div className="ambient-halo" />
+      <svg className="ambient-field" viewBox="0 0 1600 1000" fill="none">
+        <g className="ambient-ribbon ambient-ribbon-blue">
+          {Array.from({ length: 14 }, (_, i) => <ellipse key={i} cx={1010 + i * 7} cy={480 - i * 5} rx={380 - i * 12} ry={250 - i * 10} />)}
+        </g>
+        <g className="ambient-ribbon ambient-ribbon-red">
+          {Array.from({ length: 10 }, (_, i) => <path key={i} d={`M-100 ${550+i*18}C220 ${180+i*25} 520 ${1050-i*22} 930 ${700-i*15}S1390 ${250+i*12} 1750 ${510+i*16}`} />)}
+        </g>
+        <g className="ambient-weave">
+          {Array.from({ length: 3 }, (_, i) => <path key={i} d={`M-80 ${480 + i * 24}C270 ${150 + i * 30} 520 ${820 - i * 18} 800 ${520 + i * 12}C1080 ${220 + i * 20} 1330 ${760 - i * 24} 1680 ${390 + i * 18}`} />)}
+        </g>
+      </svg>
+      <FlowLines side="left" />
+      <FlowLines side="right" />
+    </div>
   );
 }

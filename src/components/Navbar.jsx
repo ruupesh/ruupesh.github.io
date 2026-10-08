@@ -1,6 +1,5 @@
 import SectionIcon from "./SectionIcon";
 import { useState, useEffect, useRef } from "react";
-import ThemeToggle from "./ThemeToggle";
 import { usePortfolio } from "../context/usePortfolio";
 import useSectionNavigation from "../hooks/useSectionNavigation";
 
@@ -54,12 +53,12 @@ export default function Navbar() {
   return (
     <header className="navbar" ref={navRef}>
       <nav className="nav-container" aria-label="Main navigation">
-        <a href="/#impact" className="nav-brand" onClick={navigate}>See the impact <span aria-hidden="true">↘</span></a>
+        <a href="/#impact" className="nav-brand" onClick={navigate}>See the impact </a>
         <div className={`nav-links${open ? " is-open" : ""}`} id="navigation-links">
           {LINKS.map(({ id, label }) => <a key={id} href={`/#${id}`} onClick={navigate} aria-current={active === id ? "location" : undefined}><SectionIcon section={id} />{label}<span className="nav-active-dot" aria-hidden="true" /></a>)}
-          <a href={personal.resumeUrl || "/Rupesh_Bodkhe-SDE2.pdf"} target="_blank" rel="noopener noreferrer" className="nav-resume">Résumé ↗</a>
+          <a href={personal.resumeUrl || "/Rupesh_Bodkhe-SDE2.pdf"} target="_blank" rel="noopener noreferrer" className="nav-resume">Résumé</a>
         </div>
-        <div className="nav-controls"><ThemeToggle /><button ref={toggleRef} className="mobile-menu-btn" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="navigation-links" aria-label={open ? "Close navigation" : "Open navigation"}>{open ? "Close −" : "Menu +"}</button></div>
+        <div className="nav-controls"><button ref={toggleRef} className="mobile-menu-btn" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="navigation-links" aria-label={open ? "Close navigation" : "Open navigation"}>{open ? "Close" : "Menu"}</button></div>
       </nav>
     </header>
   );

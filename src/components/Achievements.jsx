@@ -1,4 +1,5 @@
 import SectionIcon from "./SectionIcon";
+import InkTrace from "./InkTrace";
 import { usePortfolio } from "../context/usePortfolio";
 import useScrollReveal from "../hooks/useScrollReveal";
 
@@ -12,6 +13,7 @@ export default function Achievements() {
         <div className="section-header" data-index="06">
           <p className="subtitle section-kicker gsap-reveal"><SectionIcon section="achievements" />Recognition & Credentials</p>
           <h2 className="gsap-reveal">Achievements</h2>
+          <InkTrace />
         </div>
         <div className="recognition-layout">
           {certifications?.length > 0 && (
@@ -28,10 +30,10 @@ export default function Achievements() {
                       <h4>{certificate.name}</h4>
                       {certificate.url ? (
                         <a href={certificate.url} target="_blank" rel="noopener noreferrer">
-                          Verify Credential <span aria-hidden="true">↗</span>
+                          Verify Credential
                           <span className="recognition-sr-only">: {certificate.name}</span>
                         </a>
-                      ) : <span className="recognition-complete">✓ Completed</span>}
+                      ) : <span className="recognition-complete">Completed</span>}
                     </div>
                   </li>
                 ))}

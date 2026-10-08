@@ -1,0 +1,77 @@
+/* Physical surfaces and ink details. GSAP scrubs their progress on every device. */
+[data-motion-engine='gsap'] .gsap-reveal { transition: none; }
+[data-motion-engine='gsap'] :is(.about-statement mark, .diagram-path, .chart-bar) { animation: none !important; }
+.impact-item { --metric-line: 1; perspective: 900px; }
+.impact-item::before { content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 2px; background: linear-gradient(90deg, #a9c3ef, #5677a9); transform: scaleX(var(--metric-line)); transform-origin: left; }
+.impact-number { padding-block: 5px; }
+.about-statement mark { background-repeat: no-repeat; }
+.about-personal-line em { --ink-line: 1; background: linear-gradient(90deg, #bb887960, #bb887960) left bottom / calc(var(--ink-line) * 100%) 2px no-repeat; padding-bottom: 5px; }
+.stats-showcase { perspective: 1100px; }
+.stat-card { position: relative; padding-top: 20px; border-color: #6c82a3; }
+.stat-number { text-shadow: 0 3px 0 #1e2c46; }
+
+.career-ledger { --spine-progress: 1; position: relative; padding-left: 28px; }
+.career-ledger::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: #34455e; }
+.career-ledger::after { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(#a5bde5, #5f7fbd 65%, #b58073); transform: scaleY(var(--spine-progress)); transform-origin: top; }
+.career-entry { position: relative; }
+.career-entry::before { content: ''; position: absolute; left: -31px; top: 44px; width: 7px; height: 7px; background: #91a9d0; border: 1px solid #d0def3; border-radius: 50%; box-shadow: 0 0 0 5px #0c1017; z-index: 1; }
+.career-summary { perspective: 900px; }
+.career-contributions li::before { content: ''; top: .85em; width: 6px; height: 1px; background: var(--red); }
+.career-identity, .career-period { transition: none; }
+
+.expertise-matrix { gap: 16px; border: 0; perspective: 1100px; }
+.expertise-matrix .expertise-cell { --panel-line: 1; position: relative; border: 1px solid #ffffff14; border-radius: 10px; padding: 25px; background: linear-gradient(135deg, #1a283a, #111b29 75%); box-shadow: 0 3px 0 #090f18; }
+.expertise-cell::after { content: ''; position: absolute; left: 25px; right: 25px; bottom: 14px; height: 1px; background: linear-gradient(90deg, #7d9ac43d, #7d9ac400); transform: scaleX(var(--panel-line)); transform-origin: left; }
+.expertise-index { color: #b2c7e8; }
+.expertise-items li { font-size: 12px; }
+.expertise-items li:not(:last-child)::after { color: #6f85a3; }
+
+.academic-record { --archive-depth: 1; position: relative; padding: 34px; border: 1px solid #4c6080; border-radius: 12px; background: linear-gradient(120deg, #1b293c, #131d2c); box-shadow: 0 3px 0 #0a101c; gap: 42px; }
+.academic-record::before, .academic-record::after { content: ''; position: absolute; left: 12px; right: 12px; height: 9px; border: 1px solid #34455f; border-top: 0; border-radius: 0 0 9px 9px; bottom: -9px; background: #132036; transform: translateY(calc(var(--archive-depth) * 3px)); z-index: -1; }
+.academic-record::before { left: 24px; right: 24px; bottom: -16px; background: #0d1727; }
+.academic-date { padding: 7px 10px; border: 1px solid #53698c; border-radius: 3px; display: inline-block; color: #bdcce4; }
+.academic-main h3 { margin-top: 24px; }
+.academic-grade-value { color: #c9d8f1; text-shadow: 0 3px 0 #21314b; }
+.academic-achievements { border-left-color: #465c7d; }
+
+.recognition-certificate-list { border-top: 0; display: grid; gap: 10px; perspective: 1000px; }
+.recognition-certificate { padding: 23px; border: 1px solid #ffffff18; border-radius: 8px; background: linear-gradient(125deg, #182338, #121b2b); box-shadow: 0 2px 0 #080e17; }
+.recognition-number { color: #bdcee9; }
+.recognition-awards { background: linear-gradient(140deg, #22314a, #151d2b); transform: none; box-shadow: 0 5px 0 #121b2b; }
+.recognition-awards-mark { perspective: 700px; }
+.reading-entry { --page-rule: 1; position: relative; padding-left: 24px; perspective: 1000px; }
+.reading-entry::before { content: ''; position: absolute; top: 32px; bottom: 32px; width: 1px; left: 0; background: linear-gradient(var(--red), #728bac); transform: scaleY(var(--page-rule)); transform-origin: top; }
+.reading-content h3 { color: #e5e9f2; }
+.reading-meta { color: #a2b5d1; }
+.reading-link { border-color: #607698; color: #baceee; }
+.connect-section { --invitation-progress: .5; }
+.connect-section::before { transform: translate(calc(var(--invitation-progress) * -65px), calc(var(--invitation-progress) * 40px)) scale(calc(.85 + var(--invitation-progress) * .25)); }
+.connect-socials { perspective: 700px; }
+.connect-email { border-color: #566c90; }
+.colophon-content { perspective: 800px; }
+
+@media (max-width: 760px) {
+  .career-ledger { padding-left: 18px; }
+  .career-entry::before { left: -21px; top: 28px; width: 6px; height: 6px; }
+  .expertise-matrix { gap: 12px; }
+  .expertise-matrix .expertise-cell { padding: 23px; }
+  .expertise-cell::after { left: 23px; right: 23px; }
+  .academic-record { padding: 26px; gap: 28px; }
+  .recognition-certificate { padding: 20px; }
+  .reading-entry { padding-left: 18px; }
+  .reading-entry::before { top: 26px; bottom: 26px; }
+}
+@media (max-width: 480px) {
+  .academic-record { padding: 23px; }
+  .academic-achievements { gap: 18px; }
+  .academic-grade-value { font-size: 35px; }
+  .recognition-certificate { padding: 19px 16px; gap: 15px; }
+  .expertise-category { flex-wrap: wrap; }
+  .expertise-count { font-size: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .impact-item, .career-ledger, .expertise-cell, .reading-entry { --metric-line: 1; --spine-progress: 1; --panel-line: 1; --page-rule: 1; }
+  .about-personal-line em { --ink-line: 1; }
+  .academic-record { --archive-depth: 1; }
+  .connect-section::before { transform: none; }
+}
