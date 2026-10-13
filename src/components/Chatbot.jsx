@@ -28,7 +28,7 @@ Built 5+ GenAI, Agentic AI and multi-agent systems. Expertise in prompt engineer
     return `**Contact Information**
 
 **Email:** [${portfolioData.personal.email}](mailto:${portfolioData.personal.email})
-**Phone:** ${portfolioData.personal.phone}
+${portfolioData.personal.contactAvailability}
 **LinkedIn:** [${portfolioData.personal.linkedin.replace("https://www.", "")}](${portfolioData.personal.linkedin})
 **GitHub:** [${portfolioData.personal.github.replace("https://", "")}](${portfolioData.personal.github})
 `;

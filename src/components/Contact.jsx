@@ -7,7 +7,6 @@ import githubIcon from "../assets/github.svg";
 import leetcodeIcon from "../assets/leetcode.svg";
 import mediumIcon from "../assets/medium.svg";
 import gmailIcon from "../assets/Gmail.svg";
-import whatsappIcon from "../assets/WhatsApp.svg";
 
 export default function Contact() {
   const { personal } = usePortfolio();
@@ -18,7 +17,6 @@ export default function Contact() {
     { url: personal?.leetcode, label: "LeetCode", icon: leetcodeIcon },
     { url: personal?.medium, label: "Medium", icon: mediumIcon },
     { url: personal?.email && `mailto:${personal.email}`, label: "Email", icon: gmailIcon },
-    { url: personal?.phone && `https://wa.me/${personal.phone.replace(/[^0-9]/g, "")}`, label: "WhatsApp", icon: whatsappIcon },
   ];
 
   return (
@@ -46,6 +44,7 @@ export default function Contact() {
                 </a>
               ))}
             </nav>
+            <p className="connect-availability">{personal.contactAvailability}</p>
             {personal?.email && (
               <a href={`mailto:${personal.email}`} className="connect-email">
                 <span>{personal.email}</span>

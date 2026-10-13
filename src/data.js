@@ -9,7 +9,7 @@ const portfolioData = {
         github: "https://github.com/ruupesh",
         leetcode: "https://leetcode.com/ruupesh",
         medium: "https://medium.com/@ruupesh",
-        phone: "+91-9604996583",
+        contactAvailability: "Phone and WhatsApp are unavailable at the moment.",
         location: "Based in Hyderabad, India",
         resumeUrl: import.meta.env.VITE_RESUME_URL,
         summary: "Fullstack AI Engineer with ~4 years of experience building and shipping end-to-end backend and AgenticAI applications using diverse Python frameworks. Experienced in rapidly developing microservices, event-driven architectures, and multi-agent & GenAI systems on cloud-native infrastructure. Comfortable owning features from design to production, integrating LLMs, APIs, frontend components, and DevOps pipelines to deliver scalable products."
